@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:multisuperstore/generated/l10n.dart';
 import 'package:multisuperstore/src/elements/SearchWidgetShop.dart';
+import 'package:multisuperstore/src/elements/ShopListBoxWidget.dart';
+import 'package:multisuperstore/src/pages/chat_page.dart';
+import 'package:multisuperstore/src/pages/fav_screen.dart';
+import 'package:multisuperstore/src/pages/stores.dart';
 import 'ProfilePage.dart';
 import 'vendor_map.dart';
 import '../elements/DrawerWidget.dart';
@@ -9,7 +13,7 @@ import '../pages/home.dart';
 import 'orders.dart';
 
 // ignore: must_be_immutable
-class PagesWidget extends StatefulWidget  {
+class PagesWidget extends StatefulWidget {
   dynamic currentTab;
 
   Widget currentPage = HomeWidget();
@@ -19,7 +23,7 @@ class PagesWidget extends StatefulWidget  {
     Key key,
     this.currentTab,
   }) {
-    currentTab = 2;
+    currentTab = 0;
   }
 
   @override
@@ -45,18 +49,27 @@ class _PagesWidgetState extends State<PagesWidget> {
       widget.currentTab = tabItem;
       switch (tabItem) {
         case 0:
-          widget.currentPage = VendorMapWidget(parentScaffoldKey: widget.scaffoldKey);
+          widget.currentPage =
+              VendorMapWidget(parentScaffoldKey: widget.scaffoldKey);
           break;
         case 1:
-          widget.currentPage = SearchResultWidgetShop();
+          widget.currentPage = Stores();
           break;
         case 2:
-          widget.currentPage = HomeWidget(parentScaffoldKey: widget.scaffoldKey);
+          widget.currentPage = ChatPage();
           break;
         case 3:
-          widget.currentPage = OrdersWidget();
+          widget.currentPage =
+              HomeWidget(parentScaffoldKey: widget.scaffoldKey);
           break;
         case 4:
+          widget.currentPage = FavScreen();
+          break;
+        case 5:
+          widget.currentPage = OrdersWidget();
+          // widget.currentPage = ProfilePage();
+          break;
+        case 6:
           widget.currentPage = ProfilePage();
           break;
       }
@@ -67,63 +80,68 @@ class _PagesWidgetState extends State<PagesWidget> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: Helper.of(context).onWillPop,
-
       child: Scaffold(
         key: widget.scaffoldKey,
         drawer: DrawerWidget(),
         //backgroundColor: Colors.transparent,
         body: widget.currentPage,
-        bottomNavigationBar:  BottomNavigationBar(
-
+        bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Theme.of(context).accentColor,
           showSelectedLabels: true,
           showUnselectedLabels: true,
-          selectedLabelStyle:TextStyle(color:Theme.of(context).accentColor,fontWeight: FontWeight.w600,fontSize:12),
-          unselectedItemColor:  Color(0xFFaeaeae),
-          unselectedLabelStyle: TextStyle( color: Color(0xFFaeaeae),fontSize: 12.0,),
-          backgroundColor:Theme.of(context).primaryColor,
+          selectedLabelStyle: TextStyle(
+              color: Theme.of(context).accentColor,
+              fontWeight: FontWeight.w600,
+              fontSize: 12),
+          unselectedItemColor: Color(0xFFaeaeae),
+          unselectedLabelStyle: TextStyle(
+            color: Color(0xFFaeaeae),
+            fontSize: 12.0,
+          ),
+          backgroundColor: Theme.of(context).primaryColor,
           currentIndex: widget.currentTab,
           onTap: (int i) {
             this._selectTab(i);
           },
           // this will be set when a new tab is tapped
           items: [
-
             BottomNavigationBarItem(
-
               icon: Icon(Icons.location_on_outlined),
               // ignore: deprecated_member_use
               title: Text('map'),
-
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.search),
+                icon: Icon(Icons.shop),
                 // ignore: deprecated_member_use
-                title: Text( 'search')
-            ),
+                title: Text('Fav Shops')),
             BottomNavigationBarItem(
-                icon: Image(image:AssetImage('assets/img/logo.png'),
-                  width:35,height:35,
+                icon: Icon(Icons.chat),
+                // ignore: deprecated_member_use
+                title: Text('Chats')),
+            BottomNavigationBarItem(
+                icon: Image(
+                  image: AssetImage('assets/img/logo.png'),
+                  width: 35,
+                  height: 35,
                 ),
                 // ignore: deprecated_member_use
-                title: Text('Home')
-            ),
+                title: Text('Home')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.favorite),
+                // ignore: deprecated_member_use
+                title: Text('Wishlist')),
             BottomNavigationBarItem(
                 icon: new Icon(Icons.shopping_bag_outlined),
                 // ignore: deprecated_member_use
-                title: Text( S.of(context).my_orders)
-            ),
+                title: Text(S.of(context).my_orders)),
             BottomNavigationBarItem(
               icon: new Icon(Icons.person),
               // ignore: deprecated_member_use
-              title: Text(  S.of(context).profile),
+              title: Text(S.of(context).profile),
             ),
           ],
         ),
       ),
     );
   }
-
-
-  }
-
+}
