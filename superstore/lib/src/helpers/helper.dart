@@ -1,13 +1,16 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math' as Math;
 import 'dart:math';
 import 'dart:math' show cos, acos, sin;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:html/parser.dart';
@@ -27,11 +30,8 @@ class Helper {
 
   // for mapping data retrieved form json array
   static getData(Map<String, dynamic> data) {
-
     return data['data'] ?? [];
   }
-
-
 
   static int getIntData(Map<String, dynamic> data) {
     return (data['data'] as int) ?? 0;
@@ -47,9 +47,12 @@ class Helper {
 
   static Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+        .buffer
+        .asUint8List();
   }
 
   static List<Icon> getStarsList(double rate, {double size = 18}) {
@@ -60,7 +63,8 @@ class Helper {
     if (rate - rate.floor() > 0) {
       list.add(Icon(Icons.star_half, size: size, color: Color(0xFFFFB24D)));
     }
-    list.addAll(List.generate(5 - rate.floor() - (rate - rate.floor()).ceil(), (index) {
+    list.addAll(
+        List.generate(5 - rate.floor() - (rate - rate.floor()).ceil(), (index) {
       return Icon(Icons.star_border, size: size, color: Color(0xFFFFB24D));
     }));
     return list;
@@ -84,12 +88,12 @@ class Helper {
     }
   }
 
-  static calculateDeliveryFees(){
-
-    int deliveryFees =0;
+  static calculateDeliveryFees() {
+    int deliveryFees = 0;
 
     currentLogisticsPricing.value.forEach((item) {
-      if(item.fromRange <= currentCheckout.value.km && item.toRange >= currentCheckout.value.km){
+      if (item.fromRange <= currentCheckout.value.km &&
+          item.toRange >= currentCheckout.value.km) {
         deliveryFees = item.amount;
       }
     });
@@ -123,16 +127,14 @@ class Helper {
   }
 
   static priceDistance(km) {
-
-      return '$km KM';
-
+    return '$km KM';
   }
 
-  static calculateTime(double distance){
-    var avgSpeed = (1/ 48);
-    var hours  =  avgSpeed* distance;
-    var mins   =  hours * 60;
-    var totalMinutes   = (mins+10).toStringAsFixed(0);
+  static calculateTime(double distance) {
+    var avgSpeed = (1 / 48);
+    var hours = avgSpeed * distance;
+    var mins = hours * 60;
+    var totalMinutes = (mins + 10).toStringAsFixed(0);
     return "$totalMinutes mins";
   }
 
@@ -144,8 +146,10 @@ class Helper {
     });
   }
 
-  static String limitString(String text, {int limit = 24, String hiddenText = "..."}) {
-    return text.substring(0, Math.min<int>(limit, text.length)) + (text.length > limit ? hiddenText : '');
+  static String limitString(String text,
+      {int limit = 24, String hiddenText = "..."}) {
+    return text.substring(0, Math.min<int>(limit, text.length)) +
+        (text.length > limit ? hiddenText : '');
   }
 
   static String getCreditCardNumber(String number) {
@@ -183,8 +187,11 @@ class Helper {
       return Color(int.parse("0xFF" + hex));
     }
   }
-  static Future<Marker> getMyPositionMarker(double latitude, double longitude) async {
-    final Uint8List markerIcon = await getBytesFromAsset('assets/img/my_marker.png', 120);
+
+  static Future<Marker> getMyPositionMarker(
+      double latitude, double longitude) async {
+    final Uint8List markerIcon =
+        await getBytesFromAsset('assets/img/my_marker.png', 120);
     final Marker marker = Marker(
         markerId: MarkerId(Random().nextInt(100).toString()),
         icon: BitmapDescriptor.fromBytes(markerIcon),
@@ -193,6 +200,7 @@ class Helper {
 
     return marker;
   }
+
   static BoxFit getBoxFit(String boxFit) {
     switch (boxFit) {
       case 'cover':
@@ -215,8 +223,18 @@ class Helper {
   }
 
   static Future<Marker> getMarker(Map<String, dynamic> res) async {
-
-    final Uint8List markerIcon = await getBytesFromAsset('assets/img/marker.png', 120);
+    final File markerImageFile =
+        await DefaultCacheManager().getSingleFile(res['logo']);
+    final Uint8List markerImageBytes = await markerImageFile.readAsBytes();
+    final Codec markerImageCodec = await instantiateImageCodec(
+      markerImageBytes,
+      targetWidth: 60,
+    );
+    final FrameInfo frameInfo = await markerImageCodec.getNextFrame();
+    final ByteData byteData = await frameInfo.image.toByteData(
+      format: ImageByteFormat.png,
+    );
+    final Uint8List markerIcon = byteData.buffer.asUint8List();
     final Marker marker = Marker(
         markerId: MarkerId(res['shopId']),
         icon: BitmapDescriptor.fromBytes(markerIcon),
@@ -230,12 +248,11 @@ class Helper {
             onTap: () {
               print(CustomTrace(StackTrace.current, message: 'Info Window'));
             }),
-        position: LatLng(double.parse(res['latitude']), double.parse(res['longitude'])));
+        position: LatLng(
+            double.parse(res['latitude']), double.parse(res['longitude'])));
 
     return marker;
   }
-
-
 
   static distance(
       double lat1, double lon1, double lat2, double lon2, String unit) {
@@ -258,15 +275,13 @@ class Helper {
     return (deg * pi / 180.0);
   }
 
-  static  double rad2deg(double rad) {
+  static double rad2deg(double rad) {
     return (rad * 180.0 / pi);
   }
 
-
   // ignore: non_constant_identifier_names
   void ClearCartShow() {
-    var size = MediaQuery.of(context)
-        .size;
+    var size = MediaQuery.of(context).size;
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -275,7 +290,6 @@ class Helper {
             height: size.height * 0.3,
             color: Color(0xff737373),
             child: Container(
-
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.only(
@@ -287,7 +301,8 @@ class Helper {
                 children: <Widget>[
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.only(left:size.width * 0.05,right:size.width * 0.05),
+                      padding: EdgeInsets.only(
+                          left: size.width * 0.05, right: size.width * 0.05),
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
@@ -305,8 +320,11 @@ class Helper {
                     alignment: Alignment.bottomCenter,
                     child: Padding(
                       padding: EdgeInsets.only(
-                          left:size.width * 0.05,right:size.width * 0.05,top: 5, bottom: 5),
-                      child:Row(
+                          left: size.width * 0.05,
+                          right: size.width * 0.05,
+                          top: 5,
+                          bottom: 5),
+                      child: Row(
                         children: [
                           Container(
                             width: size.width * 0.44,
@@ -314,13 +332,11 @@ class Helper {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
                                 border: Border.all(
-                                    color: Colors.grey[200],
-                                    width:1
-                                )
-                              /*borderRadius: BorderRadius.only(
+                                    color: Colors.grey[200], width: 1)
+                                /*borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(40),
                                   topRight: Radius.circular(40))*/
-                            ),
+                                ),
                             // ignore: deprecated_member_use
                             child: FlatButton(
                               onPressed: () {
@@ -328,16 +344,16 @@ class Helper {
                               },
                               child: Center(
                                   child: Text(
-                                    'Cancel',
-                                    style: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  )),
+                                'Cancel',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )),
                             ),
                           ),
-                          SizedBox(width:size.width * 0.02),
+                          SizedBox(width: size.width * 0.02),
                           Container(
                             width: size.width * 0.44,
                             height: 45.0,
@@ -353,18 +369,17 @@ class Helper {
                               onPressed: () {},
                               child: Center(
                                   child: Text(
-                                    'Clear Cart',
-                                    style: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  )),
+                                'Clear Cart',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )),
                             ),
                           ),
                         ],
                       ),
-
                     ),
                   ),
                 ],
@@ -374,7 +389,8 @@ class Helper {
         });
   }
 
-  static AlignmentDirectional getAlignmentDirectional(String alignmentDirectional) {
+  static AlignmentDirectional getAlignmentDirectional(
+      String alignmentDirectional) {
     switch (alignmentDirectional) {
       case 'top_start':
         return AlignmentDirectional.topStart;
@@ -401,7 +417,8 @@ class Helper {
 
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
-    if (currentBackPressTime == null || now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
       currentBackPressTime = now;
 
       return Future.value(false);
