@@ -81,6 +81,7 @@ dependencies:
   just_audio:
   upi_india: 3.0.1
   webview_flutter: ^2.0.12
+  url_launcher: ^6.0.10
 
 dependency_overrides:
   intl: 0.17.0

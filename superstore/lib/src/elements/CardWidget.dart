@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:superstore/src/models/vendor.dart';
+import 'package:superstore/src/pages/grocerystore.dart';
+import 'package:superstore/src/pages/store_detail.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../helpers/helper.dart';
 
 // ignore: must_be_immutable
@@ -138,7 +141,28 @@ class CardWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                if (market.shopType == '1' ||
+                                    market.shopType == '3') {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => GroceryStoreWidget(
+                                            shopDetails: market,
+                                            shopTypeID:
+                                                int.parse(market.shopType),
+                                            focusId:
+                                                int.parse(market.focusType),
+                                          )));
+                                } else {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => StoreViewDetails(
+                                            shopDetails: market,
+                                            shopTypeID:
+                                                int.parse(market.shopType),
+                                            focusId:
+                                                int.parse(market.focusType),
+                                          )));
+                                }
+                              },
                               child: Container(
                                 height: 24,
                                 margin: EdgeInsets.symmetric(horizontal: 8),
@@ -159,7 +183,15 @@ class CardWidget extends StatelessWidget {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () async {
+                                String url =
+                                    "https://www.google.com/maps/dir/?api=1&destination=${market.latitude},${market.longitude}&travelmode=driving&dir_action=navigate";
+                                if (await canLaunch(url)) {
+                                  await launch(url);
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              },
                               child: Container(
                                 height: 24,
                                 margin: EdgeInsets.only(right: 8),
