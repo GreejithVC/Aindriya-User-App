@@ -5,9 +5,7 @@ import '../controllers/map_controller.dart';
 import '../elements/CardsCarouselWidget.dart';
 import '../elements/CircularLoadingWidget.dart';
 
-
 class VendorMapWidget extends StatefulWidget {
-
   final GlobalKey<ScaffoldState> parentScaffoldKey;
 
   VendorMapWidget({Key key, this.parentScaffoldKey}) : super(key: key);
@@ -25,14 +23,14 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
 
   @override
   void initState() {
-   /** _con.currentMarket = widget.routeArgument?.param as Market;
-    if (_con.currentMarket?.latitude != null) {
-      // user select a market
-      _con.getMarketLocation();
-      _con.getDirectionSteps();
-    } else {
-      _con.getCurrentLocation();
-    } */
+    /** _con.currentMarket = widget.routeArgument?.param as Market;
+        if (_con.currentMarket?.latitude != null) {
+        // user select a market
+        _con.getMarketLocation();
+        _con.getDirectionSteps();
+        } else {
+        _con.getCurrentLocation();
+        } */
 
     _con.getCurrentLocation();
     super.initState();
@@ -48,15 +46,21 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
         leading: _con.currentAddress?.latitude == null
             ? new IconButton(
                 icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
-                onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
+                onPressed: () =>
+                    widget.parentScaffoldKey.currentState.openDrawer(),
               )
             : IconButton(
-                icon: new Icon(Icons.arrow_back, color: Theme.of(context).hintColor),
-                onPressed: () => Navigator.of(context).pushNamed('/Pages', arguments: 2),
+                icon: new Icon(Icons.arrow_back,
+                    color: Theme.of(context).hintColor),
+                onPressed: () =>
+                    Navigator.of(context).pushNamed('/Pages', arguments: 2),
               ),
         title: Text(
           'Explorer',
-          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
+          style: Theme.of(context)
+              .textTheme
+              .headline6
+              .merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
           IconButton(
@@ -65,10 +69,9 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
               color: Theme.of(context).hintColor,
             ),
             onPressed: () {
-            _con.goCurrentLocation();
+              _con.goCurrentLocation();
             },
           ),
-
         ],
       ),
       body: Stack(
@@ -92,6 +95,7 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
                     _con.getMarketsOfArea();
                   },
                   polylines: _con.polylines,
+                  circles: Set.from(_con.allCircles),
                 ),
           CardsCarouselWidget(
             marketsList: _con.topMarkets,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:superstore/src/models/vendor.dart';
@@ -16,6 +17,13 @@ class MapController extends ControllerMVC {
   List<Marker> allMarkers = <Marker>[];
   Address currentAddress;
   Set<Polyline> polylines = new Set();
+  List<Circle> allCircles = <Circle>[];
+
+  // Set<Circle> circles = Set.from([Circle(
+  //   circleId: CircleId(id),
+  //   center: LatLng(latitude, longitude),
+  //   radius: 4000,
+  // )]);
   CameraPosition cameraPosition;
 
   // MapsUtil mapsUtil = new MapsUtil();
@@ -32,8 +40,19 @@ class MapController extends ControllerMVC {
         _market.toMap(),
         onItemSelected: (selectedItem) {
           topMarkets.clear();
+          allCircles.clear();
           setState(() {
-            topMarkets.add(Vendor.fromJSON(selectedItem));
+            Vendor item = Vendor.fromJSON(selectedItem);
+            topMarkets.add(item);
+            allCircles.add(Circle(
+              strokeWidth: 1,
+              strokeColor: Colors.amberAccent,
+              fillColor: Colors.indigo.withOpacity(0.5),
+              circleId: CircleId(item.shopId),
+              center: LatLng(double.tryParse(item.latitude),
+                  double.tryParse(item.longitude)),
+              radius: 2000,
+            ));
           });
         },
       ).then((marker) {
@@ -115,7 +134,7 @@ class MapController extends ControllerMVC {
     });
   }
 
-  /*
+/*
   void getDirectionSteps() async {
     currentAddress = await sett.getCurrentLocation();
     mapsUtil
@@ -144,10 +163,10 @@ class MapController extends ControllerMVC {
     });
   }
  */
-  // Future refreshMap() async {
-  //   setState(() {
-  //     topMarkets = <Vendor>[];
-  //   });
-  //   //  listenForNearMarkets(currentAddress, currentAddress);
-  // }
+// Future refreshMap() async {
+//   setState(() {
+//     topMarkets = <Vendor>[];
+//   });
+//   //  listenForNearMarkets(currentAddress, currentAddress);
+// }
 }
