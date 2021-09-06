@@ -47,7 +47,7 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
                 ),
               )
             : Container(
-                height: 288,
+                height: 300,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.marketsList.length,
