@@ -14,7 +14,7 @@ class Vendor {
   String latitude;
   String shopType;
   String focusType;
-  String shopIcon;
+  String shopTypePreviewImage;
 
   Vendor();
 
@@ -28,7 +28,7 @@ class Vendor {
       rate = jsonMap['rate'];
       distance = jsonMap['distance'];
       logo = jsonMap['logo'];
-      shopIcon = jsonMap['logo'];
+      shopTypePreviewImage = jsonMap['logo'];
       cover = jsonMap['cover'];
       openStatus = jsonMap['openStatus'];
       longitude = jsonMap['longitude'];
@@ -61,7 +61,7 @@ class Vendor {
     map["rate"] = rate;
     map["distance"] = distance;
     map["logo"] = logo;
-    map["logo"] = shopIcon;
+    map["logo"] = shopTypePreviewImage;
     map["cover"] = cover;
     map["openStatus"] = openStatus;
     map["longitude"] = longitude;
