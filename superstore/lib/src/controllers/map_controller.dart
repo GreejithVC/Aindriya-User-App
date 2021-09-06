@@ -7,36 +7,36 @@ import 'package:superstore/src/models/vendor.dart';
 import '../repository/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-
-
-
 import '../helpers/helper.dart';
 import '../models/address.dart';
 import '../repository/market_repository.dart';
 
-
 class MapController extends ControllerMVC {
-
   List<Vendor> topMarkets = <Vendor>[];
   List<Marker> allMarkers = <Marker>[];
   Address currentAddress;
   Set<Polyline> polylines = new Set();
   CameraPosition cameraPosition;
- // MapsUtil mapsUtil = new MapsUtil();
+
+  // MapsUtil mapsUtil = new MapsUtil();
   Completer<GoogleMapController> mapController = Completer();
 
- void listenForNearMarkets(Address myLocation, Address areaLocation) async {
-    final Stream<Vendor> stream = await getNearMarkets(myLocation, areaLocation);
+  void listenForNearMarkets(Address myLocation, Address areaLocation) async {
+    final Stream<Vendor> stream =
+        await getNearMarkets(myLocation, areaLocation);
     stream.listen((Vendor _market) {
       // Helper.calculateDistance();
-              print('loaddata');
+      print('loaddata');
 
-      setState(() {
-        if (_market.logo != null) {
-          topMarkets.add(_market);
-        }
-      });
-    Helper.getMarker(_market.toMap()).then((marker) {
+      Helper.getMarker(
+        _market.toMap(),
+        onItemSelected: (selectedItem) {
+          topMarkets.clear();
+          setState(() {
+            topMarkets.add(Vendor.fromJSON(selectedItem));
+          });
+        },
+      ).then((marker) {
         setState(() {
           allMarkers.add(marker);
         });
@@ -46,39 +46,17 @@ class MapController extends ControllerMVC {
 
   void getCurrentLocation() async {
     try {
-
-      setState(() {
-
-          cameraPosition = CameraPosition(
-            target: LatLng(currentUser.value.latitude, currentUser.value.longitude),
-            zoom: 14.4746,
-          );
-
-      });
-
-        Helper.getMyPositionMarker(currentUser.value.latitude,currentUser.value.longitude).then((marker) {
-          setState(() {
-            allMarkers.add(marker);
-          });
-        });
-
-    } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED') {
-        print('Permission denied');
-      }
-    }
-  }
-
-  void getMarketLocation() async {
-    try {
-
       setState(() {
         cameraPosition = CameraPosition(
-          target: LatLng(currentUser.value.latitude, currentUser.value.longitude),
-          zoom:  17.5,
+          target:
+              LatLng(currentUser.value.latitude, currentUser.value.longitude),
+          zoom: 14.4746,
         );
       });
-      Helper.getMyPositionMarker(currentUser.value.latitude, currentUser.value.longitude).then((marker) {
+
+      Helper.getMyPositionMarker(
+              currentUser.value.latitude, currentUser.value.longitude)
+          .then((marker) {
         setState(() {
           allMarkers.add(marker);
         });
@@ -90,23 +68,45 @@ class MapController extends ControllerMVC {
     }
   }
 
+  void getMarketLocation() async {
+    try {
+      setState(() {
+        cameraPosition = CameraPosition(
+          target:
+              LatLng(currentUser.value.latitude, currentUser.value.longitude),
+          zoom: 17.5,
+        );
+      });
+      Helper.getMyPositionMarker(
+              currentUser.value.latitude, currentUser.value.longitude)
+          .then((marker) {
+        setState(() {
+          allMarkers.add(marker);
+        });
+      });
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        print('Permission denied');
+      }
+    }
+  }
 
   Future<void> goCurrentLocation() async {
     final GoogleMapController controller = await mapController.future;
 
-
-
-      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(currentUser.value.latitude,currentUser.value.longitude),
-        zoom: 14.4746,
-      )));
-
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      target: LatLng(currentUser.value.latitude, currentUser.value.longitude),
+      zoom: 14.4746,
+    )));
   }
 
   void getMarketsOfArea() async {
     setState(() {
-      topMarkets = <Vendor>[];
-      Address areaAddress = Address.fromJSON({"latitude": currentUser.value.latitude, "longitude": currentUser.value.longitude});
+      // topMarkets = <Vendor>[];
+      Address areaAddress = Address.fromJSON({
+        "latitude": currentUser.value.latitude,
+        "longitude": currentUser.value.longitude
+      });
       if (cameraPosition != null) {
         listenForNearMarkets(currentAddress, areaAddress);
       } else {
@@ -144,10 +144,10 @@ class MapController extends ControllerMVC {
     });
   }
  */
-  Future refreshMap() async {
-    setState(() {
-      topMarkets = <Vendor>[];
-    });
-  //  listenForNearMarkets(currentAddress, currentAddress);
-  }
+  // Future refreshMap() async {
+  //   setState(() {
+  //     topMarkets = <Vendor>[];
+  //   });
+  //   //  listenForNearMarkets(currentAddress, currentAddress);
+  // }
 }

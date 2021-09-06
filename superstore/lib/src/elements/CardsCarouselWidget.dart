@@ -24,7 +24,7 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
   @override
   Widget build(BuildContext context) {
     return widget.marketsList.isEmpty
-        ? CardsCarouselLoaderWidget()
+        ? Container()
         : widget.marketsList[0].shopId == 'no_data'
             ? Positioned(
                 bottom: 0.0,

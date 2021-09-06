@@ -14,6 +14,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:html/parser.dart';
+import 'package:superstore/src/listener/item_selected_listener.dart';
 import '../elements/ClearCartWidget.dart';
 import '../repository/order_repository.dart';
 import '../repository/settings_repository.dart';
@@ -222,7 +223,8 @@ class Helper {
     }
   }
 
-  static Future<Marker> getMarker(Map<String, dynamic> res) async {
+  static Future<Marker> getMarker(Map<String, dynamic> res,
+      {OnItemSelected onItemSelected}) async {
     final File markerImageFile =
         await DefaultCacheManager().getSingleFile(res['logo']);
     final Uint8List markerImageBytes = await markerImageFile.readAsBytes();
@@ -238,9 +240,9 @@ class Helper {
     final Marker marker = Marker(
         markerId: MarkerId(res['shopId']),
         icon: BitmapDescriptor.fromBytes(markerIcon),
-//        onTap: () {
-//          //print(res.name);
-//        },
+        onTap: () {
+          onItemSelected(res);
+        },
         anchor: Offset(0.5, 0.5),
         infoWindow: InfoWindow(
             title: res['shopName'],
