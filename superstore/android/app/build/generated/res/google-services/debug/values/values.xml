@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">473854277139-2gunmj6nf29g4iobb26q43vhlesur5ka.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">473854277139</string>
+    <string name="google_api_key" translatable="false">AIzaSyCvyvQsVggCaOuyVad9koB7pxra9OBHYlQ</string>
+    <string name="google_app_id" translatable="false">1:473854277139:android:a7f7539c05ec6591b831e6</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCvyvQsVggCaOuyVad9koB7pxra9OBHYlQ</string>
+    <string name="google_storage_bucket" translatable="false">buysmartfinal.appspot.com</string>
+    <string name="project_id" translatable="false">buysmartfinal</string>
+</resources>
