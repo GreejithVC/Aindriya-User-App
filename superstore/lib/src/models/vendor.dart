@@ -28,7 +28,7 @@ class Vendor {
       rate = jsonMap['rate'];
       distance = jsonMap['distance'];
       logo = jsonMap['logo'];
-      shopTypePreviewImage = jsonMap['logo'];
+      shopTypePreviewImage = jsonMap['previewImage'];
       cover = jsonMap['cover'];
       openStatus = jsonMap['openStatus'];
       longitude = jsonMap['longitude'];
@@ -61,7 +61,7 @@ class Vendor {
     map["rate"] = rate;
     map["distance"] = distance;
     map["logo"] = logo;
-    map["logo"] = shopTypePreviewImage;
+    map["previewImage"] = shopTypePreviewImage;
     map["cover"] = cover;
     map["openStatus"] = openStatus;
     map["longitude"] = longitude;

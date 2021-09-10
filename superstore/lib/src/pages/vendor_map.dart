@@ -82,7 +82,7 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
               ? CircularLoadingWidget(height: 0)
               : GoogleMap(
                   mapToolbarEnabled: false,
-                  mapType: MapType.normal,
+                  mapType: MapType.hybrid,
                   initialCameraPosition: _con.cameraPosition,
                   markers: Set.from(_con.allMarkers),
                   onMapCreated: (GoogleMapController controller) {
