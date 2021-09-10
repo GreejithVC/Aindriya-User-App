@@ -80,7 +80,11 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
         children: <Widget>[
           _con.cameraPosition == null
               ? CircularLoadingWidget(height: 0)
-              : GoogleMap(
+              : GoogleMap(onTap: (LatLng latLng){
+            setState(() {
+              _con.topMarkets.clear();
+            });
+          },
                   mapToolbarEnabled: false,
                   mapType: MapType.hybrid,
                   initialCameraPosition: _con.cameraPosition,
