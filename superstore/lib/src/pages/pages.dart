@@ -106,12 +106,12 @@ class _PagesWidgetState extends State<PagesWidget> {
             BottomNavigationBarItem(
               icon: Icon(Icons.location_on_outlined),
               // ignore: deprecated_member_use
-              title: Text('map'),
+              title: Text('Map'),
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.shop),
                 // ignore: deprecated_member_use
-                title: Text('Fav Shops')),
+                title: Text('Favorite')),
             BottomNavigationBarItem(
                 icon: Icon(Icons.chat),
                 // ignore: deprecated_member_use
@@ -131,7 +131,7 @@ class _PagesWidgetState extends State<PagesWidget> {
             BottomNavigationBarItem(
                 icon: new Icon(Icons.shopping_bag_outlined),
                 // ignore: deprecated_member_use
-                title: Text(S.of(context).my_orders)),
+                title: Text('Orders')),
             BottomNavigationBarItem(
               icon: new Icon(Icons.person),
               // ignore: deprecated_member_use

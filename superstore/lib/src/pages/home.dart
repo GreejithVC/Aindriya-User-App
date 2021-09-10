@@ -102,7 +102,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                       // Here the height of the container is 45% of our total height
                                       height: 80,
                                       decoration: BoxDecoration(
-                                        color: Theme.of(context).accentColor,
+                                        color: Theme.of(context).secondaryHeaderColor,
                                       ),
                                     ),
                                     HomeSliderWidget(slides: _con.slides),
@@ -116,11 +116,11 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children:[
-                                  Text('Shop Category',
+                                  Text('Our Stores',
                                   style: TextStyle(
-                                    fontFamily: 'Blacksword',
+                                    fontFamily: 'proximanova-regular',
                                     fontSize:24,
-                                    color:Colors.brown
+                                    color:Colors.blueGrey
                                   ),
                                   )
                                 ]
@@ -143,7 +143,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                   color: Theme.of(context).hintColor,
                                 ),
                                 title: Text(
-                                  'Nearest Shop',
+                                  'Nearby Shop',
                                   style: Theme.of(context).textTheme.headline3,
                                 ),
                                 subtitle: Text(
@@ -152,9 +152,9 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 2),
                             ShopTopSlider(vendorList: _con.vendorList, key: null,),
-                              SizedBox(height: 20),
+                              SizedBox(height: 2),
 
 
 

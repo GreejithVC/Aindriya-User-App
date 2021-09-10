@@ -69,7 +69,7 @@ class MapController extends ControllerMVC {
         cameraPosition = CameraPosition(
           target:
               LatLng(currentUser.value.latitude, currentUser.value.longitude),
-          zoom: 7.227,
+          zoom: 14.4746,
         );
       });
 

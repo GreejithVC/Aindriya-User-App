@@ -94,7 +94,7 @@ class _OtpVerificationState extends StateMVC<OtpVerification> with TickerProvide
               SizedBox(height: 20.0),
               Text("OTP Verification", style: Theme.of(context).textTheme.subtitle1),
               SizedBox(height: 10.0),
-              Text("Enter the otp send to +81 96466 78905",
+              Text("Enter the otp send to +91 7293112800",
                   textAlign: TextAlign.center, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600, color: Colors.grey[400])),
               SizedBox(height: 20),
               Padding(

@@ -83,7 +83,7 @@ class _MyAppState extends StateMVC<MyApp> {
                       primaryColor: Colors.white,
                       disabledColor: Colors.grey,
                       cardColor: Colors.lightBlue[50],
-                      secondaryHeaderColor: Color(0xFF043832).withOpacity(1.0),
+                      secondaryHeaderColor: Color(0xFF047BD5).withOpacity(1.0),
                       floatingActionButtonTheme: FloatingActionButtonThemeData(elevation: 0, foregroundColor: Colors.white),
                       brightness: Brightness.light,
 
@@ -113,7 +113,7 @@ class _MyAppState extends StateMVC<MyApp> {
                       brightness: Brightness.dark,
                       scaffoldBackgroundColor: Color(0xFF2C2C2C),
                       primaryColorLight: Colors.white,
-                      //accentColor: Color(0xFFFc8019),
+                      //accentColor: Color(0xFFfbbc00),047BD5
                       accentColor: Color(0xFFfbbc00).withOpacity(1.0),
                       dividerColor: Color(0xFF9999aa).withOpacity(0.1),
                       hintColor: Color(0xFFccccdd).withOpacity(0.1),
