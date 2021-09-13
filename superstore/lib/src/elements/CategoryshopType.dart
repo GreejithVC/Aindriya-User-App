@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:responsive_ui/responsive_ui.dart';
 import 'package:superstore/src/models/shop_type.dart';
@@ -25,12 +26,66 @@ class _CategoryShopTypeState extends State<CategoryShopType> {
 
     return Container(
       width:double.infinity,
-      margin:EdgeInsets.only(left:5,right:5),
-      padding: EdgeInsets.only(top:10),
-      child: Wrap(
-        children: List.generate(widget.shopType.length, (index) {
+      margin:EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),color: Colors.lightBlue.withOpacity(.2),
+      child: StaggeredGridView.countBuilder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.all(0),
+        crossAxisCount: 6,
+        itemCount:widget.shopType.length,
+        itemBuilder: (BuildContext context, int index) {
           ShopType _shopTypeData = widget.shopType.elementAt(index);
-           return Wrap(
+          return Column(
+              children:[
+                GestureDetector(
+                  onTap: () {
+
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                      return Stores(storeType: int.parse(_shopTypeData.shopType), pageTitle:  _shopTypeData.title,focusId: int.parse(_shopTypeData.id),
+                        coverImage: _shopTypeData.coverImage,previewImage: _shopTypeData.previewImage,);
+                    }));
+
+                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => SendPackage()));
+                  },
+                  child: Container(
+                      padding: EdgeInsets.all(10),
+                      height: 150.0,
+                      decoration: new BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8),border: Border.all(color:  Color(0xffFFD700),width: 2,style: BorderStyle.solid),
+                          shape: BoxShape.rectangle,
+                          image: new DecorationImage(
+                              fit: BoxFit.contain,
+                              image: NetworkImage(_shopTypeData.previewImage)
+                          )
+                      )),
+                ),
+                SizedBox(height:5),
+                Container(
+                  child: Text(
+                    _shopTypeData.title,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                ),
+              ]
+          );
+        },
+        staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+        mainAxisSpacing: 20,
+        crossAxisSpacing: 12,
+      ),
+      
+    );
+
+  }
+  Widget _listViewBuilder(){
+    return Wrap(
+      children: List.generate(widget.shopType.length, (index) {
+        ShopType _shopTypeData = widget.shopType.elementAt(index);
+        return
+          Wrap(
               children:[
                 Div(
                   colL:3,
@@ -40,27 +95,28 @@ class _CategoryShopTypeState extends State<CategoryShopType> {
                     padding: EdgeInsets.only(bottom:10),
                     child:Column(
                         children:[
-                        GestureDetector(
-                        onTap: () {
+                          GestureDetector(
+                            onTap: () {
 
-                   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                               return Stores(storeType: int.parse(_shopTypeData.shopType), pageTitle:  _shopTypeData.title,focusId: int.parse(_shopTypeData.id),
-                               coverImage: _shopTypeData.coverImage,previewImage: _shopTypeData.previewImage,);
-                           }));
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                return Stores(storeType: int.parse(_shopTypeData.shopType), pageTitle:  _shopTypeData.title,focusId: int.parse(_shopTypeData.id),
+                                  coverImage: _shopTypeData.coverImage,previewImage: _shopTypeData.previewImage,);
+                              }));
 
-                       //Navigator.of(context).push(MaterialPageRoute(builder: (context) => SendPackage()));
-                             },
+                              //Navigator.of(context).push(MaterialPageRoute(builder: (context) => SendPackage()));
+                            },
                             child: Container(
-                              width: 70.0,
-                              height: 70.0,
-                              decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: new DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: NetworkImage(_shopTypeData.previewImage)
-                                  )
-                              )),
-                        ),
+                                padding: EdgeInsets.all(10),
+                                width: 100.0,
+                                height: 115.0,
+                                decoration: new BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8),border: Border.all(color:  Color(0xffFFD700),width: 2,style: BorderStyle.solid),
+                                    shape: BoxShape.rectangle,
+                                    image: new DecorationImage(
+                                        fit: BoxFit.contain,
+                                        image: NetworkImage(_shopTypeData.previewImage)
+                                    )
+                                )),
+                          ),
                           SizedBox(height:5),
                           Container(
                             child: Text(
@@ -78,8 +134,6 @@ class _CategoryShopTypeState extends State<CategoryShopType> {
                 ),
               ]
           );
-        }),),
-    );
-
+      }),);
   }
 }

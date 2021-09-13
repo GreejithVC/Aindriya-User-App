@@ -15,6 +15,7 @@ class Vendor {
   String shopType;
   String focusType;
   String shopTypePreviewImage;
+  bool isFavourite;
 
   Vendor();
 
@@ -28,13 +29,14 @@ class Vendor {
       rate = jsonMap['rate'];
       distance = jsonMap['distance'];
       logo = jsonMap['logo'];
-      shopTypePreviewImage = jsonMap['previewImage'];
+      shopTypePreviewImage = jsonMap['logo'];
       cover = jsonMap['cover'];
       openStatus = jsonMap['openStatus'];
       longitude = jsonMap['longitude'];
       latitude = jsonMap['latitude'];
       shopType = jsonMap['shopType'];
       focusType = jsonMap['focusType'];
+      isFavourite = jsonMap['isFavourite'];
     } catch (e) {
       shopId = '';
       shopName = '';
@@ -61,7 +63,7 @@ class Vendor {
     map["rate"] = rate;
     map["distance"] = distance;
     map["logo"] = logo;
-    map["previewImage"] = shopTypePreviewImage;
+    map["logo"] = shopTypePreviewImage;
     map["cover"] = cover;
     map["openStatus"] = openStatus;
     map["longitude"] = longitude;
