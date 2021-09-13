@@ -178,6 +178,7 @@ class Helper {
         // ignore: deprecated_member_use
         port: Uri.parse(GlobalConfiguration().getString('base_url')).port,
         path: _path + path);
+    print(uri);
     return uri;
   }
 

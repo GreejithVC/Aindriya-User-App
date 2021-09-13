@@ -10,7 +10,6 @@ import '../controllers/product_controller.dart';
 import '../elements/BottomBarWidget.dart';
 import '../models/product.dart';
 
-
 // ignore: must_be_immutable
 class CategoryProduct extends StatefulWidget {
   Category categoryData;
@@ -22,7 +21,20 @@ class CategoryProduct extends StatefulWidget {
   String latitude;
   String longitude;
   int focusId;
-  CategoryProduct({Key key, this.categoryData, this.shopId, this.shopName, this.subtitle, this.km, this.shopTypeID, this.latitude, this.longitude, this.focusId}) : super(key: key);
+
+  CategoryProduct(
+      {Key key,
+      this.categoryData,
+      this.shopId,
+      this.shopName,
+      this.subtitle,
+      this.km,
+      this.shopTypeID,
+      this.latitude,
+      this.longitude,
+      this.focusId})
+      : super(key: key);
+
   @override
   _CategoryProductState createState() => _CategoryProductState();
 }
@@ -33,7 +45,9 @@ class _CategoryProductState extends StateMVC<CategoryProduct> {
   _CategoryProductState() : super(ProductController()) {
     _con = controller;
   }
+
   bool popperShow = false;
+
   @override
   void initState() {
     super.initState();
@@ -46,7 +60,31 @@ class _CategoryProductState extends StateMVC<CategoryProduct> {
 
     _con.category_products.forEach((element) {
       tabs.add(Tab(
-        text: element.subcategory_name,
+        // text: element.subcategory_name,
+        child: Container(
+          width: 120,
+          padding: EdgeInsets.only(left: 5, right: 5),
+          alignment: Alignment.bottomCenter,
+          child: Row(
+            children: [
+              Container(
+                width: 50,
+                margin: EdgeInsets.only(top: 6),
+                decoration: BoxDecoration(
+                    image: new DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          element.image,
+                        ))),
+              ),
+              Expanded(
+                  child: Text(element.subcategory_name,
+                      style: TextStyle(fontSize: 12, color: Colors.black87),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2)),
+            ],
+          ),
+        ),
       ));
     });
     return tabs;
@@ -65,17 +103,18 @@ class _CategoryProductState extends StateMVC<CategoryProduct> {
       child: Scaffold(
         key: _con.scaffoldKey,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: popperShow?Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: FlareActor(
-                'assets/img/winners.flr',
-                animation: 'boom',
+        floatingActionButton: popperShow
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: FlareActor(
+                      'assets/img/winners.flr',
+                      animation: 'boom',
+                    )),
               )
-          ),
-        ):BottomBarWidget(),
+            : BottomBarWidget(),
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool isScrolled) {
             return [
@@ -96,31 +135,54 @@ class _CategoryProductState extends StateMVC<CategoryProduct> {
                 bottom: PreferredSize(
                   preferredSize: const Size.fromHeight(0),
                   child: TabBar(
+                    unselectedLabelColor: Colors.red,
+                    indicatorColor: Colors.blue,
                     isScrollable: true,
                     tabs: tabMaker(),
+                    indicator: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                          color: Colors.blue,
+                          width: 2,
+                          style: BorderStyle.solid),
+                    ),
                   ),
                 ),
               ),
             ];
           },
-          body:  _con.category_products.isEmpty? RectangleLoaderWidget() : MediaQuery.removePadding(
-            context: context,
-            removeTop: true,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 0),
-              child: TabBarView(
-                children: List.generate(
-                  _con.category_products.length,
-                      (index) {
-                    Product _productDetails = _con.category_products.elementAt(index);
+          body: _con.category_products.isEmpty
+              ? RectangleLoaderWidget()
+              : MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 0),
+                    child: TabBarView(
+                      children: List.generate(
+                        _con.category_products.length,
+                        (index) {
+                          Product _productDetails =
+                              _con.category_products.elementAt(index);
 
-                    return CategorySwipeHeader(productData: _productDetails.productdetails, con: _con,shopId: widget.shopId,callback: callback, focusId: widget.focusId,
-                       shopName: widget.shopName, subtitle: widget.subtitle,km: widget.km,shopTypeID: widget.shopTypeID,longitude: widget.longitude,latitude: widget.latitude,);
-                  },
+                          return CategorySwipeHeader(
+                            productData: _productDetails.productdetails,
+                            con: _con,
+                            shopId: widget.shopId,
+                            callback: callback,
+                            focusId: widget.focusId,
+                            shopName: widget.shopName,
+                            subtitle: widget.subtitle,
+                            km: widget.km,
+                            shopTypeID: widget.shopTypeID,
+                            longitude: widget.longitude,
+                            latitude: widget.latitude,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
         ),
       ),
     );
@@ -136,7 +198,12 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   String statusBarMode = 'dark';
 
-  SliverCustomHeaderDelegate({this.collapsedHeight, this.expandedHeight, this.paddingTop, this.coverImgUrl, this.pagetitle});
+  SliverCustomHeaderDelegate(
+      {this.collapsedHeight,
+      this.expandedHeight,
+      this.paddingTop,
+      this.coverImgUrl,
+      this.pagetitle});
 
   @override
   double get minExtent => this.collapsedHeight + this.paddingTop;
@@ -150,7 +217,9 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   Color makeStickyHeaderBgColor(shrinkOffset) {
-    final int alpha = (shrinkOffset / (this.maxExtent - this.minExtent) * 255).clamp(0, 255).toInt();
+    final int alpha = (shrinkOffset / (this.maxExtent - this.minExtent) * 255)
+        .clamp(0, 255)
+        .toInt();
     return Color.fromARGB(alpha, 255, 255, 255);
   }
 
@@ -158,13 +227,16 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
     if (shrinkOffset <= 50) {
       return isIcon ? Colors.white : Colors.transparent;
     } else {
-      final int alpha = (shrinkOffset / (this.maxExtent - this.minExtent) * 255).clamp(0, 255).toInt();
+      final int alpha = (shrinkOffset / (this.maxExtent - this.minExtent) * 255)
+          .clamp(0, 255)
+          .toInt();
       return Color.fromARGB(alpha, 0, 0, 0);
     }
   }
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       height: this.maxExtent,
       width: MediaQuery.of(context).size.width,
@@ -209,7 +281,8 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
                         icon: Icon(
                           Icons.arrow_back_ios,
                           size: 20,
-                          color: this.makeStickyHeaderTextColor(shrinkOffset, false),
+                          color: this
+                              .makeStickyHeaderTextColor(shrinkOffset, false),
                         ),
                         onPressed: () => Navigator.pop(context),
                       ),
@@ -222,9 +295,13 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
                               child: Text(
                                 this.pagetitle,
                                 textAlign: TextAlign.left,
-                                style: Theme.of(context).textTheme.headline1.merge(TextStyle(
-                                  color: this.makeStickyHeaderTextColor(shrinkOffset, false),
-                                )),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline1
+                                    .merge(TextStyle(
+                                      color: this.makeStickyHeaderTextColor(
+                                          shrinkOffset, false),
+                                    )),
                               ),
                             ),
                           ],
@@ -236,7 +313,8 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
                         child: Icon(
                           Icons.favorite_border,
                           size: 20,
-                          color: this.makeStickyHeaderTextColor(shrinkOffset, false),
+                          color: this
+                              .makeStickyHeaderTextColor(shrinkOffset, false),
                         ),
                       ),
                       SizedBox(width: 15),
@@ -245,7 +323,8 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
                         child: Icon(
                           Icons.search,
                           size: 20,
-                          color: this.makeStickyHeaderTextColor(shrinkOffset, false),
+                          color: this
+                              .makeStickyHeaderTextColor(shrinkOffset, false),
                         ),
                       ),
                     ],
