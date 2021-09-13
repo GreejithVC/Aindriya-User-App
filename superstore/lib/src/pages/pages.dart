@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:superstore/generated/l10n.dart';
 import 'package:superstore/src/pages/fav_shops.dart';
-import 'package:superstore/src/pages/stores.dart';
 import 'ProfilePage.dart';
 import 'chat_page.dart';
 import 'fav_screen.dart';

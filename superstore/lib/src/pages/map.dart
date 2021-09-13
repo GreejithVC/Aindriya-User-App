@@ -23,8 +23,6 @@ import '../repository/order_repository.dart' as repository;
 
 // ignore: must_be_immutable
 class MapWidget extends StatefulWidget {
-
-
   String orderId;
   MapWidget({Key key, this.orderId}) : super(key: key);
 
@@ -70,6 +68,8 @@ class _MapWidgetState extends State<MapWidget>  with AfterLayoutMixin<MapWidget>
     super.initState();
 
   }
+
+
 
 
   listenForPaymentDetails(id) async {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:superstore/src/pages/store_detail.dart';
 import 'package:superstore/src/pages/upload_prescription.dart';
 
 import '../helpers/helper.dart';
@@ -325,13 +326,9 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                           ),
                           Wrap(
                             children: [
-                              Icon(
-                                Icons.star,
-                                color: Colors.orange,
-                                size: 17,
-                              ),
+                              FavButton(),
                               SizedBox(width: 2),
-                              Text(shopDetails.rate, style: Theme.of(context).textTheme.subtitle2),
+                              // Text(shopDetails.rate, style: Theme.of(context).textTheme.subtitle2),
                             ],
                           )
                         ]),
@@ -419,6 +416,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
       ],
     );
   }
+
 
   @override
   double get maxExtent => extent;

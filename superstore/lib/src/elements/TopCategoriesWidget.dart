@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../pages/category_product.dart';
 import '../models/category.dart';
 import 'CategoryLoaderWidget.dart';
-
 
 // ignore: must_be_immutable
 class TopCategoriesWidget extends StatefulWidget {
@@ -16,7 +16,20 @@ class TopCategoriesWidget extends StatefulWidget {
   String longitude;
   String latitude;
   int focusId;
-  TopCategoriesWidget({Key key, this.categoryData, this.shopId, this.shopName, this.subtitle, this.km, this.shopTypeID, this.latitude, this.longitude, this.focusId}) : super(key: key);
+
+  TopCategoriesWidget(
+      {Key key,
+      this.categoryData,
+      this.shopId,
+      this.shopName,
+      this.subtitle,
+      this.km,
+      this.shopTypeID,
+      this.latitude,
+      this.longitude,
+      this.focusId})
+      : super(key: key);
+
   @override
   _TopCategoriesWidgetState createState() => _TopCategoriesWidgetState();
 }
@@ -24,67 +37,67 @@ class TopCategoriesWidget extends StatefulWidget {
 class _TopCategoriesWidgetState extends State<TopCategoriesWidget> {
   @override
   Widget build(BuildContext context) {
-    return   widget.categoryData.isEmpty? CategoryLoaderWidget() :GridView.builder(
-        itemCount: widget.categoryData.length,
-        physics: NeverScrollableScrollPhysics(),
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      child: StaggeredGridView.countBuilder(
         shrinkWrap: true,
-        primary: false,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisSpacing: 10.0, crossAxisCount: (Orientation.portrait == MediaQuery.of(context).orientation) ? 3 : 3),
-        itemBuilder: (context, index) {
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.all(0),
+        crossAxisCount: 6,
+        itemCount: widget.categoryData.length,
+        itemBuilder: (BuildContext context, int index) {
           Category _categoryData = widget.categoryData.elementAt(index);
-          return Padding(
-            padding: const EdgeInsets.only(left: 5, right: 5),
-            child: new InkResponse(
-                onTap: () {
-
-                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => CategoryProduct(categoryData: _categoryData,shopId: widget.shopId, shopName: widget.shopName, subtitle: widget.subtitle,km:widget.km ,shopTypeID: widget.shopTypeID, latitude: widget.latitude, longitude: widget.longitude,focusId: widget.focusId,  )));
-
-                },
-                child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5.0),
-
-                        ),
-                    child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
-                              child: Container(
-                                height: 70.0,
-                                width: 60.0,
-                                child: Image(
-                                  image: NetworkImage(
-                                    _categoryData.image,
-                                  ),
-                                  fit: BoxFit.fitHeight,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                            padding: EdgeInsets.only(top: 4, right: 5, left: 5, bottom: 4),
-                            height: 45,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(5), bottomLeft: Radius.circular(5)),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Flexible(child: Text(_categoryData.name, textAlign: TextAlign.center, style: Theme.of(context).textTheme.subtitle2))
-                              ],
-                            )),
-                      )
-                    ]))),
-          );
-        });
+          return Column(children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CategoryProduct(
+                          categoryData: _categoryData,
+                          shopId: widget.shopId,
+                          shopName: widget.shopName,
+                          subtitle: widget.subtitle,
+                          km: widget.km,
+                          shopTypeID: widget.shopTypeID,
+                          latitude: widget.latitude,
+                          longitude: widget.longitude,
+                          focusId: widget.focusId,
+                        )));
+              },
+              child: Container(
+                  padding: EdgeInsets.all(10),
+                  height: 150.0,
+                  decoration: new BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                          color: Color(0xffFFD700),
+                          width: 2,
+                          style: BorderStyle.solid),
+                      shape: BoxShape.rectangle,
+                      image: new DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            _categoryData.image,
+                          )))),
+            ),
+            SizedBox(height: 5),
+            Container(
+              child: Text(
+                _categoryData.name,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            ),
+          ]);
+        },
+        staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+        mainAxisSpacing: 20,
+        crossAxisSpacing: 12,
+      ),
+    );
   }
 }
