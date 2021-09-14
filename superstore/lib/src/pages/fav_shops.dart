@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:superstore/src/components/chat_detail_page_appbar.dart';
 import 'package:superstore/src/controllers/fav_shop_controller.dart';
 import 'package:superstore/src/elements/EmptyOrdersWidget.dart';
 import 'package:superstore/src/elements/ShopListBoxWidget.dart';
@@ -25,31 +26,7 @@ class _FavShopsState extends StateMVC<FavShops> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 0,
-        title: Container(
-            width: double.infinity,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'FAV SHOPS',
-                            style: Theme.of(context).textTheme.subtitle2,
-                            textAlign: TextAlign.left,
-                          ),
-                        ]),
-                  ),
-                ],
-              ),
-            ])),
-      ),
+      appBar: ChatDetailPageAppBar(),
       body: _con.favShopList.isEmpty
           ? EmptyOrdersWidget()
           : ListView.separated(

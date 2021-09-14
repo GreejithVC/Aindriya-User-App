@@ -12,29 +12,20 @@ class ChatDetailPageAppBar extends StatelessWidget implements PreferredSizeWidge
     return AppBar(
       elevation: 0,
       automaticallyImplyLeading: false,
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme.of(context).primaryColorDark,
       flexibleSpace: SafeArea(
-        child: Container(
-          padding: EdgeInsets.only(right: 16),
+        child: Container(padding: EdgeInsets.only(left: 5),
           child: Row(
             children: <Widget>[
               IconButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.arrow_back_ios),
+                icon: Icon(Icons.arrow_back_ios,size: 20,),
                 color: Theme.of(context).backgroundColor,
               ),
               SizedBox(
                 width: 2,
-              ),
-              CircleAvatar(
-                // ignore: deprecated_member_use
-                backgroundImage: NetworkImage("${GlobalConfiguration().getString('base_upload')}uploads/vendor_image/vendor_$shopId.png"),
-                maxRadius: 20,
-              ),
-              SizedBox(
-                width: 12,
               ),
               Expanded(
                 flex: 1,
@@ -43,8 +34,8 @@ class ChatDetailPageAppBar extends StatelessWidget implements PreferredSizeWidge
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      '$shopName ID:$shopId',
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      "Favourite Shops",
+                      style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16),
                     ),
                     SizedBox(
                       height: 6,
