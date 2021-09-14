@@ -66,6 +66,7 @@ class FavShopController extends ControllerMVC {
   }
 
   deleteFavShop(context, Vendor vendor) {
+    print("deleteFavShop///");
     FirebaseFirestore.instance
         .collection('Favourites')
         .doc(currentUser.value.id)
@@ -77,6 +78,7 @@ class FavShopController extends ControllerMVC {
     }).catchError((e) {
       print(e);
     }).whenComplete(() {
+      print("deleteFavShop/// whenComplete");
       listenForFavShopList();
     });
   }

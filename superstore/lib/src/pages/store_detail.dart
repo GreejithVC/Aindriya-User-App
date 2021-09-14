@@ -370,18 +370,13 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                         padding: EdgeInsets.only(
                             top: 10, left: shopTitle, right: 10),
                         child: Row(children: [
-
                           Text(shopDetails.shopName,
                               textAlign: TextAlign.center,
-                              style:
-                                  Theme.of(context).textTheme.headline6),
+                              style: Theme.of(context).textTheme.headline6),
                           Expanded(
                             child: Text("  (9AM - 9PM)",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2),
+                                style: Theme.of(context).textTheme.subtitle2),
                           ),
-
                           Wrap(
                             children: [
                               FavButton(vendorData: shopDetails),
@@ -502,40 +497,52 @@ class FavButton extends StatefulWidget {
   final Vendor vendorData;
 
   const FavButton({Key key, this.vendorData}) : super(key: key);
+
   @override
   _FavButtonState createState() => _FavButtonState();
 }
 
 class _FavButtonState extends StateMVC<FavButton> {
-  // bool isFavourite = false;
   FavShopController _con;
+
   _FavButtonState() : super(FavShopController()) {
     _con = controller;
   }
 
-  Widget build(BuildContext context,) {
+  @override
+  // ignore: must_call_super
+  void initState() {
+    _con.listenForFavShopList();
+  }
 
+  Widget build(BuildContext context) {
+    print("Fav Button ////");
+    print(widget.vendorData.shopName);
+    print(widget.vendorData.shopId);
+    print(_con?.favShopList?.length);
+    _con?.favShopList?.forEach((element) {
+      print(element.shopId);
+    });
+    print(_con?.favShopList?.contains(widget.vendorData) == true);
+    print(_con?.favShopList
+        ?.any((item) => item.shopId == widget.vendorData.shopId));
     return Container(
         child: GestureDetector(
       onTap: () {
         setState(() {
-          widget.vendorData
-              ?.isFavourite =
-          !(widget.vendorData
-              ?.isFavourite ??
-              false);
-          widget.vendorData?.isFavourite ==
-              true
-              ? _con?.addFavShop(
-              context,
-              widget.vendorData)
-              : _con?.deleteFavShop(
-              context,
-              widget.vendorData);
+          _con?.favShopList?.any(
+                      (item) => item.shopId == widget.vendorData.shopId) ==
+                  true
+              ? _con?.deleteFavShop(context, widget.vendorData)
+              : _con?.addFavShop(context, widget.vendorData);
         });
       },
       child: Icon(
-        widget.vendorData.isFavourite == true ? Icons.favorite : Icons.favorite_border,
+        _con?.favShopList
+                    ?.any((item) => item.shopId == widget.vendorData.shopId) ==
+                true
+            ? Icons.favorite
+            : Icons.favorite_border,
         color: Colors.red,
       ),
     ));

@@ -28,6 +28,12 @@ class _ShopTopSliderState extends StateMVC<ShopTopSlider> {
   }
 
   @override
+  // ignore: must_call_super
+  void initState() {
+    _con.listenForFavShopList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: 280,
@@ -254,23 +260,24 @@ class _ShopTopSliderState extends StateMVC<ShopTopSlider> {
                                                           onTap: () {
                                                             print("fav tapped");
                                                             setState(() {
-                                                              _vendorData
-                                                                      ?.isFavourite =
-                                                                  !(_vendorData
-                                                                          ?.isFavourite ??
-                                                                      false);
-                                                              _vendorData?.isFavourite ==
+                                                              _con?.favShopList?.any((item) =>
+                                                                          item.shopId ==
+                                                                          _vendorData
+                                                                              .shopId) ==
                                                                       true
-                                                                  ? _con?.addFavShop(
+                                                                  ? _con?.deleteFavShop(
                                                                       context,
                                                                       _vendorData)
-                                                                  : _con?.deleteFavShop(
+                                                                  : _con?.addFavShop(
                                                                       context,
                                                                       _vendorData);
                                                             });
                                                           },
                                                           child: Icon(
-                                                            _vendorData?.isFavourite ==
+                                                            _con?.favShopList?.any((item) =>
+                                                                        item.shopId ==
+                                                                        _vendorData
+                                                                            .shopId) ==
                                                                     true
                                                                 ? Icons.favorite
                                                                 : Icons

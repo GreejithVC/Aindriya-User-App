@@ -15,7 +15,6 @@ class Vendor {
   String shopType;
   String focusType;
   String shopTypePreviewImage;
-  bool isFavourite;
 
   Vendor();
 
@@ -36,7 +35,6 @@ class Vendor {
       latitude = jsonMap['latitude'] ?? "";
       shopType = jsonMap['shopType'] ?? "";
       focusType = jsonMap['focusType'] ?? "";
-      isFavourite = jsonMap['isFavourite'] ?? false;
     } catch (e) {
       shopId = '';
       shopName = '';
