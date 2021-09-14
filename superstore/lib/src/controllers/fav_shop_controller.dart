@@ -51,8 +51,10 @@ class FavShopController extends ControllerMVC {
   addFavShop(context, Vendor vendor) {
     print("addFavShop///");
     FirebaseFirestore.instance
-        .collection('favShopList')
+        .collection('Favourites')
         .doc(currentUser.value.id)
+        .collection("favouriteShops")
+        .doc(vendor.shopId)
         .set(vendor.toMap())
         .catchError((e) {
       print(e);
@@ -65,8 +67,10 @@ class FavShopController extends ControllerMVC {
 
   deleteFavShop(context, Vendor vendor) {
     FirebaseFirestore.instance
-        .collection('favShopList')
+        .collection('Favourites')
         .doc(currentUser.value.id)
+        .collection("favouriteShops")
+        .doc(vendor.shopId)
         .delete()
         .then((_) {
       print("success!");
@@ -81,7 +85,9 @@ class FavShopController extends ControllerMVC {
     favShopList.clear();
     print("listenForFavShopList///");
     FirebaseFirestore.instance
-        .collection("favShopList")
+        .collection('Favourites')
+        .doc(currentUser.value.id)
+        .collection("favouriteShops")
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((result) {

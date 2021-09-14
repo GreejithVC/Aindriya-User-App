@@ -22,21 +22,21 @@ class Vendor {
   Vendor.fromJSON(Map<String, dynamic> jsonMap) {
     print(jsonMap);
     try {
-      shopId = jsonMap['shopId'];
-      shopName = jsonMap['shopName'];
-      subtitle = jsonMap['subtitle'];
-      locationMark = jsonMap['locationMark'];
-      rate = jsonMap['rate'];
-      distance = jsonMap['distance'];
-      logo = jsonMap['logo'];
-      shopTypePreviewImage = jsonMap['previewImage'];
-      cover = jsonMap['cover'];
-      openStatus = jsonMap['openStatus'];
-      longitude = jsonMap['longitude'];
-      latitude = jsonMap['latitude'];
-      shopType = jsonMap['shopType'];
-      focusType = jsonMap['focusType'];
-      isFavourite = jsonMap['isFavourite'];
+      shopId = jsonMap['shopId'] ?? "";
+      shopName = jsonMap['shopName'] ?? "";
+      subtitle = jsonMap['subtitle'] ?? "";
+      locationMark = jsonMap['locationMark'] ?? "";
+      rate = jsonMap['rate'] ?? "";
+      distance = jsonMap['distance'] ?? "";
+      logo = jsonMap['logo'] ?? "";
+      shopTypePreviewImage = jsonMap['previewImage'] ?? "";
+      cover = jsonMap['cover'] ?? "";
+      openStatus = jsonMap['openStatus'] ?? false;
+      longitude = jsonMap['longitude'] ?? "";
+      latitude = jsonMap['latitude'] ?? "";
+      shopType = jsonMap['shopType'] ?? "";
+      focusType = jsonMap['focusType'] ?? "";
+      isFavourite = jsonMap['isFavourite'] ?? false;
     } catch (e) {
       shopId = '';
       shopName = '';
@@ -71,7 +71,6 @@ class Vendor {
     map["latitude"] = latitude;
     map["focusType"] = focusType;
     map["shopType"] = shopType;
-
 
     return map;
   }

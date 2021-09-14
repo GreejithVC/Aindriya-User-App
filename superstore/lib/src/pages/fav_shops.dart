@@ -62,8 +62,8 @@ class _FavShopsState extends StateMVC<FavShops> {
               itemBuilder: (context, int index) {
                 return ShopList(
                   choice: _con.favShopList[index],
-                  shopType: _con.favShopList[index].shopType ?? 0,
-                  focusId: _con.favShopList[index]?.focusType ?? 0,
+                  shopType: int.parse(_con.favShopList[index].shopType) ?? 0,
+                  focusId: int.parse(_con.favShopList[index].focusType) ?? 0,
                   previewImage: _con.favShopList[index]?.shopTypePreviewImage,
                 );
               },
