@@ -369,23 +369,22 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                         padding: EdgeInsets.only(
                             top: 10, left: shopTitle, right: 10),
                         child: Row(children: [
+
+                          Text(shopDetails.shopName,
+                              textAlign: TextAlign.center,
+                              style:
+                                  Theme.of(context).textTheme.headline6),
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(shopDetails.shopName,
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        Theme.of(context).textTheme.headline6),
-                              ],
-                            ),
+                            child: Text("  (9AM - 9PM)",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle2),
                           ),
+
                           Wrap(
                             children: [
                               FavButton(),
                               SizedBox(width: 2),
-                              // Text(shopDetails.rate,
-                              //     style: Theme.of(context).textTheme.subtitle2),
                             ],
                           )
                         ]),
