@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:superstore/src/controllers/fav_shop_controller.dart';
 import 'package:superstore/src/helpers/helper.dart';
 import 'package:superstore/src/models/vendor.dart';
 import 'package:superstore/src/pages/grocerystore.dart';
@@ -18,7 +20,13 @@ class ShopTopSlider extends StatefulWidget {
   _ShopTopSliderState createState() => _ShopTopSliderState();
 }
 
-class _ShopTopSliderState extends State<ShopTopSlider> {
+class _ShopTopSliderState extends StateMVC<ShopTopSlider> {
+  FavShopController _con;
+
+  _ShopTopSliderState() : super(FavShopController()) {
+    _con = controller;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -112,28 +120,31 @@ class _ShopTopSliderState extends State<ShopTopSlider> {
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.end,
                                                       children: [
-                                                        Visibility(visible: false,
+                                                        Visibility(
+                                                          visible: false,
                                                           child: Container(
                                                             height: 30,
                                                             width: 30,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              shape:
-                                                                  BoxShape.circle,
+                                                              shape: BoxShape
+                                                                  .circle,
                                                               boxShadow: [
                                                                 BoxShadow(
                                                                   color: Colors
                                                                       .grey
                                                                       .withOpacity(
                                                                           0.2),
-                                                                  spreadRadius: 1,
+                                                                  spreadRadius:
+                                                                      1,
                                                                   blurRadius: 7,
                                                                   offset: Offset(
                                                                       0,
                                                                       3), // changes position of shadow
                                                                 ),
                                                               ],
-                                                              color: Colors.blue,
+                                                              color:
+                                                                  Colors.blue,
                                                             ),
                                                             child: Icon(
                                                                 Icons
@@ -241,12 +252,21 @@ class _ShopTopSliderState extends State<ShopTopSlider> {
                                                               bottom: 1),
                                                       child: GestureDetector(
                                                           onTap: () {
+                                                            print("fav tapped");
                                                             setState(() {
                                                               _vendorData
                                                                       ?.isFavourite =
                                                                   !(_vendorData
                                                                           ?.isFavourite ??
                                                                       false);
+                                                              _vendorData?.isFavourite ==
+                                                                      true
+                                                                  ? _con?.addFavShop(
+                                                                      context,
+                                                                      _vendorData)
+                                                                  : _con?.deleteFavShop(
+                                                                      context,
+                                                                      _vendorData);
                                                             });
                                                           },
                                                           child: Icon(

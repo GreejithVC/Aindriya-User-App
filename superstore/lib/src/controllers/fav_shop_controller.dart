@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:superstore/src/models/vendor.dart';
+import 'package:superstore/src/repository/user_repository.dart';
 
 class FavShopController extends ControllerMVC {
   List<Vendor> favShopList = <Vendor>[];
@@ -47,23 +48,25 @@ class FavShopController extends ControllerMVC {
   //       gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
   // }
   //
-  addFavShop(context, Vendor vendor, userId) {
+  addFavShop(context, Vendor vendor) {
+    print("addFavShop///");
     FirebaseFirestore.instance
         .collection('favShopList')
-        .doc(userId)
+        .doc(currentUser.value.id)
         .set(vendor.toMap())
         .catchError((e) {
       print(e);
     }).whenComplete(() {
+      print("addFavShop/// whenComplete");
       listenForFavShopList();
       // Helper.hideLoader(loader);
     });
   }
 
-  deleteFavShop(context, Vendor vendor, userId) {
+  deleteFavShop(context, Vendor vendor) {
     FirebaseFirestore.instance
         .collection('favShopList')
-        .doc(userId)
+        .doc(currentUser.value.id)
         .delete()
         .then((_) {
       print("success!");
