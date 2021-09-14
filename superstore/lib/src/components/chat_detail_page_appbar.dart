@@ -72,3 +72,4 @@ class ChatDetailPageAppBar extends StatelessWidget implements PreferredSizeWidge
   // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
+
