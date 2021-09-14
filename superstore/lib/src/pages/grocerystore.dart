@@ -326,7 +326,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                           ),
                           Wrap(
                             children: [
-                              FavButton(),
+                              FavButton(vendorData: shopDetails),
                               SizedBox(width: 2),
                               // Text(shopDetails.rate, style: Theme.of(context).textTheme.subtitle2),
                             ],

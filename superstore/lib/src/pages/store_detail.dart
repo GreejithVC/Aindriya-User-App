@@ -1,5 +1,6 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:superstore/src/controllers/fav_shop_controller.dart';
 import 'package:superstore/src/elements/SearchWidgetRe.dart';
 import '../elements/RectangleLoaderWidget.dart';
 import '../helpers/helper.dart';
@@ -383,7 +384,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
 
                           Wrap(
                             children: [
-                              FavButton(),
+                              FavButton(vendorData: shopDetails),
                               SizedBox(width: 2),
                             ],
                           )
@@ -498,19 +499,39 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class FavButton extends StatefulWidget {
+  final Vendor vendorData;
+
+  const FavButton({Key key, this.vendorData}) : super(key: key);
   @override
   _FavButtonState createState() => _FavButtonState();
 }
 
-class _FavButtonState extends State<FavButton> {
+class _FavButtonState extends StateMVC<FavButton> {
   bool isFavourite = false;
+  FavShopController _con;
+  _FavButtonState() : super(FavShopController()) {
+    _con = controller;
+  }
 
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,) {
+
     return Container(
         child: GestureDetector(
       onTap: () {
         setState(() {
-          isFavourite = !(isFavourite ?? false);
+          widget.vendorData
+              ?.isFavourite =
+          !(widget.vendorData
+              ?.isFavourite ??
+              false);
+          widget.vendorData?.isFavourite ==
+              true
+              ? _con?.addFavShop(
+              context,
+              widget.vendorData)
+              : _con?.deleteFavShop(
+              context,
+              widget.vendorData);
         });
       },
       child: Icon(
