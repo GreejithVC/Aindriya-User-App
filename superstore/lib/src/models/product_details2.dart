@@ -1,13 +1,14 @@
 import 'addon.dart';
 import 'variant.dart';
 
-
 class ProductDetails2 {
   String id;
+
   // ignore: non_constant_identifier_names
   String product_name;
   int rating;
   String image;
+
   // ignore: non_constant_identifier_names
   int num_of_imgs;
   List<variantModel> variant;
@@ -24,10 +25,16 @@ class ProductDetails2 {
       rating = jsonMap['rating'];
       image = jsonMap['image'];
       num_of_imgs = jsonMap['num_of_imgs'];
-      variant =
-      jsonMap['variant'] != null ? List.from(jsonMap['variant']).map((element) => variantModel.fromJSON(element)).toList() : [];
-      addon =
-      jsonMap['addon'] != null ? List.from(jsonMap['addon']).map((element) => AddonModel.fromJSON(element)).toList() : [];
+      variant = jsonMap['variant'] != null
+          ? List.from(jsonMap['variant'])
+              .map((element) => variantModel.fromJSON(element))
+              .toList()
+          : [];
+      addon = jsonMap['addon'] != null
+          ? List.from(jsonMap['addon'])
+              .map((element) => AddonModel.fromJSON(element))
+              .toList()
+          : [];
       productType = jsonMap['productType'];
     } catch (e) {
       id = '';

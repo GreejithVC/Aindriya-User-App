@@ -3,7 +3,7 @@ import 'package:superstore/generated/l10n.dart';
 import 'package:superstore/src/pages/fav_shops.dart';
 import 'ProfilePage.dart';
 import 'chat_page.dart';
-import 'fav_screen.dart';
+import 'wishList.dart';
 import 'vendor_map.dart';
 import '../elements/DrawerWidget.dart';
 import '../helpers/helper.dart';
@@ -61,7 +61,7 @@ class _PagesWidgetState extends State<PagesWidget> {
               HomeWidget(parentScaffoldKey: widget.scaffoldKey);
           break;
         case 4:
-          widget.currentPage = FavScreen();
+          widget.currentPage = WishList();
           break;
         case 5:
           widget.currentPage = OrdersWidget();
