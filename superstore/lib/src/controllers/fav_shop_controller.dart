@@ -47,6 +47,18 @@ class FavShopController extends ControllerMVC{
   //       gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
   // }
   //
+  addFavShop(context, Vendor vendor, userId) {
+    FirebaseFirestore.instance.collection('favShopList').doc(userId).
+    set(vendor.toMap()
+    ).catchError((e) {
+      print(e);
+    }).whenComplete(() {
+      listenForFavShopList();
+      // Helper.hideLoader(loader);
+    });
+  }
+
+
   Future<void> listenForFavShopList() async {
     favShopList.clear();
     print("listenForFavShopList///");
