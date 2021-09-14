@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:superstore/src/models/vendor.dart';
 
-class FavShopController extends ControllerMVC{
+class FavShopController extends ControllerMVC {
   List<Vendor> favShopList = <Vendor>[];
 
   // addPackageType(context, id, pageType) {
@@ -48,9 +48,11 @@ class FavShopController extends ControllerMVC{
   // }
   //
   addFavShop(context, Vendor vendor, userId) {
-    FirebaseFirestore.instance.collection('favShopList').doc(userId).
-    set(vendor.toMap()
-    ).catchError((e) {
+    FirebaseFirestore.instance
+        .collection('favShopList')
+        .doc(userId)
+        .set(vendor.toMap())
+        .catchError((e) {
       print(e);
     }).whenComplete(() {
       listenForFavShopList();
@@ -58,6 +60,19 @@ class FavShopController extends ControllerMVC{
     });
   }
 
+  deleteFavShop(context, Vendor vendor, userId) {
+    FirebaseFirestore.instance
+        .collection('favShopList')
+        .doc(userId)
+        .delete()
+        .then((_) {
+      print("success!");
+    }).catchError((e) {
+      print(e);
+    }).whenComplete(() {
+      listenForFavShopList();
+    });
+  }
 
   Future<void> listenForFavShopList() async {
     favShopList.clear();
@@ -71,8 +86,7 @@ class FavShopController extends ControllerMVC{
         print(result.id);
         print(result.reference);
         print(result.data());
-        setState(() => favShopList
-            .add(Vendor.fromJSON(result.data())));
+        setState(() => favShopList.add(Vendor.fromJSON(result.data())));
       });
     }).catchError((e) {
       print(e);
@@ -81,7 +95,4 @@ class FavShopController extends ControllerMVC{
       print(favShopList.length);
     });
   }
-
-
-
 }
