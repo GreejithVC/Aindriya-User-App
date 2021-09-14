@@ -4,6 +4,7 @@ import 'package:superstore/src/components/chat_detail_page_appbar.dart';
 import 'package:superstore/src/controllers/fav_shop_controller.dart';
 import 'package:superstore/src/elements/EmptyOrdersWidget.dart';
 import 'package:superstore/src/elements/ShopListBoxWidget.dart';
+import 'package:superstore/src/models/vendor.dart';
 import 'package:superstore/src/pages/Widget/customAppBar.dart';
 
 class FavShops extends StatefulWidget {
@@ -27,7 +28,9 @@ class _FavShopsState extends StateMVC<FavShops> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Favourite Shops",),
+      appBar: CustomAppBar(
+        title: "Favourite Shops",
+      ),
       body: _con.favShopList.isEmpty
           ? EmptyOrdersWidget()
           : ListView.separated(
@@ -38,11 +41,13 @@ class _FavShopsState extends StateMVC<FavShops> {
               padding: EdgeInsets.only(top: 16),
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, int index) {
+                Vendor _shopTypeData = _con.favShopList.elementAt(index);
+
                 return ShopList(
-                  choice: _con.favShopList[index],
-                  shopType: int.parse(_con.favShopList[index].shopType) ?? 0,
-                  focusId: int.parse(_con.favShopList[index].focusType) ?? 0,
-                  previewImage: _con.favShopList[index]?.shopTypePreviewImage,
+                  choice: _shopTypeData,
+                  shopType: int.parse(_shopTypeData.shopType) ?? 0,
+                  focusId: int.parse(_shopTypeData.focusType) ?? 0,
+                  previewImage: _shopTypeData?.shopTypePreviewImage,
                 );
               },
               separatorBuilder: (context, index) {

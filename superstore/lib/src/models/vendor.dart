@@ -15,6 +15,8 @@ class Vendor {
   String shopType;
   String focusType;
   String shopTypePreviewImage;
+  String openTime;
+  String closeTime;
 
   Vendor();
 
@@ -35,6 +37,8 @@ class Vendor {
       latitude = jsonMap['latitude'] ?? "";
       shopType = jsonMap['shopType'] ?? "";
       focusType = jsonMap['focusType'] ?? "";
+      openTime = jsonMap['openTime'] ?? "";
+      closeTime = jsonMap['closeTime'] ?? "";
     } catch (e) {
       shopId = '';
       shopName = '';
@@ -49,6 +53,8 @@ class Vendor {
       latitude = '';
       focusType = '';
       shopType = '';
+      openTime = '';
+      closeTime = '';
       print(CustomTrace(StackTrace.current, message: e));
     }
   }
@@ -69,6 +75,8 @@ class Vendor {
     map["latitude"] = latitude;
     map["focusType"] = focusType;
     map["shopType"] = shopType;
+    map["openTime"] = openTime;
+    map["closeTime"] = closeTime;
 
     return map;
   }

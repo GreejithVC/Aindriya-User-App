@@ -374,7 +374,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.headline6),
                           Expanded(
-                            child: Text("  (9AM - 9PM)",
+                            child: Text("  (${shopDetails?.openTime ?? ""} - ${shopDetails?.openTime ?? ""})",
                                 style: Theme.of(context).textTheme.subtitle2),
                           ),
                           Wrap(

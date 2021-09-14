@@ -19,6 +19,7 @@ class VendorController extends ControllerMVC {
     final Stream<Vendor> stream = await getVendorList(shopType, focusId);
 
     stream.listen((Vendor _list) {
+      print(_list);
       setState(() => vendorList.add(_list));
       vendorList.forEach((element) {
         print(element.logo);
