@@ -507,7 +507,7 @@ class FavButton extends StatefulWidget {
 }
 
 class _FavButtonState extends StateMVC<FavButton> {
-  bool isFavourite = false;
+  // bool isFavourite = false;
   FavShopController _con;
   _FavButtonState() : super(FavShopController()) {
     _con = controller;
@@ -535,7 +535,7 @@ class _FavButtonState extends StateMVC<FavButton> {
         });
       },
       child: Icon(
-        isFavourite == true ? Icons.favorite : Icons.favorite_border,
+        widget.vendorData.isFavourite == true ? Icons.favorite : Icons.favorite_border,
         color: Colors.red,
       ),
     ));
