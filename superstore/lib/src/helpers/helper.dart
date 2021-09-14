@@ -227,7 +227,7 @@ class Helper {
   static Future<Marker> getMarker(Map<String, dynamic> res,
       {OnItemSelected onItemSelected}) async {
     final File markerImageFile =
-        await DefaultCacheManager().getSingleFile(res['logo'],);
+        await DefaultCacheManager().getSingleFile(res['previewImage'],);
     final Uint8List markerImageBytes = await markerImageFile.readAsBytes();
     final Codec markerImageCodec = await instantiateImageCodec(
       markerImageBytes,
