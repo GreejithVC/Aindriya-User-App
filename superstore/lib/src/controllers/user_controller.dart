@@ -13,7 +13,7 @@ import '../repository/user_repository.dart';
 import '../../generated/l10n.dart';
 
 class UserController extends ControllerMVC {
-  User user = new User();
+  UserDetails user = new UserDetails();
   bool hidePassword = true;
   Address addressData = Address();
   bool loading = false;

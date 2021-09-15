@@ -388,7 +388,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void register(File image) async {
-    User _user = userRepo.currentUser.value;
+    UserDetails _user = userRepo.currentUser.value;
 
     final String _apiToken = 'api_token=${_user.apiToken}';
     // ignore: deprecated_member_use

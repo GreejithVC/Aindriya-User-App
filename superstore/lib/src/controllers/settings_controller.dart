@@ -12,7 +12,7 @@ class SettingsController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-  void update(User user) async {
+  void update(UserDetails user) async {
     repository.update(user).then((value) {
       setState(() {});
       // ignore: deprecated_member_use

@@ -4,7 +4,7 @@ import '../../generated/l10n.dart';
 import '../models/user.dart';
 
 class ProfileSettingsDialog extends StatefulWidget {
-  final User user;
+  final UserDetails user;
   final VoidCallback onChanged;
 
   ProfileSettingsDialog({Key key, this.user, this.onChanged}) : super(key: key);

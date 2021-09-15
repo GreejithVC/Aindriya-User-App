@@ -79,7 +79,7 @@ Future<OrderDetailsModel> getInvoiceDetails(orderID) async {
 }
 
 Future<bool> addFavorite() async {
-  User _user = userRepo.currentUser.value;
+  UserDetails _user = userRepo.currentUser.value;
   if (_user.apiToken == null) {
     return false;
   }
@@ -104,7 +104,7 @@ Future<bool> addFavorite() async {
 
 Future<String> bookOrderResp() async {
   Checkout _book = currentCheckout.value;
-  User _user = userRepo.currentUser.value;
+  UserDetails _user = userRepo.currentUser.value;
 
   final String _apiToken = 'api_token=${_user.apiToken}';
   // ignore: deprecated_member_use
@@ -126,7 +126,7 @@ Future<String> bookOrderResp() async {
 }
 
 Future<String> cancelledOrder(CancelledModel orderReason) async {
-  User _user = userRepo.currentUser.value;
+  UserDetails _user = userRepo.currentUser.value;
 
   final String _apiToken = 'api_token=${_user.apiToken}';
   // ignore: deprecated_member_use
@@ -149,7 +149,7 @@ Future<String> cancelledOrder(CancelledModel orderReason) async {
 
 
 Future<String> updateRating(ShopRatingModel data, orderId) async {
-  User _user = userRepo.currentUser.value;
+  UserDetails _user = userRepo.currentUser.value;
 
   final String _apiToken = 'api_token=${_user.apiToken}';
   // ignore: deprecated_member_use
@@ -172,7 +172,7 @@ Future<String> updateRating(ShopRatingModel data, orderId) async {
 
 
 Future<String> updateDriverRating(DriverRatingModel data) async {
-  User _user = userRepo.currentUser.value;
+  UserDetails _user = userRepo.currentUser.value;
 
   final String _apiToken = 'api_token=${_user.apiToken}';
   // ignore: deprecated_member_use
@@ -193,7 +193,7 @@ Future<String> updateDriverRating(DriverRatingModel data) async {
   }
 }
 Future<Stream<OrderList>> getOrders() async {
-  User _user = userRepo.currentUser.value;
+  UserDetails _user = userRepo.currentUser.value;
   if (_user.apiToken == null) {
     return new Stream.value(null);
   }
@@ -220,7 +220,7 @@ Future<Stream<OrderList>> getOrders() async {
 }
 
 Future<Stream<OrderTrack>> getOrdersTrack(String id) async {
-  User _user = userRepo.currentUser.value;
+  UserDetails _user = userRepo.currentUser.value;
   if (_user.apiToken == null) {
     return new Stream.value(null);
   }
@@ -248,7 +248,7 @@ Future<Stream<OrderTrack>> getOrdersTrack(String id) async {
 }
 
 Future<bool> checkRating(id) async {
-  User _user = userRepo.currentUser.value;
+  UserDetails _user = userRepo.currentUser.value;
   if (_user.apiToken == null) {
     return false;
   }
@@ -276,7 +276,7 @@ Future<bool> checkRating(id) async {
 }
 
 Future<Review> addProductReview(Review review) async {
-  User _user = userRepo.currentUser.value;
+  UserDetails _user = userRepo.currentUser.value;
   if (_user.apiToken == null) {
     return Review.fromJSON({});
   }

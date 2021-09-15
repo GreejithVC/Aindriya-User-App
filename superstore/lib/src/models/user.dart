@@ -1,6 +1,6 @@
 import 'address.dart';
 
-class User {
+class UserDetails {
   String id;
   String name;
   String email;
@@ -22,9 +22,9 @@ class User {
 
 //  String role;
 
-  User();
+  UserDetails();
 
-  User.fromJSON(Map<String, dynamic> jsonMap) {
+  UserDetails.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = jsonMap['id'].toString();
       name = jsonMap['name'] != null ? jsonMap['name'] : '';

@@ -8,9 +8,9 @@ import '../models/registermodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
 
-ValueNotifier<User> currentUser = new ValueNotifier(User());
+ValueNotifier<UserDetails> currentUser = new ValueNotifier(UserDetails());
 
-Future<User> login(User user) async {
+Future<UserDetails> login(UserDetails user) async {
   // ignore: deprecated_member_use
   final String url = '${GlobalConfiguration().getString('api_base_url')}api/login';
   print(url);
@@ -24,7 +24,7 @@ Future<User> login(User user) async {
   //print(json.decode(response.body)['data']);
   if (response.statusCode == 200) {
     setCurrentUser(response.body);
-    currentUser.value = User.fromJSON(json.decode(response.body)['data']);
+    currentUser.value = UserDetails.fromJSON(json.decode(response.body)['data']);
 
     print(currentUser.value.toMap());
   } else {
@@ -33,7 +33,7 @@ Future<User> login(User user) async {
   return currentUser.value;
 }
 
-Future<bool> resetPassword(User user) async {
+Future<bool> resetPassword(UserDetails user) async {
   // ignore: deprecated_member_use
   final String url = '${GlobalConfiguration().getString('api_base_url')}send_reset_link_email';
   final client = new http.Client();
@@ -50,7 +50,7 @@ Future<bool> resetPassword(User user) async {
 }
 
 Future<void> logout() async {
-  currentUser.value = new User();
+  currentUser.value = new UserDetails();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.remove('current_user');
 }
@@ -88,7 +88,7 @@ void setCurrentUser(jsonString) async {
   }
 }
 
-void setCurrentUserUpdate(User jsonString) async {
+void setCurrentUserUpdate(UserDetails jsonString) async {
 
   try {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -99,11 +99,11 @@ void setCurrentUserUpdate(User jsonString) async {
   }
 }
 
-Future<User> getCurrentUser() async {
+Future<UserDetails> getCurrentUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //prefs.clear();
   if (currentUser.value.auth == null && prefs.containsKey('current_user')) {
-    currentUser.value = User.fromJSON(json.decode(prefs.get('current_user')));
+    currentUser.value = UserDetails.fromJSON(json.decode(prefs.get('current_user')));
     currentUser.value.auth = true;
   } else {
     currentUser.value.auth = false;
@@ -113,7 +113,7 @@ Future<User> getCurrentUser() async {
   return currentUser.value;
 }
 
-Future<User> update(User user) async {
+Future<UserDetails> update(UserDetails user) async {
   final String _apiToken = 'api_token=${currentUser.value.apiToken}';
   // ignore: deprecated_member_use
   final String url = '${GlobalConfiguration().getString('base_url')}api/profileupdate/${currentUser.value.id}?$_apiToken';
