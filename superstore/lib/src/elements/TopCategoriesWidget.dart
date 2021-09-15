@@ -50,37 +50,39 @@ class _TopCategoriesWidgetState extends State<TopCategoriesWidget> {
         itemBuilder: (BuildContext context, int index) {
           Category _categoryData = widget.categoryData.elementAt(index);
           return Column(children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CategoryProduct(
-                          categoryData: _categoryData,
-                          shopId: widget.shopId,
-                          shopName: widget.shopName,
-                          subtitle: widget.subtitle,
-                          km: widget.km,
-                          shopTypeID: widget.shopTypeID,
-                          latitude: widget.latitude,
-                          longitude: widget.longitude,
-                          focusId: widget.focusId,
-                        )));
-              },
-              child: Container(
-                  padding: EdgeInsets.all(10),
-                  height: 150.0,
-                  decoration: new BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                          color: Color(0xffFFD700),
-                          width: 2,
-                          style: BorderStyle.solid),
-                      shape: BoxShape.rectangle,
-                      image: new DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                            _categoryData.image,
-                          )))),
+            AspectRatio(aspectRatio: 1,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CategoryProduct(
+                            categoryData: _categoryData,
+                            shopId: widget.shopId,
+                            shopName: widget.shopName,
+                            subtitle: widget.subtitle,
+                            km: widget.km,
+                            shopTypeID: widget.shopTypeID,
+                            latitude: widget.latitude,
+                            longitude: widget.longitude,
+                            focusId: widget.focusId,
+                          )));
+                },
+                child: Container(
+                    padding: EdgeInsets.all(10),
+                    height: 150.0,
+                    decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                            color: Color(0xffFFD700),
+                            width: 2,
+                            style: BorderStyle.solid),
+                        shape: BoxShape.rectangle,
+                        image: new DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(
+                              _categoryData.image,
+                            )))),
+              ),
             ),
             SizedBox(height: 5),
             Container(

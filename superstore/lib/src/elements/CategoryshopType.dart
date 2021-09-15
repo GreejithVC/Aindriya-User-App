@@ -38,26 +38,28 @@ class _CategoryShopTypeState extends State<CategoryShopType> {
           ShopType _shopTypeData = widget.shopType.elementAt(index);
           return Column(
               children:[
-                GestureDetector(
-                  onTap: () {
+                AspectRatio(aspectRatio: 1,
+                  child: GestureDetector(
+                    onTap: () {
 
-                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                      return Stores(storeType: int.parse(_shopTypeData.shopType), pageTitle:  _shopTypeData.title,focusId: int.parse(_shopTypeData.id),
-                        coverImage: _shopTypeData.coverImage,previewImage: _shopTypeData.previewImage,);
-                    }));
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                        return Stores(storeType: int.parse(_shopTypeData.shopType), pageTitle:  _shopTypeData.title,focusId: int.parse(_shopTypeData.id),
+                          coverImage: _shopTypeData.coverImage,previewImage: _shopTypeData.previewImage,);
+                      }));
 
-                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => SendPackage()));
-                  },
-                  child: Container(
-                      padding: EdgeInsets.all(10),
-                      height: 150.0,
-                      decoration: new BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8),border: Border.all(color:  Color(0xffFFD700),width: 2,style: BorderStyle.solid),
-                          shape: BoxShape.rectangle,
-                          image: new DecorationImage(
-                              fit: BoxFit.contain,
-                              image: NetworkImage(_shopTypeData.previewImage)
-                          )
-                      )),
+                      //Navigator.of(context).push(MaterialPageRoute(builder: (context) => SendPackage()));
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(10),
+                        height: 150.0,
+                        decoration: new BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8),border: Border.all(color:  Color(0xffFFD700),width: 2,style: BorderStyle.solid),
+                            shape: BoxShape.rectangle,
+                            image: new DecorationImage(
+                                fit: BoxFit.contain,
+                                image: NetworkImage(_shopTypeData.previewImage)
+                            )
+                        )),
+                  ),
                 ),
                 SizedBox(height:5),
                 Container(
