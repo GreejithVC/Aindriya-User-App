@@ -26,8 +26,9 @@ class _CategoryShopTypeState extends State<CategoryShopType> {
 
     return Container(
       width:double.infinity,
-      margin:EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),color: Colors.lightBlue.withOpacity(.2),
+      // margin:EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
+      color: Colors.lightBlue.withOpacity(.2),
       child: StaggeredGridView.countBuilder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),

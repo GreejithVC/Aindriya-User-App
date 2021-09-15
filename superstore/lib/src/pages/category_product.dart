@@ -63,19 +63,28 @@ class _CategoryProductState extends StateMVC<CategoryProduct> {
         // text: element.subcategory_name,
         child: Container(
           width: 120,
-          padding: EdgeInsets.only(left: 5, right: 5),
-          alignment: Alignment.bottomCenter,
+          // alignment: Alignment.bottomLeft,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                width: 50,
-                margin: EdgeInsets.only(top: 6),
-                decoration: BoxDecoration(
-                    image: new DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                          element.image,
-                        ))),
+              AspectRatio(
+                aspectRatio: .9,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    width: 50,
+                    // margin: EdgeInsets.only(top: 6,left: 3),
+                    decoration: BoxDecoration(
+                        image: new DecorationImage(
+                            fit: BoxFit.contain,
+                            image: NetworkImage(
+                              element.image,
+                            ))),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 4,
               ),
               Expanded(
                   child: Text(element.subcategory_name,
@@ -131,20 +140,25 @@ class _CategoryProductState extends StateMVC<CategoryProduct> {
               SliverAppBar(
                 pinned: true,
                 floating: false,
-                primary: false,
-                bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(0),
-                  child: TabBar(
-                    unselectedLabelColor: Colors.red,
-                    indicatorColor: Colors.blue,
-                    isScrollable: true,
-                    tabs: tabMaker(),
-                    indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                          color: Colors.blue,
-                          width: 2,
-                          style: BorderStyle.solid),
+                primary: false,automaticallyImplyLeading: false,
+                // bottom:
+                flexibleSpace:  Container(margin: EdgeInsets.symmetric(horizontal: 20),
+                  child: PreferredSize(
+                    preferredSize: const Size.fromHeight(0),
+                    child: TabBar(
+                      labelPadding:
+                          EdgeInsets.only(left: 8, right: 4, top: 4, bottom: 4),
+                      unselectedLabelColor: Colors.red,
+                      indicatorColor: Colors.blue,
+                      isScrollable: true,
+                      tabs: tabMaker(),
+                      indicator: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                            color: Colors.blue,
+                            width: 2,
+                            style: BorderStyle.solid),
+                      ),
                     ),
                   ),
                 ),
@@ -237,7 +251,7 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
+    return Container(margin: EdgeInsets.only(bottom: 10),
       height: this.maxExtent,
       width: MediaQuery.of(context).size.width,
       child: Stack(
