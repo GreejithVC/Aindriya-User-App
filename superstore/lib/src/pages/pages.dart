@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:superstore/generated/l10n.dart';
 import 'package:superstore/src/pages/fav_shops.dart';
+import 'package:superstore/src/pages/otp_verification.dart';
+import 'package:superstore/src/pages/register.dart';
 import 'ProfilePage.dart';
 import 'chat_page.dart';
 import 'wishList.dart';
@@ -51,7 +53,7 @@ class _PagesWidgetState extends State<PagesWidget> {
               VendorMapWidget(parentScaffoldKey: widget.scaffoldKey);
           break;
         case 1:
-          widget.currentPage = FavShops();
+          widget.currentPage = OtpVerification();
           break;
         case 2:
           widget.currentPage = ChatPage();
@@ -64,7 +66,7 @@ class _PagesWidgetState extends State<PagesWidget> {
           widget.currentPage = WishList();
           break;
         case 5:
-          widget.currentPage = OrdersWidget();
+          widget.currentPage = Register();
           break;
         case 6:
           widget.currentPage = ProfilePage();

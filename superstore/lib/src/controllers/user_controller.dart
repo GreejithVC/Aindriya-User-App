@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class UserController extends ControllerMVC {
   GlobalKey<ScaffoldState> scaffoldKeyState;
 
   OverlayEntry loader;
+
   // ignore: non_constant_identifier_names
   Registermodel register_data = new Registermodel();
 
@@ -35,10 +37,7 @@ class UserController extends ControllerMVC {
     //_firebaseMessaging = FirebaseMessaging();
 
     //  listenForAddress();
-
   }
-
-
 
   void login() async {
     FocusScope.of(context).unfocus();
@@ -48,20 +47,18 @@ class UserController extends ControllerMVC {
       repository.login(user).then((value) {
         Helper.hideLoader(loader);
         if (value != null && value.apiToken != null) {
-        /**  Fluttertoast.showToast(
-            msg: "${S.of(context).login} ${S.of(context).successfully}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 5,
-          ); */
-        //   gettoken();
+          /**  Fluttertoast.showToast(
+              msg: "${S.of(context).login} ${S.of(context).successfully}",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 5,
+              ); */
+          //   gettoken();
 
-
-
-          if(currentUser.value.latitude!=0.0 && currentUser.value.longitude!=0.0) {
-
+          if (currentUser.value.latitude != 0.0 &&
+              currentUser.value.longitude != 0.0) {
             Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
-          }else{
+          } else {
             Navigator.of(context).pushReplacementNamed('/location');
           }
         } else {
@@ -83,20 +80,20 @@ class UserController extends ControllerMVC {
   }
 
   gettoken() {
-
-
     FirebaseMessaging.instance.getToken().then((deviceid) {
-       print(deviceid);
+      print(deviceid);
       var table = 'user' + currentUser.value.id;
-      FirebaseFirestore.instance.collection('devToken').doc(table).set({'devToken': deviceid, 'userId': currentUser.value.id}).catchError((e) {
+      FirebaseFirestore.instance.collection('devToken').doc(table).set({
+        'devToken': deviceid,
+        'userId': currentUser.value.id
+      }).catchError((e) {
         print('firebase error');
         print(e);
-
       });
     });
   }
 
-  void saveAddress(){
+  void saveAddress() {
     if (loginFormKey.currentState.validate()) {
       loginFormKey.currentState.save();
 
@@ -114,8 +111,8 @@ class UserController extends ControllerMVC {
       repository.register(register_data).then((value) {
         print(value);
         if (value == true) {
-
-          showToast("${S.of(context).register} ${S.of(context).successfully}", gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+          showToast("${S.of(context).register} ${S.of(context).successfully}",
+              gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
           Navigator.of(context).pushReplacementNamed('/Login');
         } else {
           // ignore: deprecated_member_use
@@ -144,11 +141,13 @@ class UserController extends ControllerMVC {
         if (value != null && value == true) {
           // ignore: deprecated_member_use
           scaffoldKey?.currentState?.showSnackBar(SnackBar(
-            content: Text(S.of(context).your_reset_link_has_been_sent_to_your_email),
+            content:
+                Text(S.of(context).your_reset_link_has_been_sent_to_your_email),
             action: SnackBarAction(
               label: S.of(context).login,
               onPressed: () {
-                Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Login');
+                Navigator.of(scaffoldKey.currentContext)
+                    .pushReplacementNamed('/Login');
               },
             ),
             duration: Duration(seconds: 10),
@@ -167,7 +166,41 @@ class UserController extends ControllerMVC {
   }
 
   void showToast(String msg, {int duration, int gravity}) {
-    Toast.show(msg, context, duration: duration, gravity: gravity ,);
+    Toast.show(
+      msg,
+      context,
+      duration: duration,
+      gravity: gravity,
+    );
   }
 
+  void sendOtp() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    await auth.verifyPhoneNumber(
+      phoneNumber: '+919445872729',
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        print("verificationCompleted");
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print("verificationFailed");
+        print(e.message);
+      },
+      codeSent: (String verificationId, int resendToken) async {
+        print("codeSent");
+        // String smsCode = 'xxxx';
+        //
+        // PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        //     verificationId: verificationId, smsCode: smsCode);
+        //
+        // await auth.signInWithCredential(credential);
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        print("codeAutoRetrievalTimeout");
+        verificationId = verificationId;
+        print(verificationId);
+        print("Timout");
+      },
+    );
+  }
 }

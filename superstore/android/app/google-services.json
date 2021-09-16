@@ -7,9 +7,104 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:473854277139:android:06d7e8ac69b1cf23b831e6",
+        "android_client_info": {
+          "package_name": "adminapp.albuysmart.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473854277139-2gunmj6nf29g4iobb26q43vhlesur5ka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvyvQsVggCaOuyVad9koB7pxra9OBHYlQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "473854277139-2gunmj6nf29g4iobb26q43vhlesur5ka.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473854277139:android:fa4eb74aa19f3bc2b831e6",
+        "android_client_info": {
+          "package_name": "driverapp.albuysmart.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473854277139-2gunmj6nf29g4iobb26q43vhlesur5ka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvyvQsVggCaOuyVad9koB7pxra9OBHYlQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "473854277139-2gunmj6nf29g4iobb26q43vhlesur5ka.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:473854277139:android:a7f7539c05ec6591b831e6",
         "android_client_info": {
           "package_name": "userapp.albuysmart.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473854277139-fhakok0h5ejbdnou9d8p6ni1occonii6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "userapp.albuysmart.com",
+            "certificate_hash": "0246fc527856e999d1aa1c3867e1a1064a2f3fbd"
+          }
+        },
+        {
+          "client_id": "473854277139-2gunmj6nf29g4iobb26q43vhlesur5ka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvyvQsVggCaOuyVad9koB7pxra9OBHYlQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "473854277139-2gunmj6nf29g4iobb26q43vhlesur5ka.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473854277139:android:3c98a6e66c889be1b831e6",
+        "android_client_info": {
+          "package_name": "vendorapp.albuysmart.com"
         }
       },
       "oauth_client": [
