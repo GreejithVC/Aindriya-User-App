@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:superstore/src/models/packagetype.dart';
 import 'package:superstore/src/repository/user_repository.dart';
 import '../models/category.dart';
 
@@ -12,7 +13,26 @@ class VendorController extends ControllerMVC {
   List<Vendor> vendorList = <Vendor>[];
   List<Category> categories = <Category>[];
   List<RestaurantProduct> vendorResProductList = <RestaurantProduct>[];
+  PackageTypeModel subScribedPackage;
   VendorController();
+
+
+  Future<void> listenForPackageSubscribed(String userId) async {
+    print("listen for package subscribed");
+    FirebaseFirestore.instance
+        .collection("vendorSubscriptions")
+        .doc(userId)
+        .get()
+        .then((value) {
+      if (value?.data() != null) {
+        print(value.data());
+        setState(() => subScribedPackage =
+            PackageTypeModel.fromJSON(value.data(), userId));
+      }
+    }).catchError((e) {
+      print(e);
+    }).whenComplete(() {});
+  }
 
   Future<void> listenForVendorList(int shopType, int focusId) async {
 

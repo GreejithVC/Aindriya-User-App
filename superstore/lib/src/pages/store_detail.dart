@@ -2,6 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:superstore/src/controllers/fav_shop_controller.dart';
 import 'package:superstore/src/elements/SearchWidgetRe.dart';
+import 'package:superstore/src/models/packagetype.dart';
 import '../elements/RectangleLoaderWidget.dart';
 import '../helpers/helper.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -48,9 +49,14 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
 
   @override
   void initState() {
+    print("shop id //lllllllllllllllllllll");
+    print(widget.shopDetails.shopId);
+    print(_con.listenForPackageSubscribed(widget.shopDetails.shopId));
+
     super.initState();
     controller1.addListener(onScroll);
     _con.listenForRestaurantProduct(int.parse(widget.shopDetails.shopId));
+    _con.listenForPackageSubscribed(widget.shopDetails.shopId);
     //   _tabController = TabController(vsync: this, length: );
   }
 
@@ -111,6 +117,8 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
         body: NestedScrollView(
           controller: controller1,
           headerSliverBuilder: (BuildContext context, bool isScrolled) {
+            print("expiry /////gggggggggggggg");
+            print(_con?.subScribedPackage?.expiryDate);
             return [
               TransitionAppBar(
                 extent: 250,
@@ -121,6 +129,7 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
                 focusId: widget.focusId,
                 callback: this.callback,
                 itemDetails: _con.vendorResProductList,
+                subscribedPackage: _con.subScribedPackage,
                 avatar: Container(
                   height: 50,
                   width: 50,
@@ -200,6 +209,7 @@ class TransitionAppBar extends StatelessWidget {
   final int focusId;
   final Function callback;
   final List<RestaurantProduct> itemDetails;
+  final PackageTypeModel subscribedPackage;
 
   TransitionAppBar(
       {this.avatar,
@@ -213,6 +223,7 @@ class TransitionAppBar extends StatelessWidget {
       this.focusId,
       this.itemDetails,
       this.callback,
+      this.subscribedPackage,
       Key key})
       : super(key: key);
 
@@ -228,6 +239,7 @@ class TransitionAppBar extends StatelessWidget {
           height: height,
           shopTitle: shopTitle,
           shopDetails: shopDetails,
+          subscribedPackage: subscribedPackage,
           itemDetails: itemDetails,
           callback: callback,
           focusId: focusId,
@@ -259,6 +271,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
   final Function callback;
   final int focusId;
   final List<RestaurantProduct> itemDetails;
+  final PackageTypeModel subscribedPackage;
 
   _TransitionAppBarDelegate({
     this.avatar,
@@ -273,6 +286,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
     this.itemDetails,
     this.focusId,
     this.callback,
+    this.subscribedPackage,
     @required ScrollController scrollController,
   })  : assert(avatar != null),
         assert(extent == null || extent >= 200),
@@ -374,7 +388,8 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.headline6),
                           Expanded(
-                            child: Text("  (${shopDetails?.openTime ?? ""} - ${shopDetails?.openTime ?? ""})",
+                            child: Text(
+                                "  (${shopDetails?.openTime ?? ""} - ${shopDetails?.openTime ?? ""})",
                                 style: Theme.of(context).textTheme.subtitle2),
                           ),
                           Wrap(
@@ -427,7 +442,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                                 SizedBox(width: 10),
                                 Column(
                                   children: [
-                                    Text('Opened',
+                                    Text(subscribedPackage?.expiryDate ?? "",
                                         style: Theme.of(context)
                                             .textTheme
                                             .subtitle2),

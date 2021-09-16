@@ -53,7 +53,7 @@ class _PagesWidgetState extends State<PagesWidget> {
               VendorMapWidget(parentScaffoldKey: widget.scaffoldKey);
           break;
         case 1:
-          widget.currentPage = OtpVerification();
+          widget.currentPage = FavShops();
           break;
         case 2:
           widget.currentPage = ChatPage();
@@ -66,7 +66,7 @@ class _PagesWidgetState extends State<PagesWidget> {
           widget.currentPage = WishList();
           break;
         case 5:
-          widget.currentPage = Register();
+          widget.currentPage = OrdersWidget();
           break;
         case 6:
           widget.currentPage = ProfilePage();
