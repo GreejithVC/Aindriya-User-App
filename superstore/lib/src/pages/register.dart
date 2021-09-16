@@ -20,7 +20,9 @@ class _RegisterState extends StateMVC<Register>
   AnimationController animationController;
   bool isValidOtp = false;
   bool isOtpSend = false;
+  bool autoValidate = false;
   UserController _con;
+  final TextEditingController _phoneNumberController = TextEditingController();
 
   _RegisterState() : super(UserController()) {
     _con = controller;
@@ -116,46 +118,60 @@ class _RegisterState extends StateMVC<Register>
                         SizedBox(
                           height: 10,
                         ),
-                        Container(
-                            margin: EdgeInsets.only(left: 40, right: 40),
-                            width: double.infinity,
-                            child: TextFormField(
-                                textAlign: TextAlign.left,
-                                autocorrect: true,
-                                onSaved: (input) =>
-                                    _con.register_data.phone = input,
-                                validator: (input) => input.length <= 0
-                                    ? S.of(context).invalid_mobile_number
-                                    : null,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline3
-                                    .merge(TextStyle(
-                                        color: Theme.of(context)
-                                            .primaryColorLight)),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                decoration: InputDecoration(
-                                  labelText: S.of(context).mobile,
-                                  labelStyle: Theme.of(context)
+                        AbsorbPointer(
+                          absorbing: isValidOtp == true,
+                          child: Container(
+                              margin: EdgeInsets.only(left: 40, right: 40),
+                              width: double.infinity,
+                              child: TextFormField(
+                                  autovalidate: autoValidate == true,
+                                  controller: _phoneNumberController,
+                                  maxLength: 10,
+                                  textAlign: TextAlign.left,
+                                  autocorrect: true,
+                                  onSaved: (input) =>
+                                      _con.register_data.phone = input,
+                                  validator: (input) {
+                                    return _con.isValidMobileNumber(
+                                        context, input);
+                                  },
+                                  style: Theme.of(context)
                                       .textTheme
-                                      .headline1
-                                      .merge(TextStyle(color: Colors.grey)),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Theme.of(context).accentColor,
-                                      width: 1.0,
+                                      .headline3
+                                      .merge(TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorLight)),
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  decoration: InputDecoration(
+                                    prefixText: "+91",
+                                    prefixStyle: Theme.of(context)
+                                        .textTheme
+                                        .headline3
+                                        .merge(TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorLight)),
+                                    labelText: S.of(context).mobile,
+                                    labelStyle: Theme.of(context)
+                                        .textTheme
+                                        .headline1
+                                        .merge(TextStyle(color: Colors.grey)),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Theme.of(context).accentColor,
+                                        width: 1.0,
+                                      ),
                                     ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Theme.of(context).accentColor,
-                                      width: 1.0,
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Theme.of(context).accentColor,
+                                        width: 1.0,
+                                      ),
                                     ),
-                                  ),
-                                ))),
+                                  ))),
+                        ),
                         Visibility(
                           visible: isOtpSend == true && isValidOtp == false,
                           child: Container(
@@ -321,10 +337,18 @@ class _RegisterState extends StateMVC<Register>
                             // ignore: deprecated_member_use
                             child: FlatButton(
                               onPressed: () {
-                                setState(() {
-                                  isOtpSend = true;
-                                });
-                                _con.sendOtp();
+                                if (_con.isValidMobileNumber(context,
+                                        _phoneNumberController.text.trim()) ==
+                                    null) {
+                                  setState(() {
+                                    isOtpSend = true;
+                                    autoValidate = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    autoValidate = true;
+                                  });
+                                }
                               },
                               color: Theme.of(context).accentColor,
                               shape: RoundedRectangleBorder(

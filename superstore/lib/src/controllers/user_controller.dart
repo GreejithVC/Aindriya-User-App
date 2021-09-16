@@ -18,6 +18,7 @@ class UserController extends ControllerMVC {
   bool hidePassword = true;
   Address addressData = Address();
   bool loading = false;
+  bool autoValidate = false;
   String otpNumber;
 
   GlobalKey<FormState> loginFormKey;
@@ -174,11 +175,31 @@ class UserController extends ControllerMVC {
     );
   }
 
+  void validateAndSendOTP(
+    BuildContext context, {
+    String contact,
+  }) async {
+    if (isValidMobileNumber(context, contact) == null) {
+      sendOtp();
+    } else {
+      autoValidate = true;
+    }
+  }
+
+  String isValidMobileNumber(BuildContext context, String input) {
+    if (input.length != 10) {
+      return S.of(context).invalid_mobile_number;
+    } else {
+      return null;
+    }
+  }
+
   void sendOtp() async {
+    print("sendOtp hhhhhhhhhhhh");
     FirebaseAuth auth = FirebaseAuth.instance;
 
     await auth.verifyPhoneNumber(
-      phoneNumber: '+919445872729',
+      phoneNumber: '+919061795949',
       verificationCompleted: (PhoneAuthCredential credential) async {
         print("verificationCompleted");
       },
