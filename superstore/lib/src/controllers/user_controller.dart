@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -222,6 +225,61 @@ class UserController extends ControllerMVC {
         print(verificationId);
         print("Timout");
       },
+    );
+  }
+  void validateOTPAndVerify(BuildContext context,
+      { String enteredOTP,
+        String contact,
+       }) async {
+    if (enteredOTP.isEmpty == true) {
+      showSnackBar(context, "Please enter OTP");
+    } else if (enteredOTP.length == 6) {
+      _verifyOTP(context,
+          contact: contact,
+          otp: enteredOTP,
+         );
+    } else {
+      showSnackBar(context, "Invalid OTP");
+    }
+  }
+
+  Future<void> _verifyOTP(BuildContext context,
+      { String contact,
+         String otp,
+        }) async {
+    // pageState = PageState.loading;
+    try {
+      // final response =
+      //     await APIRepository().verifyOTP(contact: contact, otp: otp);
+      // if (response is LoginResponse) {
+      //   _validateLoginResponse(response, context);
+      // } else {
+      //   pageState = PageState.error;
+      //   WidgetUtils.showSnackBar(context, AppErrors.responseMismatchError);
+      // }
+      new Timer(new Duration(seconds: 3), () async {
+        // pageState = PageState.success;
+        // isFromForgotPassword == true
+        //     ? loadResetPasswordScreen(context)
+        //     : loadHomeScreen(context);
+      });
+    } on SocketException {
+      print("Socket Exception");
+      // pageState = PageState.error;
+     showSnackBar(context, "No Internet connection");
+    } catch (onError) {
+      print("catch _signIn");
+      print(onError);
+      // pageState = PageState.error;
+    showSnackBar(context, onError.toString());
+    }
+  }
+  static void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message ?? ""),
+        duration: Duration(seconds: 2),
+      ),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:superstore/generated/l10n.dart';
 import 'package:superstore/src/repository/settings_repository.dart';
 import '../controllers/user_controller.dart';
@@ -23,7 +24,7 @@ class _RegisterState extends StateMVC<Register>
   bool autoValidate = false;
   UserController _con;
   final TextEditingController _phoneNumberController = TextEditingController();
-
+  final TextEditingController _otpController = TextEditingController();
   _RegisterState() : super(UserController()) {
     _con = controller;
   }
@@ -119,7 +120,7 @@ class _RegisterState extends StateMVC<Register>
                           height: 10,
                         ),
                         AbsorbPointer(
-                          absorbing: isValidOtp == true,
+                          absorbing: isOtpSend == true,
                           child: Container(
                               margin: EdgeInsets.only(left: 40, right: 40),
                               width: double.infinity,
@@ -146,7 +147,7 @@ class _RegisterState extends StateMVC<Register>
                                     FilteringTextInputFormatter.digitsOnly
                                   ],
                                   decoration: InputDecoration(
-                                    prefixText: "+91",
+                                    prefixText: "+91 ",
                                     prefixStyle: Theme.of(context)
                                         .textTheme
                                         .headline3
@@ -175,24 +176,59 @@ class _RegisterState extends StateMVC<Register>
                         Visibility(
                           visible: isOtpSend == true && isValidOtp == false,
                           child: Container(
-                            margin:
-                                EdgeInsets.only(left: 34, right: 34, top: 20),
+                            height: 55,
                             width: double.infinity,
-                            child: OTPTextField(
-                              otpFieldStyle: OtpFieldStyle(
-                                  enabledBorderColor:
-                                      Theme.of(context).accentColor),
-                              length: 6,
-                              width: MediaQuery.of(context).size.width,
-                              textFieldAlignment: MainAxisAlignment.spaceAround,
-                              fieldWidth: 40,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Theme.of(context).primaryColorLight),
-                              fieldStyle: FieldStyle.underline,
-                              onCompleted: (pin) {},
+                            margin: EdgeInsets.only(left: 40, right: 40,top: 20),
+                            child: PinInputTextField(
+                              pinLength: 6,
+                              decoration: BoxLooseDecoration(
+                                  strokeColorBuilder: PinListenColorBuilder(
+                                    Colors.grey,
+                                    Colors.grey,
+                                     ),
+                                  bgColorBuilder: PinListenColorBuilder(
+                                    Colors.white,
+                                    Colors.white,
+                                     ),
+                                  radius: const Radius.circular(15),
+                                  gapSpace: 20),
+                              controller: _otpController,
+                              textInputAction: TextInputAction.go,
+                              enabled: true,
+                              keyboardType: TextInputType.number,
+                              onChanged: (pin) {
+                                debugPrint('onChanged execute. pin:$pin');
+                              },
+                              enableInteractiveSelection: false,
+                              cursor: Cursor(
+                                width: 2,
+                                color: Colors.yellowAccent,
+                                enabled: true,
+                              ),
                             ),
                           ),
+
+                          // Container(
+                          //   margin:
+                          //       EdgeInsets.only(left: 34, right: 34, top: 20),
+                          //   width: double.infinity,
+                          //   child:
+                          //   OTPTextField(
+                          //     otpFieldStyle: OtpFieldStyle(
+                          //         enabledBorderColor:
+                          //             Theme.of(context).accentColor),
+                          //     length: 6,
+                          //     width: MediaQuery.of(context).size.width,
+                          //     textFieldAlignment: MainAxisAlignment.spaceAround,
+                          //     fieldWidth: 40,
+                          //     style: TextStyle(
+                          //         fontSize: 20,
+                          //         color: Theme.of(context).primaryColorLight),
+                          //     fieldStyle: FieldStyle.underline,
+                          //
+                          //     onCompleted: (pin) {},
+                          //   ),
+                          // ),
                         ),
                         Visibility(
                           visible: isValidOtp == true,
@@ -375,9 +411,23 @@ class _RegisterState extends StateMVC<Register>
                             // ignore: deprecated_member_use
                             child: FlatButton(
                               onPressed: () {
-                                setState(() {
-                                  isValidOtp = true;
-                                });
+                                if (_otpController.text.trim().isEmpty == true) {
+                                  showSnackBar(context, "Please enter OTP");
+                                } else if (_otpController.text.trim().length == 6){
+                                  showSnackBar(context, "Successfully");
+                                  setState(() {
+                                    isValidOtp = true;
+                                  });
+                                }
+                                else {
+                                  showSnackBar(context, "Invalid OTP");
+                                }
+                                // _con.validateOTPAndVerify(context,
+                                //     enteredOTP: _otpController.text.trim(),
+                                // contact: _phoneNumberController.text.trim(),);
+                                // setState(() {
+                                //   isValidOtp = true;
+                                // });
                               },
                               color: Theme.of(context).accentColor,
                               shape: RoundedRectangleBorder(
@@ -457,6 +507,14 @@ class _RegisterState extends StateMVC<Register>
             ),
           ),
         ],
+      ),
+    );
+  }
+  static void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message ?? ""),
+        duration: Duration(seconds: 2),
       ),
     );
   }
