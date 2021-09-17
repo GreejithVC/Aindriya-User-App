@@ -110,7 +110,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                           shopTypeID: widget.shopTypeID,
                           shopDetails: widget.shopDetails,
                           focusId: widget.focusId,
-                          subscribedPackage: _con.subScribedPackage)));
+                          )));
                 })
             : Container(),
         body: NestedScrollView(

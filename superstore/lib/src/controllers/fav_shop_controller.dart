@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:superstore/src/models/packagetype.dart';
 import 'package:superstore/src/models/vendor.dart';
 import 'package:superstore/src/repository/user_repository.dart';
 
 class FavShopController extends ControllerMVC {
   List<Vendor> favShopList = <Vendor>[];
+
 
   // addPackageType(context, id, pageType) {
   //   if (generalFormKey.currentState.validate()) {
@@ -106,4 +108,5 @@ class FavShopController extends ControllerMVC {
       print(favShopList.length);
     });
   }
+
 }
