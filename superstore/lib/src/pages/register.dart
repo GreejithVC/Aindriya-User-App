@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -22,7 +24,11 @@ class _RegisterState extends StateMVC<Register>
   bool isValidOtp = false;
   bool isOtpSend = false;
   bool autoValidate = false;
+  String verificationIdFinal = "" ;
+  String smsCode= "";
   UserController _con;
+  int start = 30;
+  bool wait = false;
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
   _RegisterState() : super(UserController()) {
@@ -198,6 +204,9 @@ class _RegisterState extends StateMVC<Register>
                               keyboardType: TextInputType.number,
                               onChanged: (pin) {
                                 debugPrint('onChanged execute. pin:$pin');
+                               setState(() {
+                                 smsCode = pin;
+                               });
                               },
                               enableInteractiveSelection: false,
                               cursor: Cursor(
@@ -370,12 +379,16 @@ class _RegisterState extends StateMVC<Register>
                             height: 45,
                             width: double.infinity,
                             margin: EdgeInsets.only(left: 40, right: 40),
-                            // ignore: deprecated_member_use
+                            // ignore: deprecated_member_uses
                             child: FlatButton(
                               onPressed: () {
+                                print("mobile number");
+                                print(_phoneNumberController.text.trim());
+
                                 if (_con.isValidMobileNumber(context,
                                         _phoneNumberController.text.trim()) ==
                                     null) {
+                                  _con?.sendOtp(_phoneNumberController.text.trim(),setData,);
                                   setState(() {
                                     isOtpSend = true;
                                     autoValidate = true;
@@ -414,7 +427,15 @@ class _RegisterState extends StateMVC<Register>
                                 if (_otpController.text.trim().isEmpty == true) {
                                   showSnackBar(context, "Please enter OTP");
                                 } else if (_otpController.text.trim().length == 6){
+                                  print("entered otp");
+                                  print(_otpController.text.trim());
+                                  // _con.verifyOTP(context,
+                                  //         enteredOTP: _otpController.text.trim(),
+                                _con?.signInWithPhoneNumber(verificationIdFinal, smsCode);
+                                // _con?.verifyPhoneNumber(context, setData,_otpController.text.trim()
+
                                   showSnackBar(context, "Successfully");
+
                                   setState(() {
                                     isValidOtp = true;
                                   });
@@ -424,7 +445,7 @@ class _RegisterState extends StateMVC<Register>
                                 }
                                 // _con.validateOTPAndVerify(context,
                                 //     enteredOTP: _otpController.text.trim(),
-                                // contact: _phoneNumberController.text.trim(),);
+                                // );
                                 // setState(() {
                                 //   isValidOtp = true;
                                 // });
@@ -517,5 +538,25 @@ class _RegisterState extends StateMVC<Register>
         duration: Duration(seconds: 2),
       ),
     );
+  }
+  void setData(verificationId){
+  verificationIdFinal = verificationId;
+  startTimer();
+  }
+  void startTimer(){
+    const onsec = Duration(seconds: 1);
+    Timer timer = Timer.periodic(onsec, (timer) {
+      if(start == 0){
+        setState(() {
+          timer.cancel();
+          wait = false;
+        });
+      } else {
+        setState(() {
+         start --;
+        });
+
+      }
+    });
   }
 }
