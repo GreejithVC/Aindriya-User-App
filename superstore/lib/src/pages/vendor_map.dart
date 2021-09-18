@@ -106,7 +106,7 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
           ),
           Positioned(
             top: _con.offsetY,
-            left: _con.offsetY,
+            left: _con.offsetX,
             child: Container(
               width: 150,
               height: 150,

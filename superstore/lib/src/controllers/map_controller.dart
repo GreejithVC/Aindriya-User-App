@@ -50,11 +50,12 @@ class MapController extends ControllerMVC {
           var devicePixelRatio = Platform.isAndroid
               ? MediaQuery.of(context).devicePixelRatio
               : 1.0;
-          offsetY =
-              (screenCoordinate?.y?.toDouble() ?? 0) / devicePixelRatio - 150;
-          offsetX =
-              (screenCoordinate?.x?.toDouble() ?? 0) / devicePixelRatio - 150;
-
+          double yCoordinate =
+              (screenCoordinate?.y?.toDouble() ?? 0) / devicePixelRatio;
+          double xCoordinate =
+              (screenCoordinate?.x?.toDouble() ?? 0) / devicePixelRatio;
+          offsetY = yCoordinate > 200 ? (yCoordinate - 150) : yCoordinate;
+          offsetX = xCoordinate > 200 ? (xCoordinate - 150) : xCoordinate;
           topMarkets.clear();
           allCircles.clear();
           setState(() {
