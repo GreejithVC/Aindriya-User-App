@@ -225,7 +225,7 @@ class Helper {
   }
 
   static Future<Marker> getMarker(Map<String, dynamic> res,
-      {OnItemSelected onItemSelected}) async {
+      {OnItemSelected onItemSelected, double zoomLevel}) async {
     final File markerImageFile = await DefaultCacheManager().getSingleFile(
       res['previewImage'],
     );
@@ -240,6 +240,7 @@ class Helper {
     );
     final Uint8List markerIcon = byteData.buffer.asUint8List();
     final Marker marker = Marker(
+        visible: zoomLevel >= 14.4746,
         consumeTapEvents: true,
         markerId: MarkerId(res['shopId']),
         icon: BitmapDescriptor.fromBytes(markerIcon),

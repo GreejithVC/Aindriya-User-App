@@ -34,6 +34,7 @@ class MapController extends ControllerMVC {
   GoogleMapController googleMapController;
 
   void listenForNearMarkets(Address myLocation, Address areaLocation) async {
+    double zoomLevel = await googleMapController.getZoomLevel();
     final Stream<Vendor> stream =
         await getNearMarkets(myLocation, areaLocation);
     stream.listen((Vendor _market) {
@@ -42,6 +43,7 @@ class MapController extends ControllerMVC {
 
       Helper.getMarker(
         _market.toMap(),
+        zoomLevel: zoomLevel,
         onItemSelected: (selectedItem) async {
           Vendor item = Vendor.fromJSON(selectedItem);
           var screenCoordinate = await googleMapController.getScreenCoordinate(
