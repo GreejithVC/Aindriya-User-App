@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:superstore/generated/l10n.dart';
+import 'package:superstore/src/elements/LocationWidget.dart';
+import 'package:superstore/src/repository/user_repository.dart';
 import '../controllers/map_controller.dart';
 import '../elements/CardsCarouselWidget.dart';
 import '../elements/CircularLoadingWidget.dart';
@@ -40,27 +43,9 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        leading: _con.currentAddress?.latitude == null
-            ? new IconButton(
-                icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
-                onPressed: () =>
-                    widget.parentScaffoldKey.currentState.openDrawer(),
-              )
-            : IconButton(
-                icon: new Icon(Icons.arrow_back,
-                    color: Theme.of(context).hintColor),
-                onPressed: () =>
-                    Navigator.of(context).pushNamed('/Pages', arguments: 2),
-              ),
-        title: Text(
-          'Explorer',
-          style: Theme.of(context)
-              .textTheme
-              .headline6
-              .merge(TextStyle(letterSpacing: 1.3)),
+        leading: InkWell(
+          onTap: () => widget.parentScaffoldKey.currentState.openDrawer(),
+          child: Icon(Icons.menu, color: Theme.of(context).hintColor),
         ),
         actions: <Widget>[
           IconButton(
@@ -73,6 +58,29 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
             },
           ),
         ],
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).accentColor,
+        elevation: 0,
+        centerTitle: false,
+        titleSpacing: 0,
+        title: GestureDetector(
+            onTap: () {
+              //DeliveryAddressDialog(context: context);
+
+              showModal();
+            },
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(S.of(context).delivery_location,
+                  style: Theme.of(context).textTheme.headline1),
+              currentUser.value.latitude == null ||
+                      currentUser.value.longitude == null
+                  ? Text(S.of(context).select_your_address,
+                      style: Theme.of(context).textTheme.caption)
+                  : Text(currentUser.value.selected_address,
+                      style: Theme.of(context).textTheme.caption.merge(
+                          TextStyle(color: Theme.of(context).backgroundColor))),
+            ])),
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -118,5 +126,70 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
         ],
       ),
     );
+  }
+
+  void showModal() {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.7,
+            color: Color(0xff737373),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12.0),
+                    topRight: Radius.circular(12.0)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              LocationModalPart(),
+                            ]),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15, right: 15, top: 5, bottom: 5),
+                      child: Container(
+                        width: double.infinity,
+                        // ignore: deprecated_member_use
+                        child: FlatButton(
+                            onPressed: () {
+                              setState(() => currentUser.value);
+                              Navigator.pop(context);
+                            },
+                            padding: EdgeInsets.all(15),
+                            color: Theme.of(context).accentColor.withOpacity(1),
+                            child: Text(
+                              S.of(context).proceed_and_close,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  .merge(TextStyle(color: Colors.white)),
+                            )),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
