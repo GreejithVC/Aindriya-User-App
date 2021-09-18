@@ -1,12 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/otp_field_style.dart';
-import 'package:otp_text_field/style.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:superstore/generated/l10n.dart';
 import 'package:superstore/src/repository/settings_repository.dart';
@@ -21,16 +15,13 @@ class Register extends StatefulWidget {
 class _RegisterState extends StateMVC<Register>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
-  bool isValidOtp = false;
+
   bool isOtpSend = false;
   bool autoValidate = false;
-  String verificationIdFinal = "" ;
-  String smsCode= "";
   UserController _con;
-  int start = 30;
-  bool wait = false;
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
+
   _RegisterState() : super(UserController()) {
     _con = controller;
   }
@@ -180,34 +171,30 @@ class _RegisterState extends StateMVC<Register>
                                   ))),
                         ),
                         Visibility(
-                          visible: isOtpSend == true && isValidOtp == false,
+                          visible:
+                              isOtpSend == true && _con?.isValidOtp == false,
                           child: Container(
                             height: 55,
                             width: double.infinity,
-                            margin: EdgeInsets.only(left: 40, right: 40,top: 20),
+                            margin:
+                                EdgeInsets.only(left: 40, right: 40, top: 20),
                             child: PinInputTextField(
                               pinLength: 6,
                               decoration: BoxLooseDecoration(
                                   strokeColorBuilder: PinListenColorBuilder(
                                     Colors.grey,
                                     Colors.grey,
-                                     ),
+                                  ),
                                   bgColorBuilder: PinListenColorBuilder(
                                     Colors.white,
                                     Colors.white,
-                                     ),
+                                  ),
                                   radius: const Radius.circular(15),
                                   gapSpace: 20),
                               controller: _otpController,
                               textInputAction: TextInputAction.go,
                               enabled: true,
                               keyboardType: TextInputType.number,
-                              onChanged: (pin) {
-                                debugPrint('onChanged execute. pin:$pin');
-                               setState(() {
-                                 smsCode = pin;
-                               });
-                              },
                               enableInteractiveSelection: false,
                               cursor: Cursor(
                                 width: 2,
@@ -240,7 +227,7 @@ class _RegisterState extends StateMVC<Register>
                           // ),
                         ),
                         Visibility(
-                          visible: isValidOtp == true,
+                          visible: _con?.isValidOtp == true,
                           child: Container(
                               margin: EdgeInsets.only(left: 40, right: 40),
                               width: double.infinity,
@@ -282,7 +269,7 @@ class _RegisterState extends StateMVC<Register>
                                   ))),
                         ),
                         Visibility(
-                          visible: isValidOtp == true,
+                          visible: _con?.isValidOtp == true,
                           child: Container(
                               margin: EdgeInsets.only(left: 40, right: 40),
                               width: double.infinity,
@@ -322,7 +309,7 @@ class _RegisterState extends StateMVC<Register>
                                   ))),
                         ),
                         Visibility(
-                          visible: isValidOtp == true,
+                          visible: _con?.isValidOtp == true,
                           child: Container(
                               margin: EdgeInsets.only(left: 40, right: 40),
                               width: double.infinity,
@@ -374,7 +361,8 @@ class _RegisterState extends StateMVC<Register>
                           height: 20,
                         ),
                         Visibility(
-                          visible: isValidOtp == false && isOtpSend == false,
+                          visible:
+                              _con?.isValidOtp == false && isOtpSend == false,
                           child: Container(
                             height: 45,
                             width: double.infinity,
@@ -388,7 +376,8 @@ class _RegisterState extends StateMVC<Register>
                                 if (_con.isValidMobileNumber(context,
                                         _phoneNumberController.text.trim()) ==
                                     null) {
-                                  _con?.sendOtp(_phoneNumberController.text.trim(),setData,);
+                                  _con?.submitPhoneNumber(
+                                      _phoneNumberController.text.trim());
                                   setState(() {
                                     isOtpSend = true;
                                     autoValidate = true;
@@ -416,7 +405,8 @@ class _RegisterState extends StateMVC<Register>
                           ),
                         ),
                         Visibility(
-                          visible: isOtpSend == true && isValidOtp == false,
+                          visible:
+                              isOtpSend == true && _con?.isValidOtp == false,
                           child: Container(
                             height: 45,
                             width: double.infinity,
@@ -424,31 +414,17 @@ class _RegisterState extends StateMVC<Register>
                             // ignore: deprecated_member_use
                             child: FlatButton(
                               onPressed: () {
-                                if (_otpController.text.trim().isEmpty == true) {
+                                if (_otpController.text.trim().isEmpty ==
+                                    true) {
                                   showSnackBar(context, "Please enter OTP");
-                                } else if (_otpController.text.trim().length == 6){
+                                } else if (_otpController.text.trim().length ==
+                                    6) {
                                   print("entered otp");
                                   print(_otpController.text.trim());
-                                  // _con.verifyOTP(context,
-                                  //         enteredOTP: _otpController.text.trim(),
-                                _con?.signInWithPhoneNumber(verificationIdFinal, smsCode);
-                                // _con?.verifyPhoneNumber(context, setData,_otpController.text.trim()
-
-                                  showSnackBar(context, "Successfully");
-
-                                  setState(() {
-                                    isValidOtp = true;
-                                  });
-                                }
-                                else {
+                                  _con?.submitOTP(_otpController.text.trim());
+                                } else {
                                   showSnackBar(context, "Invalid OTP");
                                 }
-                                // _con.validateOTPAndVerify(context,
-                                //     enteredOTP: _otpController.text.trim(),
-                                // );
-                                // setState(() {
-                                //   isValidOtp = true;
-                                // });
                               },
                               color: Theme.of(context).accentColor,
                               shape: RoundedRectangleBorder(
@@ -467,7 +443,7 @@ class _RegisterState extends StateMVC<Register>
                           ),
                         ),
                         Visibility(
-                          visible: isValidOtp == true,
+                          visible: _con?.isValidOtp == true,
                           child: Container(
                             height: 45,
                             width: double.infinity,
@@ -531,6 +507,7 @@ class _RegisterState extends StateMVC<Register>
       ),
     );
   }
+
   static void showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -538,25 +515,5 @@ class _RegisterState extends StateMVC<Register>
         duration: Duration(seconds: 2),
       ),
     );
-  }
-  void setData(verificationId){
-  verificationIdFinal = verificationId;
-  startTimer();
-  }
-  void startTimer(){
-    const onsec = Duration(seconds: 1);
-    Timer timer = Timer.periodic(onsec, (timer) {
-      if(start == 0){
-        setState(() {
-          timer.cancel();
-          wait = false;
-        });
-      } else {
-        setState(() {
-         start --;
-        });
-
-      }
-    });
   }
 }

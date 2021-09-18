@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:superstore/src/models/address.dart';
 import 'package:toast/toast.dart';
-
 import '../models/registermodel.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../helpers/helper.dart';
@@ -23,14 +20,16 @@ class UserController extends ControllerMVC {
   bool loading = false;
   bool autoValidate = false;
   String otpNumber;
-
+  FirebaseAuth auth = FirebaseAuth.instance;
+  PhoneAuthCredential _phoneAuthCredential;
+  String _verificationId;
+  bool isValidOtp = false;
   GlobalKey<FormState> loginFormKey;
   GlobalKey<ScaffoldState> scaffoldKey;
   GlobalKey<ScaffoldState> scaffoldKeyState;
 
   OverlayEntry loader;
 
-  // ignore: non_constant_identifier_names
   Registermodel register_data = new Registermodel();
 
   UserController() {
@@ -38,9 +37,6 @@ class UserController extends ControllerMVC {
     loginFormKey = new GlobalKey<FormState>();
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     this.scaffoldKeyState = new GlobalKey<ScaffoldState>();
-    //_firebaseMessaging = FirebaseMessaging();
-
-    //  listenForAddress();
   }
 
   void login() async {
@@ -178,112 +174,12 @@ class UserController extends ControllerMVC {
     );
   }
 
-  // void validateAndSendOTP(
-  //   BuildContext context, {
-  //   String contact,
-  // }) async {
-  //   if (isValidMobileNumber(context, contact) == null) {
-  //     sendOtp(contact);
-  //   }
-  // }
-
   String isValidMobileNumber(BuildContext context, String input) {
     if (input.length != 10) {
       return S.of(context).invalid_mobile_number;
     } else {
       return null;
     }
-  }
-
-  void sendOtp(String contact,Function setData) async {
-    print("sendOtp hhhhhhhhhhhh");
-    print("sendOtp to");
-    print(contact);
-    FirebaseAuth auth = FirebaseAuth.instance;
-    PhoneCodeSent codeSent = (String verificationID, int resendToken) {
-      showSnackBar(context, "verification code has been send to your number");
-      setData(verificationID);
-      print("codeSent");
-    };
-
-    await auth.verifyPhoneNumber(
-      phoneNumber: "+91$contact", timeout: Duration(seconds: 120),
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        print("verificationCompleted");
-      },
-      verificationFailed: (FirebaseAuthException e) {
-        print("verificationFailed");
-        print(e.message);
-      },
-      codeSent: codeSent,
-      //     (String verificationId, int resendToken) async {
-      //   print("codeSent");
-      //   String smsCode = 'xxxxxx';
-      //
-      //   PhoneAuthCredential credential = PhoneAuthProvider.credential(
-      //       verificationId: verificationId, smsCode: smsCode);
-      //
-      //   await auth.signInWithCredential(credential);
-      //   print("Phone number automatically verified and user signed in: ${auth.currentUser.uid}");
-      // },
-      codeAutoRetrievalTimeout: (String verificationId) {
-        print("codeAutoRetrievalTimeout");
-        verificationId = verificationId;
-        print(verificationId);
-        print("Timout");
-      },
-    );
-  }
-
-  // void validateOTPAndVerify(BuildContext context,
-  //     { String enteredOTP,
-  //
-  //      }) async {
-  //   if (enteredOTP.isEmpty == true) {
-  //     showSnackBar(context, "Please enter OTP");
-  //   } else if (enteredOTP.length == 6) {
-  //     verifyOTP(context,
-  //
-  //       enteredOTP: enteredOTP,
-  //        );
-  //   } else {
-  //     showSnackBar(context, "Invalid OTP");
-  //   }
-  // }
-
-  Future<void> verifyOTP(
-    BuildContext context, {
-    String enteredOTP,
-  }) async {
-    print(enteredOTP);
-    FirebaseAuth auth = FirebaseAuth.instance;
-
-    await auth.verifyPhoneNumber(
-      // verificationCompleted: (PhoneAuthCredential credential) async {
-      //   print("verificationCompleted");
-      // },
-      // verificationFailed: (FirebaseAuthException e) {
-      //   print("verificationFailed");
-      //   print(e.message);
-      // },
-      codeSent: (String verificationId, int resendToken) async {
-        print("codeRecived");
-        print(enteredOTP);
-        String smsCode = enteredOTP;
-
-        PhoneAuthCredential credential = PhoneAuthProvider.credential(
-            verificationId: verificationId, smsCode: smsCode);
-
-        await auth.signInWithCredential(credential);
-        print("Phone number verified : ${auth.currentUser.uid}");
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {
-        print("codeAutoRetrievalTimeout");
-        verificationId = verificationId;
-        print(verificationId);
-        print("Timout");
-      },
-    );
   }
 
   static void showSnackBar(BuildContext context, String message) {
@@ -295,57 +191,53 @@ class UserController extends ControllerMVC {
     );
   }
 
-  Future<void> verifyPhoneNumber(
-      BuildContext context, Function setData, String contact) async {
-    print("verifyPhoneNumber");
-
-    FirebaseAuth auth = FirebaseAuth.instance;
-    PhoneVerificationCompleted verificationCompleted =
-        (PhoneAuthCredential phoneAuthCredential) async {
-      showSnackBar(context, "verificationCompleted");
-      print("verificationCompleted");
-    };
-    PhoneVerificationFailed verificationFailed =
-        (FirebaseAuthException exception) async {
-      showSnackBar(context, exception.toString());
-      print("verificationFailed");
-    };
-    PhoneCodeSent codeSent = (String verificationID, int resendToken) {
-      showSnackBar(context, "verification code has been send to your number");
-      setData(verificationID);
-      print("codeSent");
-    };
-    PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
-        (String verificationID) {
-      showSnackBar(context, "Time Out");
-      print("Time Out");
-    };
-
-    try {
-      await auth.verifyPhoneNumber(
-        phoneNumber: "+91$contact",
-        timeout: Duration(seconds: 120),
-        verificationCompleted: verificationCompleted,
-        verificationFailed: verificationFailed,
-        codeSent: codeSent,
-        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
-      );
-    } catch (e) {
-      showSnackBar(context, e.toString());
+  Future<void> submitPhoneNumber(String phoneNumber) async {
+    void verificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+      print('verificationCompleted');
+      _phoneAuthCredential = phoneAuthCredential;
+      _signInWithCredential();
     }
+
+    void verificationFailed(FirebaseAuthException error) {
+      print('verificationFailed');
+      showSnackBar(context, error.message);
+    }
+
+    void codeSent(String verificationId, [int code]) {
+      print('codeSent');
+      _verificationId = verificationId;
+    }
+
+    void codeAutoRetrievalTimeout(String verificationId) {
+      print('codeAutoRetrievalTimeout');
+      print(verificationId);
+    }
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: "+91$phoneNumber",
+      timeout: Duration(minutes: 3),
+      verificationCompleted: verificationCompleted,
+      verificationFailed: verificationFailed,
+      codeSent: codeSent,
+      codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+    ); // All the callbacks are above
   }
 
-  Future<void> signInWithPhoneNumber(
-      String verificationId, String smsCode) async {
-    print("smscode");
-    print(smsCode);
-    FirebaseAuth auth = FirebaseAuth.instance;
+  void submitOTP(String smsCode) {
+    _phoneAuthCredential = PhoneAuthProvider.credential(
+        verificationId: this._verificationId, smsCode: smsCode);
+    _signInWithCredential();
+  }
+
+  void _signInWithCredential() async {
     try {
-      AuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verificationId, smsCode: smsCode);
-      UserCredential userCredential =  await auth.signInWithCredential(credential);
-      print("Phone number automatically verified and user signed in: ${auth.currentUser.uid}");
-      print("Phone number automatically verified and user signed in: $userCredential");
-    } catch (e) {}
+      await auth.signInWithCredential(_phoneAuthCredential);
+      await FirebaseAuth.instance.signInWithCredential(_phoneAuthCredential);
+    } catch (e) {
+      print('catch');
+      showSnackBar(context, e.message);
+    }
+    isValidOtp = auth?.currentUser?.uid != null;
+    notifyListeners();
   }
 }
