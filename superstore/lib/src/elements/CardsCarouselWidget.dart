@@ -46,28 +46,25 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
                   ]),
                 ),
               )
-            : Container(
-                height: 300,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: widget.marketsList.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
+            : ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: widget.marketsList.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
 
-                        if( widget.marketsList.elementAt(index).shopType=='1' ||  widget.marketsList.elementAt(index).shopType=='3'){
+                    if( widget.marketsList.elementAt(index).shopType=='1' ||  widget.marketsList.elementAt(index).shopType=='3'){
 
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  GroceryStoreWidget(shopDetails: widget.marketsList.elementAt(index),shopTypeID: int.parse( widget.marketsList.elementAt(index).shopType),focusId: int.parse(widget.marketsList.elementAt(index).focusType),)));
-                        }else  {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  GroceryStoreWidget(shopDetails: widget.marketsList.elementAt(index),shopTypeID: int.parse( widget.marketsList.elementAt(index).shopType),focusId: int.parse(widget.marketsList.elementAt(index).focusType),)));
+                    }else  {
 
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  StoreViewDetails(shopDetails: widget.marketsList.elementAt(index), shopTypeID: int.parse(widget.marketsList.elementAt(index).shopType), focusId: int.parse(widget.marketsList.elementAt(index).focusType),)));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  StoreViewDetails(shopDetails: widget.marketsList.elementAt(index), shopTypeID: int.parse(widget.marketsList.elementAt(index).shopType), focusId: int.parse(widget.marketsList.elementAt(index).focusType),)));
 
-                        }
-                      },
-                      child: CardWidget(market: widget.marketsList.elementAt(index)),
-                    );
+                    }
                   },
-                ),
-              );
+                  child: CardWidget(market: widget.marketsList.elementAt(index)),
+                );
+              },
+            );
   }
 }

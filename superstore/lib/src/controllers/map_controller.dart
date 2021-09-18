@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,8 @@ class MapController extends ControllerMVC {
   Address currentAddress;
   Set<Polyline> polylines = new Set();
   List<Circle> allCircles = <Circle>[];
+  double offsetX;
+  double offsetY;
 
   // Set<Circle> circles = Set.from([Circle(
   //   circleId: CircleId(id),
@@ -28,6 +31,7 @@ class MapController extends ControllerMVC {
 
   // MapsUtil mapsUtil = new MapsUtil();
   Completer<GoogleMapController> mapController = Completer();
+  GoogleMapController googleMapController;
 
   void listenForNearMarkets(Address myLocation, Address areaLocation) async {
     final Stream<Vendor> stream =
@@ -38,11 +42,22 @@ class MapController extends ControllerMVC {
 
       Helper.getMarker(
         _market.toMap(),
-        onItemSelected: (selectedItem) {
+        onItemSelected: (selectedItem) async {
+          Vendor item = Vendor.fromJSON(selectedItem);
+          var screenCoordinate = await googleMapController.getScreenCoordinate(
+              LatLng(double.tryParse(item.latitude),
+                  double.tryParse(item.longitude)));
+          var devicePixelRatio = Platform.isAndroid
+              ? MediaQuery.of(context).devicePixelRatio
+              : 1.0;
+          offsetY =
+              (screenCoordinate?.y?.toDouble() ?? 0) / devicePixelRatio - 150;
+          offsetX =
+              (screenCoordinate?.x?.toDouble() ?? 0) / devicePixelRatio - 150;
+
           topMarkets.clear();
           allCircles.clear();
           setState(() {
-            Vendor item = Vendor.fromJSON(selectedItem);
             topMarkets.add(item);
             allCircles.add(Circle(
               strokeWidth: 1,

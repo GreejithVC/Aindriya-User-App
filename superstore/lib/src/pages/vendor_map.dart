@@ -75,35 +75,45 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
         ],
       ),
       body: Stack(
-//        fit: StackFit.expand,
-        alignment: AlignmentDirectional.bottomStart,
+        fit: StackFit.expand,
         children: <Widget>[
-          _con.cameraPosition == null
-              ? CircularLoadingWidget(height: 0)
-              : GoogleMap(
-                  onTap: (LatLng latLng) {
-                    setState(() {
-                      _con.topMarkets.clear();
-                    });
-                  },
-                  mapToolbarEnabled: false,
-                  mapType: MapType.hybrid,
-                  initialCameraPosition: _con.cameraPosition,
-                  markers: Set.from(_con.allMarkers),
-                  onMapCreated: (GoogleMapController controller) {
-                    _con.mapController.complete(controller);
-                  },
-                  onCameraMove: (CameraPosition cameraPosition) {
-                    _con.cameraPosition = cameraPosition;
-                  },
-                  onCameraIdle: () {
-                    _con.getMarketsOfArea();
-                  },
-                  polylines: _con.polylines,
-                  circles: Set.from(_con.allCircles),
-                ),
-          CardsCarouselWidget(
-            marketsList: _con.topMarkets,
+          Positioned.fill(
+            child: _con.cameraPosition == null
+                ? CircularLoadingWidget(height: 0)
+                : GoogleMap(
+                    onTap: (LatLng latLng) {
+                      setState(() {
+                        _con.topMarkets.clear();
+                      });
+                    },
+                    mapToolbarEnabled: false,
+                    mapType: MapType.hybrid,
+                    initialCameraPosition: _con.cameraPosition,
+                    markers: Set.from(_con.allMarkers),
+                    onMapCreated: (GoogleMapController controller) {
+                      _con.googleMapController = controller;
+                      _con.mapController.complete(controller);
+                    },
+                    onCameraMove: (CameraPosition cameraPosition) {
+                      _con.cameraPosition = cameraPosition;
+                    },
+                    onCameraIdle: () {
+                      _con.getMarketsOfArea();
+                    },
+                    polylines: _con.polylines,
+                    circles: Set.from(_con.allCircles),
+                  ),
+          ),
+          Positioned(
+            top: _con.offsetY,
+            left: _con.offsetY,
+            child: Container(
+              width: 150,
+              height: 150,
+              child: CardsCarouselWidget(
+                marketsList: _con.topMarkets,
+              ),
+            ),
           ),
         ],
       ),
