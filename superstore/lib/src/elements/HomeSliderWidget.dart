@@ -24,57 +24,73 @@ class _HomeSliderWidgetState extends State<HomeSliderWidget> {
     return widget.slides == null || widget.slides.isEmpty
         ? HomeSliderLoaderWidget()
         : widget.slides == null || widget.slides.isEmpty
-        ? HomeSliderLoaderWidget()
-        : Stack(
-      alignment: _alignmentDirectional ?? Helper.getAlignmentDirectional('bottom_start'),
-      fit: StackFit.passthrough,
-      children: <Widget>[
-        CarouselSlider(
-          options: CarouselOptions(
-            autoPlay: true,
-            autoPlayInterval: Duration(seconds: 5),
-            height: 180,
-            viewportFraction: 1.0,
-            onPageChanged: (index, reason) {
-              setState(() {
-                _current = index;
-                _alignmentDirectional = Helper.getAlignmentDirectional('bottom_start');
-              });
-            },
-          ),
-          items: widget.slides.map((Slide slide) {
-            return Builder(
-              builder: (BuildContext context) {
-                return Container(
-                  margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                  height: 180,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), blurRadius: 15, offset: Offset(0, 2)),
-                    ],
-                  ),
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        child: Image.network(
-                          slide.image,
-                          fit: BoxFit.fill,
-                          height: 180,
-                          width: double.infinity,
-                          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                    : null,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      /**  Container(
+            ? HomeSliderLoaderWidget()
+            : Stack(
+                alignment: _alignmentDirectional ??
+                    Helper.getAlignmentDirectional('bottom_start'),
+                fit: StackFit.passthrough,
+                children: <Widget>[
+                  CarouselSlider(
+                    options: CarouselOptions(
+                      autoPlay: true,
+                      autoPlayInterval: Duration(seconds: 5),
+                      height: 170,
+                      viewportFraction: 1.0,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _current = index;
+                          _alignmentDirectional =
+                              Helper.getAlignmentDirectional('bottom_start');
+                        });
+                      },
+                    ),
+                    items: widget.slides.map((Slide slide) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                            margin: const EdgeInsets.only(top: 20,
+                                bottom: 10, left: 20, right: 20),
+                            height: 180,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Theme.of(context)
+                                        .focusColor
+                                        .withOpacity(0.15),
+                                    blurRadius: 15,
+                                    offset: Offset(0, 2)),
+                              ],
+                            ),
+                            child: Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  child: Image.network(
+                                    slide.image,
+                                    fit: BoxFit.fill,
+                                    height: 180,
+                                    width: double.infinity,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                /**  Container(
                           alignment: Helper.getAlignmentDirectional('bottom_start'),
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -121,35 +137,38 @@ class _HomeSliderWidgetState extends State<HomeSliderWidget> {
                           ),
                           ),
                           ), */
-                    ],
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
                   ),
-                );
-              },
-            );
-          }).toList(),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 22, horizontal: 42),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: widget.slides.map((Slide slide) {
-              return Container(
-                width: 20.0,
-                height: 3.0,
-                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(8),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 22, horizontal: 42),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: widget.slides.map((Slide slide) {
+                        return Container(
+                          width: 20.0,
+                          height: 3.0,
+                          margin: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 2.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                              color: _current == widget.slides.indexOf(slide)
+                                  ? Helper.of(context)
+                                      .getColorFromHex('#25d366')
+                                  : Helper.of(context)
+                                      .getColorFromHex('#25d366')
+                                      .withOpacity(0.3)),
+                        );
+                      }).toList(),
                     ),
-                    color: _current == widget.slides.indexOf(slide)
-                        ? Helper.of(context).getColorFromHex('#25d366')
-                        : Helper.of(context).getColorFromHex('#25d366').withOpacity(0.3)),
+                  ),
+                ],
               );
-            }).toList(),
-          ),
-        ),
-      ],
-    );
-
   }
 }
