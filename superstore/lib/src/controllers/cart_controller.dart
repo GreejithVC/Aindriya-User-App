@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
+import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/repository/settings_repository.dart';
 import 'package:toast/toast.dart';
 import '../models/timeslot.dart';
@@ -21,11 +22,12 @@ class CartController extends ControllerMVC {
   int cartCount = 0;
   List<Coupons> couponList = <Coupons>[];
   List<TimeSlot> timeSlot = <TimeSlot>[];
-
+  DeliveryOptionsModel deliveryOptionsModel;
 
   GlobalKey<ScaffoldState> scaffoldCheckout;
   bool couponStatus;
   OverlayEntry loader;
+
   CartController() {
     this.scaffoldCheckout = new GlobalKey<ScaffoldState>();
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -37,7 +39,25 @@ class CartController extends ControllerMVC {
     // settingRepo.initSettings();
 
     super.initState();
-    currentCheckout.value.delivery_fees = Helper.calculateDeliveryFees().toDouble();
+    currentCheckout.value.delivery_fees =
+        Helper.calculateDeliveryFees().toDouble();
+  }
+
+  Future<void> listenForDeliveryDetails(String userId) async {
+    print("listen for DeliveryDetails");
+    FirebaseFirestore.instance
+        .collection("vendorDeliveryDetails")
+        .doc(userId)
+        .get()
+        .then((value) {
+      if (value?.data() != null) {
+        print(value.data());
+        setState(() =>
+            deliveryOptionsModel = DeliveryOptionsModel.fromJSON(value.data()));
+      }
+    }).catchError((e) {
+      print(e);
+    }).whenComplete(() {});
   }
 
   listenForCartsCount() async {
@@ -45,20 +65,17 @@ class CartController extends ControllerMVC {
   }
 
   calculateAmount() {
-
     int totalprice = 0;
 
-    int addon =0;
+    int addon = 0;
 
     currentCart.value.forEach((element) {
       element.addon.forEach((addonElement) {
-        addon += int.parse(addonElement.price)* element.qty;
+        addon += int.parse(addonElement.price) * element.qty;
       });
-      totalprice += (int.parse(element.price) * element.qty)+ addon;
+      totalprice += (int.parse(element.price) * element.qty) + addon;
       //int totalstrickprice = 0;
       //totalstrickprice += int.parse(element.strike) * element.qty;
-
-
     });
     //int saveamount;
     //saveamount = totalstrickprice - totalprice;
@@ -78,7 +95,8 @@ class CartController extends ControllerMVC {
       }
     });
     if (removeState == true) {
-      currentCart.value.removeWhere((item) => item.id == id && item.variant  == variantId);
+      currentCart.value
+          .removeWhere((item) => item.id == id && item.variant == variantId);
     }
     currentCheckout.value.couponCode = '';
     currentCheckout.value.couponStatus = false;
@@ -96,7 +114,7 @@ class CartController extends ControllerMVC {
   showQty(id, variantID) {
     String qty;
     currentCart.value.forEach((element) {
-      if (element.id == id && element.variant==variantID) {
+      if (element.id == id && element.variant == variantID) {
         qty = element.qty.toString();
       }
     });
@@ -116,37 +134,35 @@ class CartController extends ControllerMVC {
     setCurrentCartItem();
   }
 
-
-
   grandSummary() {
     double saveamount = 0;
     double totalprice = 0;
     double totalsalesprice = 0;
-    double addon =0;
+    double addon = 0;
     currentCart.value.forEach((element) {
       totalprice += int.parse(element.price) * element.qty;
 
       totalsalesprice += int.parse(element.price) * element.qty;
       element.addon.forEach((addonElement) {
-        addon += int.parse(addonElement.price)* element.qty;
+        addon += int.parse(addonElement.price) * element.qty;
       });
-
     });
 
     saveamount = totalsalesprice - totalprice;
-    currentCheckout.value.sub_total = totalsalesprice +addon;
+    currentCheckout.value.sub_total = totalsalesprice + addon;
     currentCheckout.value.discount = saveamount;
     couponStatus = currentCheckout.value.couponStatus;
     if (currentCheckout.value.couponStatus == false) {
-      currentCheckout.value.grand_total = totalprice + addon+  currentCheckout.value.delivery_tips + currentCheckout.value.delivery_fees ;
+      currentCheckout.value.grand_total = totalprice +
+          addon +
+          currentCheckout.value.delivery_tips +
+          currentCheckout.value.delivery_fees;
     }
     // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
     currentCart.notifyListeners();
 
     return saveamount;
   }
-
-
 
   redirect() {
     if (currentCart.value.length == 0) {
@@ -174,11 +190,11 @@ class CartController extends ControllerMVC {
       currentCheckout.value.grand_total = totalprice - discountValue;
     } else {
       discountAmount = ((totalprice * discountValue) / 100);
-      currentCheckout.value.discount = currentCheckout.value.discount + discountAmount;
-      currentCheckout.value.grand_total = (totalprice - discountAmount) ;
-      showToast("Your Coupon is applied successfully", gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
-
-
+      currentCheckout.value.discount =
+          currentCheckout.value.discount + discountAmount;
+      currentCheckout.value.grand_total = (totalprice - discountAmount);
+      showToast("Your Coupon is applied successfully",
+          gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
     }
     currentCheckout.value.couponCode = code;
     currentCheckout.value.couponStatus = true;
@@ -196,20 +212,20 @@ class CartController extends ControllerMVC {
     currentCart.notifyListeners();
 
     setState(() => couponStatus = false);
-    showToast("Your Coupon is removed successfully", gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
-
-
+    showToast("Your Coupon is removed successfully",
+        gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
   }
 
-  clearCart(){
+  clearCart() {
     currentCart.value.clear();
     currentCheckout.value = new Checkout();
     setCurrentCartItem();
   }
 
   void gotopayment() {
-     currentCheckout.value.address.addressSelect = currentUser.value.selected_address;
-   currentCheckout.value.address.userId = currentUser.value.id;
+    currentCheckout.value.address.addressSelect =
+        currentUser.value.selected_address;
+    currentCheckout.value.address.userId = currentUser.value.id;
     currentCheckout.value.address.phone = currentUser.value.phone;
     currentCheckout.value.address.username = currentUser.value.name;
     currentCheckout.value.userId = currentUser.value.id;
@@ -218,50 +234,54 @@ class CartController extends ControllerMVC {
 
     currentCheckout.value.cart = currentCart.value;
     if (currentUser.value.selected_address == null) {
-      showToast("Please select your address", gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
-
+      showToast("Please select your address",
+          gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
     } else {
-      if(currentCheckout.value.deliverType==1) {
+      if (currentCheckout.value.deliverType == 1) {
         currentCheckout.value.deliveryTimeSlot = '';
-        if(currentCheckout.value.uploadImage=='no') {
+        if (currentCheckout.value.uploadImage == 'no') {
           Navigator.of(context).pushNamed('/Payment');
-        }else {
+        } else {
           bookOrder(currentCheckout.value);
         }
-      }else if (currentCheckout.value.deliveryTimeSlot == null || currentCheckout.value.deliveryTimeSlot == '') {
-        showToast("Please select your deliver time slot", gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
-
+      } else if (currentCheckout.value.deliveryTimeSlot == null ||
+          currentCheckout.value.deliveryTimeSlot == '') {
+        showToast("Please select your deliver time slot",
+            gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
       } else {
-
-
-          if(currentCheckout.value.uploadImage=='no') {
-            Navigator.of(context).pushNamed('/Payment');
-          } else {
-            bookOrder(currentCheckout.value);
-          }
+        if (currentCheckout.value.uploadImage == 'no') {
+          Navigator.of(context).pushNamed('/Payment');
+        } else {
+          bookOrder(currentCheckout.value);
+        }
       }
     }
   }
 
-
-
   void bookOrder(Checkout order) {
-    order.saleCode = '${DateTime.now().millisecondsSinceEpoch}${currentUser.value.id}';
-
-
-
+    order.saleCode =
+        '${DateTime.now().millisecondsSinceEpoch}${currentUser.value.id}';
 
     FirebaseFirestore.instance
         .collection('orderDetails')
         .doc(order.saleCode)
-        .set({'status': 'Placed', 'userId': currentUser.value.id, 'orderId': order.saleCode, 'shopId': order.shopId,'userName': currentUser.value.name,
-              'originLatitude': currentUser.value.latitude, 'originLongitude': currentUser.value.longitude, 'shopLatitude': double.tryParse(currentCheckout.value.shopLatitude),
-              'shopLongitude': double.tryParse(currentCheckout.value.shopLongitude),'shopName':currentCheckout.value.shopName}).catchError((e) {
+        .set({
+      'status': 'Placed',
+      'userId': currentUser.value.id,
+      'orderId': order.saleCode,
+      'shopId': order.shopId,
+      'userName': currentUser.value.name,
+      'originLatitude': currentUser.value.latitude,
+      'originLongitude': currentUser.value.longitude,
+      'shopLatitude': double.tryParse(currentCheckout.value.shopLatitude),
+      'shopLongitude': double.tryParse(currentCheckout.value.shopLongitude),
+      'shopName': currentCheckout.value.shopName
+    }).catchError((e) {
       print(e);
     });
     Overlay.of(context).insert(loader);
     bookOrderResp().then((value) {
-      if(order.uploadImage!='no') {
+      if (order.uploadImage != 'no') {
         sendImage(order.uploadImage, value);
       }
       Navigator.of(context).pushNamed('/Thankyou', arguments: value);
@@ -280,11 +300,10 @@ class CartController extends ControllerMVC {
   }
 
   void sendImage(File image, saleCode) async {
-
-
     final String _apiToken = 'api_token=${currentUser.value.apiToken}';
     // ignore: deprecated_member_use
-    final uri = Uri.parse("${GlobalConfiguration().getString('base_url')}Api/sendimage/${currentUser.value.id}/$saleCode?$_apiToken");
+    final uri = Uri.parse(
+        "${GlobalConfiguration().getString('base_url')}Api/sendimage/${currentUser.value.id}/$saleCode?$_apiToken");
     var request = http.MultipartRequest('POST', uri);
     var pic = await http.MultipartFile.fromPath('image', image.path);
     request.files.add(pic);
@@ -295,8 +314,6 @@ class CartController extends ControllerMVC {
     } else {}
   }
 
-
-
   getTimeSlot() async {
     final Stream<TimeSlot> stream = await getTimeSlotData();
     stream.listen((TimeSlot _timeSlot) {
@@ -306,23 +323,27 @@ class CartController extends ControllerMVC {
     }, onDone: () {});
   }
 
-  calculateDistance(lat1, lon1,lat2,lon2){
-   double distance = Helper.distance(lat1, lon1, double.parse(lat2), double.parse(lon2), 'K');
-   print(distance);
-   print(setting.value.coverDistance);
-   if(distance<setting.value.coverDistance){
-     currentCheckout.value.deliveryPossible = true;
-   } else {
-     currentCheckout.value.deliveryPossible = false;
-   }
-   print(currentCheckout.value.deliveryPossible);
-   // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-   currentCart.notifyListeners();
+  calculateDistance(lat1, lon1, lat2, lon2) {
+    double distance = Helper.distance(
+        lat1, lon1, double.parse(lat2), double.parse(lon2), 'K');
+    print(distance);
+    print(setting.value.coverDistance);
+    if (distance < setting.value.coverDistance) {
+      currentCheckout.value.deliveryPossible = true;
+    } else {
+      currentCheckout.value.deliveryPossible = false;
+    }
+    print(currentCheckout.value.deliveryPossible);
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    currentCart.notifyListeners();
   }
-
 
   void showToast(String msg, {int duration, int gravity}) {
-    Toast.show(msg, context, duration: duration, gravity: gravity ,);
+    Toast.show(
+      msg,
+      context,
+      duration: duration,
+      gravity: gravity,
+    );
   }
-
 }

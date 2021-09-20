@@ -479,7 +479,7 @@ class _CheckoutListWidgetState extends State<CheckoutListWidget> {
 
 
             setting.value.instanceDelivery?Padding(
-              padding: EdgeInsets.only(top: 7, right: 10,left:5),
+              padding: EdgeInsets.only(top: 7, right: 0,left:5),
               child:Wrap(
                 children: [
                   Div(
@@ -500,7 +500,7 @@ class _CheckoutListWidgetState extends State<CheckoutListWidget> {
                               }),
                           Padding(
                             padding: EdgeInsets.only(top:12),
-                            child: Text('Instant Delivery',style: Theme.of(context).textTheme.bodyText1,),
+                            child: Text('Instant Delivery/TakeAway',style: Theme.of(context).textTheme.bodyText1,),
                           ),
 
                         ],
@@ -543,7 +543,7 @@ class _CheckoutListWidgetState extends State<CheckoutListWidget> {
                 children: <Widget>[
                   Icon(Icons.lock_clock, size: 20.0, color: Colors.grey[700]),
                   SizedBox(width: 10),
-                  Text('Delivery Time Slot', style: Theme.of(context).textTheme.subtitle2),
+                  Text('Delivery/Take Away Time Slot', style: Theme.of(context).textTheme.subtitle2),
                   Spacer(),
                   InkWell(
                     onTap: showSlot,
@@ -562,11 +562,11 @@ class _CheckoutListWidgetState extends State<CheckoutListWidget> {
                 padding: EdgeInsets.only(left: 18, right: 18, top: 10),
                 child: currentCheckout.value.deliveryTimeSlot != null
                     ? Text(
-                  'Your Order delivery time slot is ${currentCheckout.value.deliveryTimeSlot}',
+                  'Your selected time slot is ${currentCheckout.value.deliveryTimeSlot}',
                   style: Theme.of(context).textTheme.subtitle2,
                 )
                     : Text(
-                  'Please select your delivery slot',
+                  'Please select your time slot',
                   style: Theme.of(context).textTheme.subtitle2.merge(TextStyle(color: Colors.red)),
                 )):Container(),
             SizedBox(height: 20),

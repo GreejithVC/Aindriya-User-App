@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/packagetype.dart';
 import 'package:superstore/src/repository/user_repository.dart';
 import '../models/category.dart';
@@ -14,6 +15,7 @@ class VendorController extends ControllerMVC {
   List<Category> categories = <Category>[];
   List<RestaurantProduct> vendorResProductList = <RestaurantProduct>[];
   PackageTypeModel subScribedPackage;
+  DeliveryOptionsModel deliveryOptionsModel;
   VendorController();
 
 
@@ -113,5 +115,22 @@ class VendorController extends ControllerMVC {
 
 }
 
+
+  Future<void> listenForDeliveryDetails(String userId) async {
+    print("listen for DeliveryDetails");
+    FirebaseFirestore.instance
+        .collection("vendorDeliveryDetails")
+        .doc(userId)
+        .get()
+        .then((value) {
+      if (value?.data() != null) {
+        print(value.data());
+        setState(() => deliveryOptionsModel =
+            DeliveryOptionsModel.fromJSON(value.data()));
+      }
+    }).catchError((e) {
+      print(e);
+    }).whenComplete(() {});
+  }
 
 }

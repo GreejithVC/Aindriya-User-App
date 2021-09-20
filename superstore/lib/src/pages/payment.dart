@@ -51,6 +51,9 @@ class _PaymentPageState extends StateMVC<PaymentPage> {
     currentCheckout.value.payment.discount      = currentCheckout.value.discount;
     currentCheckout.value.payment.grand_total   = currentCheckout.value.grand_total;
     print(currentCheckout.value.toMap());
+    _con?.listenForDeliveryDetails( currentCheckout.value.shopId);
+    print("print shop id");
+    print( currentCheckout.value.shopId);
 
     for(int i=0; i<=6; i++){
       paymentSelect[i] = false;
@@ -437,56 +440,113 @@ class _PaymentPageState extends StateMVC<PaymentPage> {
                               ),
                             ),
                           ):Container(),
-                          Container(
-                            padding: EdgeInsets.only(left:20,right:20,bottom:10),
-                            child:InkWell(
-                              onTap: (){
-                                setSelectedRadio(1);
-                                selectPayment(5,'COD');
-                              },
-                              child: Container(
-                                  padding: EdgeInsets.only(top: 10, left: 10, right: 10,bottom:10),
-                                  decoration: BoxDecoration(
-                                      color:Theme.of(context).primaryColor,
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black12.withOpacity(0.1),
-                                          blurRadius: 1.5,
-                                          spreadRadius: 1.5,
-                                        ),
-                                      ]),
-                                  child:Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width:50,height:50,
-                                        child: Image(image:AssetImage('assets/img/cod.png'),
-                                        ),
-                                      ),
-                                      SizedBox(width:20),
-                                      Expanded(
-                                        child: Container(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text('COD',style: Theme.of(context).textTheme.headline1),
-
-                                            ],
+                          Visibility( visible: _con?.deliveryOptionsModel?.availableCOD == true,
+                            child: Container(
+                              padding: EdgeInsets.only(left:20,right:20,bottom:10),
+                              child:InkWell(
+                                onTap: (){
+                                  setSelectedRadio(1);
+                                  selectPayment(5,'COD');
+                                },
+                                child: Container(
+                                    padding: EdgeInsets.only(top: 10, left: 10, right: 10,bottom:10),
+                                    decoration: BoxDecoration(
+                                        color:Theme.of(context).primaryColor,
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black12.withOpacity(0.1),
+                                            blurRadius: 1.5,
+                                            spreadRadius: 1.5,
+                                          ),
+                                        ]),
+                                    child:Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width:50,height:50,
+                                          child: Image(image:AssetImage('assets/img/cod.png'),
                                           ),
                                         ),
-                                      ),
-                                      paymentSelect[5]==true?Align(
-                                        child: Container(
-                                            padding: EdgeInsets.only(left:10),
-                                            child: IconButton(
-                                              onPressed: (){},
-                                              icon:Icon(Icons.check_circle,color:Colors.green),
-                                            )
+                                        SizedBox(width:20),
+                                        Expanded(
+                                          child: Container(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text('COD',style: Theme.of(context).textTheme.headline1),
+
+                                              ],
+                                            ),
+                                          ),
                                         ),
-                                      ):Container()
-                                    ],
-                                  )
+                                        paymentSelect[5]==true?Align(
+                                          child: Container(
+                                              padding: EdgeInsets.only(left:10),
+                                              child: IconButton(
+                                                onPressed: (){},
+                                                icon:Icon(Icons.check_circle,color:Colors.green),
+                                              )
+                                          ),
+                                        ):Container()
+                                      ],
+                                    )
+                                ),
+                              ),
+                            ),
+                          ),
+                          Visibility(visible: _con?.deliveryOptionsModel?.availableTakeAway == true,
+                            child: Container(
+                              padding: EdgeInsets.only(left:20,right:20,bottom:10),
+                              child:InkWell(
+                                onTap: (){
+                                  setSelectedRadio(1);
+                                  selectPayment(6,'TakeAway');
+                                },
+                                child: Container(
+                                    padding: EdgeInsets.only(top: 10, left: 10, right: 10,bottom:10),
+                                    decoration: BoxDecoration(
+                                        color:Theme.of(context).primaryColor,
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black12.withOpacity(0.1),
+                                            blurRadius: 1.5,
+                                            spreadRadius: 1.5,
+                                          ),
+                                        ]),
+                                    child:Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width:50,height:50,
+                                          child: Image(image:AssetImage('assets/img/cod.png'),
+                                          ),
+                                        ),
+                                        SizedBox(width:20),
+                                        Expanded(
+                                          child: Container(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text('TakeAway',style: Theme.of(context).textTheme.headline1),
+
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        paymentSelect[6]==true?Align(
+                                          child: Container(
+                                              padding: EdgeInsets.only(left:10),
+                                              child: IconButton(
+                                                onPressed: (){},
+                                                icon:Icon(Icons.check_circle,color:Colors.green),
+                                              )
+                                          ),
+                                        ):Container()
+                                      ],
+                                    )
+                                ),
                               ),
                             ),
                           ),

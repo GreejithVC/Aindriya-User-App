@@ -31,6 +31,8 @@ class OrderList {
   OrderList();
 
   OrderList.fromJSON(Map<String, dynamic> jsonMap) {
+    print(jsonMap['payment_type'] != null ? jsonMap['payment_type'] : null);
+    print("dddddddddddddddddd");
     try {
       userid = jsonMap['userid'].toString();
       sale_code = jsonMap['sale_code'] != null ? jsonMap['sale_code'] : null;

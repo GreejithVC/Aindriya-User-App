@@ -39,7 +39,9 @@ class Payment {
     }
   }
 
-  Map toMap() {
+    Map toMap() {
+    print(paymentType);
+    print("payment type hhhhhhhhhhhhhh");
     var map = new Map<String, dynamic>();
     map["id"] = id;
     map["status"] = status;
