@@ -480,60 +480,112 @@ class _CheckoutListWidgetState extends State<CheckoutListWidget> {
 
             setting.value.instanceDelivery?Padding(
               padding: EdgeInsets.only(top: 7, right: 0,left:5),
-              child:Wrap(
+              child:Row(
                 children: [
-                  Div(
-                      colS:6,
-                      colM:6,
-                      colL:6,
-                      child:Wrap(
-                        alignment: WrapAlignment.start,
-                        crossAxisAlignment: WrapCrossAlignment.start,
-                        children: [
-                          Radio(
-                              value: 1,
-                              groupValue: selectedRadio,
-                              activeColor: Colors.blue,
-                              onChanged: (val) {
+                  Row(children: [
+                Wrap(
+                          alignment: WrapAlignment.start,
+                          crossAxisAlignment: WrapCrossAlignment.start,
+                          children: [
+                            Radio(
+                                value: 1,
+                                groupValue: selectedRadio,
+                                activeColor: Colors.blue,
+                                onChanged: (val) {
 
-                                setDeliveryType(val);
-                              }),
-                          Padding(
-                            padding: EdgeInsets.only(top:12),
-                            child: Text('Instant Delivery/TakeAway',style: Theme.of(context).textTheme.bodyText1,),
-                          ),
+                                  setDeliveryType(val);
+                                }),
+                            Padding(
+                              padding: EdgeInsets.only(top:12),
+                              child: Text('Instant Delivery/TakeAway',style: Theme.of(context).textTheme.bodyText1,),
+                            ),
 
-                        ],
-                      )
-                  ),
-                  Div(
-                      colS:6,
-                      colM:6,
-                      colL:6,
-                      child:Wrap(
-                        alignment: WrapAlignment.start,
-                        crossAxisAlignment: WrapCrossAlignment.start,
-                        children: [
-                          Radio(
-                              value: 2,
-                              groupValue: selectedRadio,
-                              activeColor: Colors.blue,
-                              onChanged: (val) {
+                          ],),
+                //         )
+                  ],),
+                  Row(children: [
+                    Wrap(
+                                alignment: WrapAlignment.start,
+                                crossAxisAlignment: WrapCrossAlignment.start,
+                                children: [
+                                  Radio(
+                                      value: 2,
+                                      groupValue: selectedRadio,
+                                      activeColor: Colors.blue,
+                                      onChanged: (val) {
 
-                               setDeliveryType(val);
-                              }),
-                          Padding(
-                            padding: EdgeInsets.only(top:12),
-                            child: Text('Select time slot',style: Theme.of(context).textTheme.bodyText1,),
-                          ),
+                                       setDeliveryType(val);
+                                      }),
+                                  Padding(
+                                    padding: EdgeInsets.only(top:12),
+                                    child: Text('Select time slot',style: Theme.of(context).textTheme.bodyText1,),
+                                  ),
 
-                        ],
-                      )
-                  ),
+                                ],
+                              ),
+
+
+                  ],),
 
 
                 ],
-              ),
+              )
+              // child:Wrap(
+              //   children: [
+              //     Div(
+              //         colS:6,
+              //         colM:6,
+              //         colL:6,
+              //         child:
+              //         Wrap(
+              //           alignment: WrapAlignment.start,
+              //           crossAxisAlignment: WrapCrossAlignment.start,
+              //           children: [
+              //             Radio(
+              //                 value: 1,
+              //                 groupValue: selectedRadio,
+              //                 activeColor: Colors.blue,
+              //                 onChanged: (val) {
+              //
+              //                   setDeliveryType(val);
+              //                 }),
+              //             Padding(
+              //               padding: EdgeInsets.only(top:12),
+              //               child: Text('Instant Delivery/TakeAway',style: Theme.of(context).textTheme.bodyText1,),
+              //             ),
+              //
+              //           ],
+              //         )
+              //     ),
+              //     Div(
+              //         colS:6,
+              //         colM:6,
+              //         colL:6,
+              //         child:
+              //         Wrap(
+              //           alignment: WrapAlignment.start,
+              //           crossAxisAlignment: WrapCrossAlignment.start,
+              //           children: [
+              //             Radio(
+              //                 value: 2,
+              //                 groupValue: selectedRadio,
+              //                 activeColor: Colors.blue,
+              //                 onChanged: (val) {
+              //
+              //                  setDeliveryType(val);
+              //                 }),
+              //             Padding(
+              //               padding: EdgeInsets.only(top:12),
+              //               child: Text('Select time slot',style: Theme.of(context).textTheme.bodyText1,),
+              //             ),
+              //
+              //           ],
+              //         )
+              //     ),
+              //
+              //
+              //   ],
+              // ),
             ):Container(),
 
 
