@@ -132,10 +132,10 @@ class MapController extends ControllerMVC {
     final GoogleMapController controller = await mapController.future;
 
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-      target: LatLng(currentUser.value.latitude, currentUser.value.longitude),
-      zoom: 14.4746,
-    )));
-  }
+  target: LatLng(currentUser.value.latitude, currentUser.value.longitude),
+  zoom: 14.4746,
+  )));
+}
 
   void getMarketsOfArea() async {
     setState(() {

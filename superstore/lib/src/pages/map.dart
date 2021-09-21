@@ -45,6 +45,10 @@ class _MapWidgetState extends State<MapWidget>
     target: LatLng(currentUser.value.latitude, currentUser.value.longitude),
     zoom: 17.5,
   );
+  var _initialCameraPosition2 = CameraPosition(
+    target: LatLng(currentUser.value.latitude, currentUser.value.longitude),
+    zoom: 17.5,
+  );
 
   GoogleMapController _googleMapController;
   Marker _origin;
@@ -92,6 +96,7 @@ class _MapWidgetState extends State<MapWidget>
   }
 
   getTrackDetails() {
+    print("getTrackDetails");
     FirebaseFirestore.instance
         .collection("orderDetails")
         .where("orderId", isEqualTo: widget.orderId)
@@ -101,7 +106,32 @@ class _MapWidgetState extends State<MapWidget>
         if (result.data()["status"] == 'Completed') {
           // Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
 
-        } else if (result.data()["paymentType"] == 'TakeAway') {
+        } else if (result.data()["paymentType"] == "TakeAway") {
+          print("paymentType");
+          print(result.data()["paymentType"]);
+          print("shopLongitude");
+          print( result.data()["shopLongitude"]);
+          print("shopLongitude");
+          print( result.data()["shopLongitude"]);
+
+
+
+          print(LatLng(result.data()["shopLatitude"], result.data()["shopLongitude"]));
+          print("location bbbbbbbbbbbbbb");
+          _googleMapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+            target: LatLng(result.data()["shopLatitude"], result.data()["shopLongitude"]),
+            zoom: 14.4746,
+          )));
+
+          // LatLng _driver = LatLng(
+          //     result.data()["originLatitude"], result.data()["originLatitude"]);
+          // LatLng _destination = LatLng(result.data()["shopLongitude"],
+          //     result.data()["shopLatitude"]);
+          // latlng.add(_driver);
+          // latlng.add(_destination);
+          // _addMarker(_driver);
+          // _addMarker(_destination);
+
           LatLng _destination = LatLng(
               result.data()["shopLatitude"], result.data()["originLongitude"]);
           latlng.add(_destination);
