@@ -149,11 +149,13 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
               ),
             ];
           },
-          body: (DateFormat("dd/mm/yyyy")
-                              ?.parse(_con.subScribedPackage?.expiryDate) ??
-                          DateTime.now())
-                      .isBefore(DateTime.now()) ==
-                  true
+          body: ((DateFormat("dd/mm/yyyy")
+                                  ?.parse(_con.subScribedPackage?.expiryDate) ??
+                              DateTime.now())
+                          .isBefore(DateTime.now()) ==
+                      true) ||
+                  (_con.deliveryOptionsModel?.availableCOD != true &&
+                      _con.deliveryOptionsModel?.availableTakeAway != true)
               ? Center(child: Text("Sorry this shop is currently closed"))
               : SingleChildScrollView(
                   padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),

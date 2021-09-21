@@ -169,11 +169,13 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
               ),
             ];
           },
-          body: (DateFormat("dd/mm/yyyy")
-                              ?.parse(_con.subScribedPackage?.expiryDate) ??
-                          DateTime.now())
-                      .isBefore(DateTime.now()) ==
-                  true
+          body: ((DateFormat("dd/mm/yyyy")
+                                  ?.parse(_con.subScribedPackage?.expiryDate) ??
+                              DateTime.now())
+                          .isBefore(DateTime.now()) ==
+                      true) ||
+                  (_con.deliveryOptionsModel?.availableCOD != true &&
+                      _con.deliveryOptionsModel?.availableTakeAway != true)
               ? Center(child: Text("Sorry this shop is currently closed"))
               : (_con.vendorResProductList.isEmpty
                   ? RectangleLoaderWidget()

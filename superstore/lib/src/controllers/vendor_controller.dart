@@ -135,12 +135,16 @@ class VendorController extends ControllerMVC {
         .then((value) {
       if (value?.data() != null) {
         print(value.data());
-        setState(() => deliveryOptionsModel =
-            DeliveryOptionsModel.fromJSON(value.data()));
+        setState(() {
+          deliveryOptionsModel = DeliveryOptionsModel.fromJSON(value.data());
+          if (deliveryOptionsModel?.availableCOD != true &&
+              deliveryOptionsModel?.availableTakeAway != true) {
+            storeLiveStatus(false, userId);
+          }
+        });
       }
     }).catchError((e) {
       print(e);
     }).whenComplete(() {});
   }
-
 }
