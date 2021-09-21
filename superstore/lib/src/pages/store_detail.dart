@@ -1,5 +1,6 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:superstore/src/controllers/fav_shop_controller.dart';
 import 'package:superstore/src/elements/SearchWidgetRe.dart';
 import 'package:superstore/src/models/packagetype.dart';
@@ -168,29 +169,35 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
               ),
             ];
           },
-          body: _con.vendorResProductList.isEmpty
-              ? RectangleLoaderWidget()
-              : TabBarView(
-                  children: List.generate(
-                    _con.vendorResProductList.length,
-                    (index) {
-                      RestaurantProduct _productDetails =
-                          _con.vendorResProductList.elementAt(index);
-                      return ProductBox1Widget(
-                        productData: _productDetails.productdetails,
-                        shopId: widget.shopDetails.shopId,
-                        shopName: widget.shopDetails.shopName,
-                        subtitle: widget.shopDetails.subtitle,
-                        km: widget.shopDetails.distance,
-                        shopTypeID: widget.shopTypeID,
-                        latitude: widget.shopDetails.latitude,
-                        longitude: widget.shopDetails.longitude,
-                        callback: this.callback,
-                        focusId: widget.focusId,
-                      );
-                    },
-                  ),
-                ),
+          body: (DateFormat("dd/mm/yyyy")
+                              ?.parse(_con.subScribedPackage?.expiryDate) ??
+                          DateTime.now())
+                      .isBefore(DateTime.now()) ==
+                  true
+              ? Center(child: Text("Sorry this shop is currently closed"))
+              : (_con.vendorResProductList.isEmpty
+                  ? RectangleLoaderWidget()
+                  : TabBarView(
+                      children: List.generate(
+                        _con.vendorResProductList.length,
+                        (index) {
+                          RestaurantProduct _productDetails =
+                              _con.vendorResProductList.elementAt(index);
+                          return ProductBox1Widget(
+                            productData: _productDetails.productdetails,
+                            shopId: widget.shopDetails.shopId,
+                            shopName: widget.shopDetails.shopName,
+                            subtitle: widget.shopDetails.subtitle,
+                            km: widget.shopDetails.distance,
+                            shopTypeID: widget.shopTypeID,
+                            latitude: widget.shopDetails.latitude,
+                            longitude: widget.shopDetails.longitude,
+                            callback: this.callback,
+                            focusId: widget.focusId,
+                          );
+                        },
+                      ),
+                    )),
         ),
       ),
     );

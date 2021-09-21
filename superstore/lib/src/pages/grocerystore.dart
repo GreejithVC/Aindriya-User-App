@@ -107,9 +107,9 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => UploadPrescription(
-                          shopTypeID: widget.shopTypeID,
-                          shopDetails: widget.shopDetails,
-                          focusId: widget.focusId,
+                            shopTypeID: widget.shopTypeID,
+                            shopDetails: widget.shopDetails,
+                            focusId: widget.focusId,
                           )));
                 })
             : Container(),
@@ -149,28 +149,34 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
               ),
             ];
           },
-          body: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                SizedBox(height: 10),
-                TopCategoriesWidget(
-                  focusId: widget.focusId,
-                  categoryData: _con.categories,
-                  shopId: widget.shopDetails.shopId,
-                  shopName: widget.shopDetails.shopName,
-                  subtitle: widget.shopDetails.subtitle,
-                  km: widget.shopDetails.distance,
-                  shopTypeID: widget.shopTypeID,
-                  latitude: widget.shopDetails.latitude,
-                  longitude: widget.shopDetails.longitude,
+          body: (DateFormat("dd/mm/yyyy")
+                              ?.parse(_con.subScribedPackage?.expiryDate) ??
+                          DateTime.now())
+                      .isBefore(DateTime.now()) ==
+                  true
+              ? Center(child: Text("Sorry this shop is currently closed"))
+              : SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      SizedBox(height: 10),
+                      TopCategoriesWidget(
+                        focusId: widget.focusId,
+                        categoryData: _con.categories,
+                        shopId: widget.shopDetails.shopId,
+                        shopName: widget.shopDetails.shopName,
+                        subtitle: widget.shopDetails.subtitle,
+                        km: widget.shopDetails.distance,
+                        shopTypeID: widget.shopTypeID,
+                        latitude: widget.shopDetails.latitude,
+                        longitude: widget.shopDetails.longitude,
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
         ),
       ),
     );
