@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../repository/user_repository.dart';
 import '../controllers/splash_screen_controller.dart';
@@ -14,6 +17,7 @@ class SplashScreen extends StatefulWidget {
 class SplashScreenState extends StateMVC<SplashScreen> {
   SplashScreenController _con;
   bool firstLoad = false;
+
   SplashScreenState() : super(SplashScreenController()) {
     _con = controller;
   }
@@ -21,7 +25,10 @@ class SplashScreenState extends StateMVC<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    loadData();
+    Timer(const Duration(seconds: 3), () {
+      loadData();
+    });
+
   }
 
   void loadData() {
@@ -33,25 +40,25 @@ class SplashScreenState extends StateMVC<SplashScreen> {
       });
       if (progress == 100) {
         try {
-               print('loader');
+          print('loader');
 
-          if(currentUser.value.auth!=false && currentUser.value.auth!= null){
-            if(currentUser.value.latitude!=0.0 && currentUser.value.longitude!=0.0) {
-              if(firstLoad==false) {
-                setState(() { firstLoad=true; });
-              Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
+          if (currentUser.value.auth != false &&
+              currentUser.value.auth != null) {
+            if (currentUser.value.latitude != 0.0 &&
+                currentUser.value.longitude != 0.0) {
+              if (firstLoad == false) {
+                setState(() {
+                  firstLoad = true;
+                });
+                Navigator.of(context)
+                    .pushReplacementNamed('/Pages', arguments: 2);
               }
-            }else{
+            } else {
               Navigator.of(context).pushReplacementNamed('/location');
             }
-          }else {
+          } else {
             Navigator.of(context).pushReplacementNamed('/introscreen');
-
-
           }
-
-
-
         } catch (e) {}
       }
     });
@@ -68,14 +75,36 @@ class SplashScreenState extends StateMVC<SplashScreen> {
               ),
               child: Column(
                 children: <Widget>[
-                  Expanded(
-                    child: FlareActor(
-                      "assets/img/splash.flr",
-                      alignment: Alignment.center,
-                      fit: BoxFit.cover,
-                      animation: "bottomanimi",
-                    ),
+                  SizedBox(height: 200),
+                  Image.asset(
+                    'assets/img/logo.png',
+                    width: 150,
+                    fit: BoxFit.cover,
                   ),
+                  SizedBox(height: 50),
+                  SpinKitCircle(
+                    color: Colors.blue,
+                    // type: SpinKitWaveType.start,
+                    size: 50.0,
+                  ),
+
+                  // SpinKitWave(
+                  //   itemBuilder: (BuildContext context, int index) {
+                  //     return DecoratedBox(
+                  //       decoration: BoxDecoration(
+                  //         color: index.isEven ? Colors.white : Colors.green,
+                  //       ),
+                  //     );
+                  //   },
+                  // )
+                  // Expanded(
+                  //   child: FlareActor(
+                  //     "assets/img/splash.flr",
+                  //     alignment: Alignment.center,
+                  //     fit: BoxFit.cover,
+                  //     animation: "bottomanimi",
+                  //   ),
+                  // ),
                 ],
               ),
             )
@@ -96,7 +125,8 @@ class SplashScreenState extends StateMVC<SplashScreen> {
                     ),
                     SizedBox(height: 50),
                     CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).hintColor),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).hintColor),
                     ),
                   ],
                 ),
