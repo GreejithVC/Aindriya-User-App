@@ -169,9 +169,10 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
               ),
             ];
           },
-          body: ((DateFormat("dd/mm/yyyy")
-                                  ?.parse(_con.subScribedPackage?.expiryDate) ??
-                              DateTime.now())
+          body: ((_con.subScribedPackage?.expiryDate?.isNotEmpty == true
+                              ? DateFormat("dd/mm/yyyy")
+                                  ?.parse(_con.subScribedPackage?.expiryDate)
+                              : DateTime.now())
                           .isBefore(DateTime.now()) ==
                       true) ||
                   (_con.deliveryOptionsModel?.availableCOD != true &&

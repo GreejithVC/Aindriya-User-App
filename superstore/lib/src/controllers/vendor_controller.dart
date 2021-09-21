@@ -31,9 +31,10 @@ class VendorController extends ControllerMVC {
         print(value.data());
         setState(() {
           subScribedPackage = PackageTypeModel.fromJSON(value.data(), userId);
-          DateTime expiryDate =
-              DateFormat("dd/mm/yyyy")?.parse(subScribedPackage?.expiryDate) ??
-                  DateTime.now();
+          DateTime expiryDate = subScribedPackage?.expiryDate?.isNotEmpty ==
+                  true
+              ? DateFormat("dd/mm/yyyy")?.parse(subScribedPackage?.expiryDate)
+              : DateTime.now();
           final bool isExpired = expiryDate.isBefore(DateTime.now());
           print(isExpired);
           if (isExpired == true) {

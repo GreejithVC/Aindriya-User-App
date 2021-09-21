@@ -149,9 +149,10 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
               ),
             ];
           },
-          body: ((DateFormat("dd/mm/yyyy")
-                                  ?.parse(_con.subScribedPackage?.expiryDate) ??
-                              DateTime.now())
+          body: ((_con.subScribedPackage?.expiryDate?.isNotEmpty == true
+                              ? DateFormat("dd/mm/yyyy")
+                                  ?.parse(_con.subScribedPackage?.expiryDate)
+                              : DateTime.now())
                           .isBefore(DateTime.now()) ==
                       true) ||
                   (_con.deliveryOptionsModel?.availableCOD != true &&
@@ -484,8 +485,9 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
     print(expiryDateString);
     print(DateTime.now());
     print("expiry ,,,,,,,,,,,,,,,,,");
-    DateTime expiryDate =
-        DateFormat("dd/mm/yyyy")?.parse(expiryDateString) ?? DateTime.now();
+    DateTime expiryDate = expiryDateString?.isNotEmpty == true
+        ? DateFormat("dd/mm/yyyy")?.parse(expiryDateString)
+        : DateTime.now();
     final bool isExpired = expiryDate.isBefore(DateTime.now());
     print(isExpired);
     return isExpired ? "Closed" : "Opened";
