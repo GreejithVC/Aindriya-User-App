@@ -66,7 +66,7 @@ class SplashScreenState extends StateMVC<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       key: _con.scaffoldKey,
       body: 1 == 1
           ? Container(
@@ -82,8 +82,8 @@ class SplashScreenState extends StateMVC<SplashScreen> {
                     fit: BoxFit.cover,
                   ),
                   SizedBox(height: 50),
-                  SpinKitCircle(
-                    color: Colors.blue,
+                  SpinKitThreeBounce(
+                    color: const Color(0xff1169BF),
                     // type: SpinKitWaveType.start,
                     size: 50.0,
                   ),
