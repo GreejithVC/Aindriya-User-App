@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/packagetype.dart';
@@ -28,8 +29,17 @@ class VendorController extends ControllerMVC {
         .then((value) {
       if (value?.data() != null) {
         print(value.data());
-        setState(() => subScribedPackage =
-            PackageTypeModel.fromJSON(value.data(), userId));
+        setState(() {
+          subScribedPackage = PackageTypeModel.fromJSON(value.data(), userId);
+          DateTime expiryDate =
+              DateFormat("dd/mm/yyyy")?.parse(subScribedPackage?.expiryDate) ??
+                  DateTime.now();
+          final bool isExpired = expiryDate.isBefore(DateTime.now());
+          print(isExpired);
+          if (isExpired == true) {
+            storeLiveStatus(false, userId);
+          }
+        });
       }
     }).catchError((e) {
       print(e);
@@ -125,12 +135,16 @@ class VendorController extends ControllerMVC {
         .then((value) {
       if (value?.data() != null) {
         print(value.data());
-        setState(() => deliveryOptionsModel =
-            DeliveryOptionsModel.fromJSON(value.data()));
+        setState(() {
+          deliveryOptionsModel = DeliveryOptionsModel.fromJSON(value.data());
+          if (deliveryOptionsModel?.availableCOD != true &&
+              deliveryOptionsModel?.availableTakeAway != true) {
+            storeLiveStatus(false, userId);
+          }
+        });
       }
     }).catchError((e) {
       print(e);
     }).whenComplete(() {});
   }
-
 }

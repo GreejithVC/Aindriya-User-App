@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import '../models/restaurant_product.dart';
 import '../models/vendor.dart';
@@ -29,6 +31,27 @@ Future<Stream<Vendor>> getVendorList(int shopType, int focusId) async {
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
     return new Stream.value(new Vendor.fromJSON({}));
+  }
+}
+
+Future<bool>  storeLiveStatus(status, id) async {
+  Uri uri = Helper.getUri('Api_vendor/dashboard/live_status/${id}/$status');
+  Map<String, dynamic> _queryParams = {};
+
+  _queryParams['api_token'] = currentUser.value.apiToken;
+  uri = uri.replace(queryParameters: _queryParams);
+  final client = new http.Client();
+  final response = await client.post(
+    uri,
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    body: json.encode(''),
+  );
+
+
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    return false;
   }
 }
 
