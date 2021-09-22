@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:superstore/src/components/chat_detail_page_appbar.dart';
 import 'package:superstore/src/controllers/fav_shop_controller.dart';
 import 'package:superstore/src/elements/EmptyOrdersWidget.dart';
 import 'package:superstore/src/elements/ShopListBoxWidget.dart';
 import 'package:superstore/src/models/vendor.dart';
-import 'package:superstore/src/pages/Widget/customAppBar.dart';
+import 'package:superstore/src/pages/pages.dart';
 
 class FavShops extends StatefulWidget {
   @override
@@ -28,9 +27,24 @@ class _FavShopsState extends StateMVC<FavShops> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: "Favourite Shops",
+      appBar: AppBar(
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      backgroundColor: Theme.of(context).primaryColorDark,
+      leading:  IconButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => PagesWidget()));
+        },
+        icon: Icon(Icons.arrow_back_ios),
+        color: Theme.of(context).backgroundColor,
       ),
+      title: Text(
+        "Favourite Shops",
+        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+      ),
+      centerTitle: true,
+    ),
       body: _con.favShopList.isEmpty
           ? EmptyOrdersWidget()
           : ListView.separated(

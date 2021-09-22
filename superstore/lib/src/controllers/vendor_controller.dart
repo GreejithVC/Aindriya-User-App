@@ -128,6 +128,12 @@ class VendorController extends ControllerMVC {
 
 
   Future<void> listenForDeliveryDetails(String userId) async {
+    print("expiry ////subScribedPackage?.expiryDate at controller");
+    print(subScribedPackage?.expiryDate);
+    print("expiry ////.deliveryOptionsModel?.availableCOD");
+    print(deliveryOptionsModel?.availableCOD);
+    print("expiry ////deliveryOptionsModel?.availableTakeAway");
+    print(deliveryOptionsModel?.availableTakeAway);
     print("listen for DeliveryDetails");
     FirebaseFirestore.instance
         .collection("vendorDeliveryDetails")

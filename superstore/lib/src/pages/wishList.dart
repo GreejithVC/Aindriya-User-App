@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:superstore/src/components/chat_detail_page_appbar.dart';
 import 'package:superstore/src/controllers/fav_product_controller.dart';
 import 'package:superstore/src/elements/CardsCarouselLoaderWidget.dart';
-import 'package:superstore/src/elements/NoShopFoundWidget.dart';
-import 'package:superstore/src/helpers/helper.dart';
 import 'package:superstore/src/models/favouriteProduct.dart';
-import 'package:superstore/src/models/product_details2.dart';
-import 'package:superstore/src/pages/Widget/customAppBar.dart';
+import 'package:superstore/src/pages/pages.dart';
 
 class WishList extends StatefulWidget {
   @override
@@ -31,9 +27,27 @@ class _WishListState extends StateMVC<WishList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: "WishList",
+      appBar: AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).primaryColorDark,
+        leading:  IconButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => PagesWidget()));
+          },
+          icon: Icon(Icons.arrow_back_ios),
+          color: Theme.of(context).backgroundColor,
+        ),
+        title: Text(
+          "WishList",
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+        ),
+        centerTitle: true,
       ),
+      // CustomAppBar(
+      //   title: "WishList",
+      // ),
       body:
           // _con.favProductList.isEmpty
           //     ? EmptyOrdersWidget()

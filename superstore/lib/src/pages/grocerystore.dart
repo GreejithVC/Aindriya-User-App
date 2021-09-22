@@ -60,6 +60,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
     controller1.addListener(onScroll);
     _con.listenForCategories(widget.shopDetails.shopId);
     _con.listenForPackageSubscribed(widget.shopDetails.shopId);
+    _con.listenForDeliveryDetails(widget.shopDetails.shopId);
 
     //   _tabController = TabController(vsync: this, length: );
   }
@@ -96,6 +97,12 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
 
   @override
   Widget build(BuildContext context) {
+    print("expiry ////subScribedPackage?.expiryDate");
+    print(_con?.subScribedPackage?.expiryDate);
+    print("expiry ////.deliveryOptionsModel?.availableCOD");
+    print(_con.deliveryOptionsModel?.availableCOD);
+    print("expiry ////deliveryOptionsModel?.availableTakeAway");
+    print(_con.deliveryOptionsModel?.availableTakeAway);
     return DefaultTabController(
       length: _con.vendorResProductList.length,
       child: Scaffold(

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:superstore/src/components/chat.dart';
+import 'package:superstore/src/pages/pages.dart';
 
 
 import '../repository/user_repository.dart';
@@ -36,7 +37,8 @@ class _ChatPageState extends State<ChatPage> {
                   IconButton(
                     icon: Icon(Icons.arrow_back_ios),
                     color: Colors.white,
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () =>  Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PagesWidget())),
                   ),
                   SizedBox(width: 30.0),
                   Text('Chat',

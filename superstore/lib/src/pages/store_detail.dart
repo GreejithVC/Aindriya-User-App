@@ -58,6 +58,7 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
     controller1.addListener(onScroll);
     _con.listenForRestaurantProduct(int.parse(widget.shopDetails.shopId));
     _con.listenForPackageSubscribed(widget.shopDetails.shopId);
+    _con.listenForDeliveryDetails(widget.shopDetails.shopId);
     //   _tabController = TabController(vsync: this, length: );
   }
 
@@ -118,8 +119,14 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
         body: NestedScrollView(
           controller: controller1,
           headerSliverBuilder: (BuildContext context, bool isScrolled) {
-            print("expiry /////gggggggggggggg");
+
+            print("expiry ////subScribedPackage?.expiryDate");
             print(_con?.subScribedPackage?.expiryDate);
+            print("expiry ////.deliveryOptionsModel?.availableCOD");
+            print(_con.deliveryOptionsModel?.availableCOD);
+            print("expiry ////deliveryOptionsModel?.availableTakeAway");
+            print(_con.deliveryOptionsModel?.availableTakeAway);
+
             return [
               TransitionAppBar(
                 extent: 250,
@@ -169,7 +176,10 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
               ),
             ];
           },
-          body: ((_con.subScribedPackage?.expiryDate?.isNotEmpty == true
+
+          body: (
+
+              (_con.subScribedPackage?.expiryDate?.isNotEmpty == true
                               ? DateFormat("dd/mm/yyyy")
                                   ?.parse(_con.subScribedPackage?.expiryDate)
                               : DateTime.now())
