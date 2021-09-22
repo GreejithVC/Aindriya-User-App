@@ -399,7 +399,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                               style: Theme.of(context).textTheme.headline6),
                           Expanded(
                             child: Text(
-                                "  (${shopDetails?.openTime ?? ""} - ${shopDetails?.openTime ?? ""})",
+                                "  (${shopDetails?.openTime ?? ""} - ${shopDetails?.closeTime ?? ""})",
                                 style: Theme.of(context).textTheme.subtitle2),
                           ),
                           Wrap(
@@ -452,7 +452,12 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                                 SizedBox(width: 10),
                                 Column(
                                   children: [
-                                    Text(subscribedPackage?.expiryDate ?? "",
+                                    Text( subscribedPackage
+                                        ?.expiryDate?.isNotEmpty ==
+                                        true
+                                        ? getStatus(
+                                        subscribedPackage?.expiryDate)
+                                        : "",
                                         style: Theme.of(context)
                                             .textTheme
                                             .subtitle2),
@@ -504,6 +509,18 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
         ),
       ],
     );
+  }
+  String getStatus(String expiryDateString) {
+    print(expiryDateString);
+    print(DateTime.now());
+    print("expiry ,,,,,,,,,,,,,,,,,");
+    DateTime expiryDate = expiryDateString?.isNotEmpty == true
+        ? DateFormat("dd/mm/yyyy")?.parse(expiryDateString)
+        : DateTime.now();
+    final bool isExpired = expiryDate.isBefore(DateTime.now());
+    print(isExpired);
+    return isExpired ? "Closed" : "Opened";
+
   }
 
   @override

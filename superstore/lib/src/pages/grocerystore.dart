@@ -367,7 +367,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                               style: Theme.of(context).textTheme.headline6),
                           Expanded(
                             child: Text(
-                                "  (${shopDetails?.openTime ?? ""} - ${shopDetails?.openTime ?? ""})",
+                                "  (${shopDetails?.openTime ?? ""} - ${shopDetails?.closeTime ?? ""})",
                                 style: Theme.of(context).textTheme.subtitle2),
                           ),
                           Wrap(
@@ -491,6 +491,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
     final bool isExpired = expiryDate.isBefore(DateTime.now());
     print(isExpired);
     return isExpired ? "Closed" : "Opened";
+
   }
 
   @override
