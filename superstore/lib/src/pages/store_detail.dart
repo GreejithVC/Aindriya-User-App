@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:superstore/src/controllers/fav_shop_controller.dart';
 import 'package:superstore/src/elements/SearchWidgetRe.dart';
+import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/packagetype.dart';
 import '../elements/RectangleLoaderWidget.dart';
 import '../helpers/helper.dart';
@@ -119,7 +120,6 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
         body: NestedScrollView(
           controller: controller1,
           headerSliverBuilder: (BuildContext context, bool isScrolled) {
-
             print("expiry ////subScribedPackage?.expiryDate");
             print(_con?.subScribedPackage?.expiryDate);
             print("expiry ////.deliveryOptionsModel?.availableCOD");
@@ -138,6 +138,7 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
                 callback: this.callback,
                 itemDetails: _con.vendorResProductList,
                 subscribedPackage: _con.subScribedPackage,
+                deliveryOptionsModel: _con.deliveryOptionsModel,
                 avatar: Container(
                   height: 50,
                   width: 50,
@@ -176,10 +177,7 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
               ),
             ];
           },
-
-          body: (
-
-              (_con.subScribedPackage?.expiryDate?.isNotEmpty == true
+          body: ((_con.subScribedPackage?.expiryDate?.isNotEmpty == true
                               ? DateFormat("dd/mm/yyyy")
                                   ?.parse(_con.subScribedPackage?.expiryDate)
                               : DateTime.now())
@@ -230,6 +228,7 @@ class TransitionAppBar extends StatelessWidget {
   final Function callback;
   final List<RestaurantProduct> itemDetails;
   final PackageTypeModel subscribedPackage;
+  final DeliveryOptionsModel deliveryOptionsModel;
 
   TransitionAppBar(
       {this.avatar,
@@ -244,6 +243,7 @@ class TransitionAppBar extends StatelessWidget {
       this.itemDetails,
       this.callback,
       this.subscribedPackage,
+      this.deliveryOptionsModel,
       Key key})
       : super(key: key);
 
@@ -260,6 +260,7 @@ class TransitionAppBar extends StatelessWidget {
           shopTitle: shopTitle,
           shopDetails: shopDetails,
           subscribedPackage: subscribedPackage,
+          deliveryOptionsModel: deliveryOptionsModel,
           itemDetails: itemDetails,
           callback: callback,
           focusId: focusId,
@@ -292,6 +293,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
   final int focusId;
   final List<RestaurantProduct> itemDetails;
   final PackageTypeModel subscribedPackage;
+  final DeliveryOptionsModel deliveryOptionsModel;
 
   _TransitionAppBarDelegate({
     this.avatar,
@@ -307,6 +309,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
     this.focusId,
     this.callback,
     this.subscribedPackage,
+    this.deliveryOptionsModel,
     @required ScrollController scrollController,
   })  : assert(avatar != null),
         assert(extent == null || extent >= 200),
@@ -390,7 +393,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
             child: AnimatedContainer(
               color: Colors.transparent,
               duration: Duration(seconds: 0),
-              height: height,
+              height: 160,
               width: double.infinity,
               child: Card(
                 color: Theme.of(context).primaryColor,
@@ -462,12 +465,15 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                                 SizedBox(width: 10),
                                 Column(
                                   children: [
-                                    Text( subscribedPackage
-                                        ?.expiryDate?.isNotEmpty ==
-                                        true
-                                        ? getStatus(
-                                        subscribedPackage?.expiryDate)
-                                        : "",
+                                    Text(
+                                        getStatus(
+                                            expiryDateString:
+                                                subscribedPackage?.expiryDate,
+                                            availableCOD: deliveryOptionsModel
+                                                ?.availableCOD,
+                                            availableTakeaway:
+                                                deliveryOptionsModel
+                                                    ?.availableTakeAway),
                                         style: Theme.of(context)
                                             .textTheme
                                             .subtitle2),
@@ -497,6 +503,80 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                           ],
                         ),
                       ),
+                      Row(
+                        children: [
+                          // Container(
+                          //   // foregroundDecoration: BoxDecoration(
+                          //   // color:deliveryOptionsModel?.availableCOD == true ? Colors.transparent :Colors.grey,
+                          //   // backgroundBlendMode: BlendMode.saturation,
+                          // ),
+                          //   // color: deliveryOptionsModel?.availableCOD == true ? Colors.transparent :Colors.grey.withOpacity(0.1),
+                          //   child: Row(
+                          //     children: [
+                          //       Image.asset('assets/img/cod.png',scale: 20,),
+                          //       Text('COD',style: Theme.of(context).textTheme.bodyText1,),
+                          //     ],
+                          //   ),
+                          // ),
+                          // SizedBox(width: 20,),
+                          // Container(color: deliveryOptionsModel?.availableTakeAway == true ? Colors.transparent :Colors.grey.withOpacity(0.5),
+                          //   child: Row(
+                          //     children: [
+                          //       Image.asset('assets/img/takeaway.png',scale: 22,),
+                          //       Text('TakeAway',style: Theme.of(context).textTheme.bodyText1,),
+                          //
+                          //     ],
+                          //   ),
+                          // )
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 8),
+                            // child: deliveryOptionsModel?.availableCOD == true ? Icon(Icons.radio_button_checked,color: Colors.blue,):Icon(Icons.radio_button_off,color: Colors.black,),
+                            child: deliveryOptionsModel?.availableCOD == true
+                                ? Image.asset(
+                                    'assets/img/cod.png',
+                                    scale: 20,
+                                  )
+                                : Image.asset(
+                                    'assets/img/cod.png',
+                                    scale: 20,
+                                    color: Colors.grey.withOpacity(0.2),
+                                  ),
+                          ),
+                          Text(
+                            'COD',
+                            style: TextStyle(
+                              color: deliveryOptionsModel?.availableCOD == true
+                                  ? Colors.black
+                                  : Colors.grey.withOpacity(0.4),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 55,
+                          ),
+
+                          // deliveryOptionsModel?.availableTakeAway == true ? Icon(Icons.radio_button_checked,color: Colors.blue,):Icon(Icons.radio_button_off,color: Colors.black,),
+                          deliveryOptionsModel?.availableTakeAway == true
+                              ? Image.asset(
+                                  'assets/img/takeaway.png',
+                                  scale: 22,
+                                )
+                              : Image.asset('assets/img/takeaway.png',
+                                  scale: 22,
+                                  color: Colors.grey.withOpacity(0.2)),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 20),
+                            child: Text(
+                              'TakeAway',
+                              style: TextStyle(
+                                  color:
+                                      deliveryOptionsModel?.availableTakeAway ==
+                                              true
+                                          ? Colors.black
+                                          : Colors.grey.withOpacity(0.4)),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -520,17 +600,20 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
       ],
     );
   }
-  String getStatus(String expiryDateString) {
+
+  String getStatus(
+      {String expiryDateString, bool availableCOD, bool availableTakeaway}) {
     print(expiryDateString);
     print(DateTime.now());
     print("expiry ,,,,,,,,,,,,,,,,,");
-    DateTime expiryDate = expiryDateString?.isNotEmpty == true
-        ? DateFormat("dd/mm/yyyy")?.parse(expiryDateString)
-        : DateTime.now();
-    final bool isExpired = expiryDate.isBefore(DateTime.now());
-    print(isExpired);
-    return isExpired ? "Closed" : "Opened";
-
+    return ((expiryDateString?.isNotEmpty == true
+                        ? DateFormat("dd/mm/yyyy")?.parse(expiryDateString)
+                        : DateTime.now())
+                    .isBefore(DateTime.now()) ==
+                true) ||
+            (availableCOD != true && availableTakeaway != true)
+        ? "Closed"
+        : "Open";
   }
 
   @override

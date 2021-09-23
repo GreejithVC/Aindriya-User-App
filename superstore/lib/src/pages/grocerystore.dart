@@ -438,12 +438,14 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                                 Column(
                                   children: [
                                     Text(
-                                        subscribedPackage
-                                                    ?.expiryDate?.isNotEmpty ==
-                                                true
-                                            ? getStatus(
-                                                subscribedPackage?.expiryDate)
-                                            : "",
+                                        getStatus(
+                                            expiryDateString:
+                                            subscribedPackage?.expiryDate,
+                                            availableCOD: deliveryOptionsModel
+                                                ?.availableCOD,
+                                            availableTakeaway:
+                                            deliveryOptionsModel
+                                                ?.availableTakeAway),
                                         style: Theme.of(context)
                                             .textTheme
                                             .subtitle2),
@@ -541,17 +543,19 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
     );
   }
 
-  String getStatus(String expiryDateString) {
+  String getStatus(
+      {String expiryDateString, bool availableCOD, bool availableTakeaway}) {
     print(expiryDateString);
     print(DateTime.now());
     print("expiry ,,,,,,,,,,,,,,,,,");
-    DateTime expiryDate = expiryDateString?.isNotEmpty == true
+    return ((expiryDateString?.isNotEmpty == true
         ? DateFormat("dd/mm/yyyy")?.parse(expiryDateString)
-        : DateTime.now();
-    final bool isExpired = expiryDate.isBefore(DateTime.now());
-    print(isExpired);
-    return isExpired ? "Closed" : "Opened";
-
+        : DateTime.now())
+        .isBefore(DateTime.now()) ==
+        true) ||
+        (availableCOD != true && availableTakeaway != true)
+        ? "Closed"
+        : "Open";
   }
 
   @override
