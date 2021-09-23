@@ -478,38 +478,13 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                       ),
                       Row(
                         children: [
-                          // Container(
-                          //   // foregroundDecoration: BoxDecoration(
-                          //   // color:deliveryOptionsModel?.availableCOD == true ? Colors.transparent :Colors.grey,
-                          //   // backgroundBlendMode: BlendMode.saturation,
-                          // ),
-                          //   // color: deliveryOptionsModel?.availableCOD == true ? Colors.transparent :Colors.grey.withOpacity(0.1),
-                          //   child: Row(
-                          //     children: [
-                          //       Image.asset('assets/img/cod.png',scale: 20,),
-                          //       Text('COD',style: Theme.of(context).textTheme.bodyText1,),
-                          //     ],
-                          //   ),
-                          // ),
-                          // SizedBox(width: 20,),
-                          // Container(color: deliveryOptionsModel?.availableTakeAway == true ? Colors.transparent :Colors.grey.withOpacity(0.5),
-                          //   child: Row(
-                          //     children: [
-                          //       Image.asset('assets/img/takeaway.png',scale: 22,),
-                          //       Text('TakeAway',style: Theme.of(context).textTheme.bodyText1,),
-                          //
-                          //     ],
-                          //   ),
-                          // )
                           Padding(
                             padding: const EdgeInsets.only(left: 20,right: 8),
-                            // child: deliveryOptionsModel?.availableCOD == true ? Icon(Icons.radio_button_checked,color: Colors.blue,):Icon(Icons.radio_button_off,color: Colors.black,),
                             child: deliveryOptionsModel?.availableCOD == true ? Image.asset('assets/img/cod.png',scale: 20,):Image.asset('assets/img/cod.png',scale: 20,color: Colors.grey.withOpacity(0.2),),
                           ),
                           Text('COD',style: TextStyle(color: deliveryOptionsModel?.availableCOD == true ? Colors.black :Colors.grey.withOpacity(0.4),),),
-          SizedBox(width: 55,),
+          SizedBox(width: 40,),
 
-                          // deliveryOptionsModel?.availableTakeAway == true ? Icon(Icons.radio_button_checked,color: Colors.blue,):Icon(Icons.radio_button_off,color: Colors.black,),
                           deliveryOptionsModel?.availableTakeAway == true ? Image.asset('assets/img/takeaway.png',scale: 22,):Image.asset('assets/img/takeaway.png',scale: 22,color:Colors. grey.withOpacity(0.2)),
                           Padding(
                             padding: const EdgeInsets.only(left: 8,right: 20),

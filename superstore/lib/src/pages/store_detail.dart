@@ -551,7 +551,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                             ),
                           ),
                           SizedBox(
-                            width: 55,
+                            width: 45,
                           ),
 
                           // deliveryOptionsModel?.availableTakeAway == true ? Icon(Icons.radio_button_checked,color: Colors.blue,):Icon(Icons.radio_button_off,color: Colors.black,),
