@@ -69,7 +69,7 @@ class MapController extends ControllerMVC {
               circleId: CircleId(item.shopId),
               center: LatLng(double.tryParse(item.latitude),
                   double.tryParse(item.longitude)),
-              radius: 3000,
+              radius: double.tryParse(item.deliveryRadius) ?? 3000,
             ));
           });
         },

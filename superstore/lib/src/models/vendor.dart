@@ -12,6 +12,7 @@ class Vendor {
   bool openStatus;
   String longitude;
   String latitude;
+  String deliveryRadius;
   String shopType;
   String focusType;
   String shopTypePreviewImage;
@@ -35,6 +36,7 @@ class Vendor {
       openStatus = jsonMap['openStatus'] ?? false;
       longitude = jsonMap['longitude'] ?? "";
       latitude = jsonMap['latitude'] ?? "";
+      deliveryRadius = jsonMap['delivery_radius'] ?? "";
       shopType = jsonMap['shopType'] ?? "";
       focusType = jsonMap['focusType'] ?? "";
       openTime = jsonMap['openTime'] ?? "";
@@ -51,6 +53,7 @@ class Vendor {
       openStatus = false;
       longitude = '';
       latitude = '';
+      deliveryRadius = '';
       focusType = '';
       shopType = '';
       openTime = '';
@@ -72,7 +75,7 @@ class Vendor {
     map["openStatus"] = openStatus;
     map["longitude"] = longitude;
     map["latitude"] = latitude;
-    map["latitude"] = latitude;
+    map["delivery_radius"] = deliveryRadius;
     map["focusType"] = focusType;
     map["shopType"] = shopType;
     map["openTime"] = openTime;
