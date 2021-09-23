@@ -69,7 +69,9 @@ class MapController extends ControllerMVC {
               circleId: CircleId(item.shopId),
               center: LatLng(double.tryParse(item.latitude),
                   double.tryParse(item.longitude)),
-              radius: double.tryParse(item.deliveryRadius) ?? 3000,
+              radius: item?.deliveryRadius?.isNotEmpty == true
+                  ? double.tryParse(item.deliveryRadius)
+                  : 3000,
             ));
           });
         },
@@ -132,10 +134,10 @@ class MapController extends ControllerMVC {
     final GoogleMapController controller = await mapController.future;
 
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-  target: LatLng(currentUser.value.latitude, currentUser.value.longitude),
-  zoom: 14.4746,
-  )));
-}
+      target: LatLng(currentUser.value.latitude, currentUser.value.longitude),
+      zoom: 14.4746,
+    )));
+  }
 
   void getMarketsOfArea() async {
     setState(() {
