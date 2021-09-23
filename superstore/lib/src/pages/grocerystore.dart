@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/packagetype.dart';
 import 'package:superstore/src/pages/store_detail.dart';
 import 'package:superstore/src/pages/upload_prescription.dart';
@@ -131,6 +132,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                 subOpacity: subOpacity,
                 shopTypeID: widget.shopTypeID,
                 subscribedPackage: _con.subScribedPackage,
+                deliveryOptionsModel: _con.deliveryOptionsModel,
                 avatar: Container(
                   height: 50,
                   width: 50,
@@ -201,6 +203,7 @@ class TransitionAppBar extends StatelessWidget {
   final double shopTitle;
   final Vendor shopDetails;
   final PackageTypeModel subscribedPackage;
+  final DeliveryOptionsModel deliveryOptionsModel;
   final double subOpacity;
   final int shopTypeID;
 
@@ -214,6 +217,7 @@ class TransitionAppBar extends StatelessWidget {
       this.shopTypeID,
       this.subOpacity,
       this.subscribedPackage,
+        this.deliveryOptionsModel,
       Key key})
       : super(key: key);
 
@@ -229,6 +233,7 @@ class TransitionAppBar extends StatelessWidget {
           shopTitle: shopTitle,
           shopDetails: shopDetails,
           subscribedPackage: subscribedPackage,
+          deliveryOptionsModel: deliveryOptionsModel,
           shopTypeID: shopTypeID,
           subOpacity: subOpacity,
           scrollController: null),
@@ -256,6 +261,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
   final PackageTypeModel subscribedPackage;
   final double subOpacity;
   final int shopTypeID;
+  final DeliveryOptionsModel deliveryOptionsModel;
 
   _TransitionAppBarDelegate({
     this.avatar,
@@ -268,10 +274,13 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
     this.subOpacity,
     this.shopTypeID,
     this.subscribedPackage,
+    this.deliveryOptionsModel,
     @required ScrollController scrollController,
   })  : assert(avatar != null),
         assert(extent == null || extent >= 200),
         assert(title != null);
+  int selectedRadio;
+
 
   @override
   Widget build(
@@ -355,7 +364,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
             child: AnimatedContainer(
               color: Colors.transparent,
               duration: Duration(seconds: 0),
-              height: height,
+              height: 160,
               width: double.infinity,
               child: Card(
                 color: Theme.of(context).primaryColor,
@@ -463,6 +472,50 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                             )
                           ],
                         ),
+
+                      ),
+                      Row(
+                        children: [
+                          // Container(
+                          //   // foregroundDecoration: BoxDecoration(
+                          //   // color:deliveryOptionsModel?.availableCOD == true ? Colors.transparent :Colors.grey,
+                          //   // backgroundBlendMode: BlendMode.saturation,
+                          // ),
+                          //   // color: deliveryOptionsModel?.availableCOD == true ? Colors.transparent :Colors.grey.withOpacity(0.1),
+                          //   child: Row(
+                          //     children: [
+                          //       Image.asset('assets/img/cod.png',scale: 20,),
+                          //       Text('COD',style: Theme.of(context).textTheme.bodyText1,),
+                          //     ],
+                          //   ),
+                          // ),
+                          // SizedBox(width: 20,),
+                          // Container(color: deliveryOptionsModel?.availableTakeAway == true ? Colors.transparent :Colors.grey.withOpacity(0.5),
+                          //   child: Row(
+                          //     children: [
+                          //       Image.asset('assets/img/takeaway.png',scale: 22,),
+                          //       Text('TakeAway',style: Theme.of(context).textTheme.bodyText1,),
+                          //
+                          //     ],
+                          //   ),
+                          // )
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20,right: 8),
+                            // child: deliveryOptionsModel?.availableCOD == true ? Icon(Icons.radio_button_checked,color: Colors.blue,):Icon(Icons.radio_button_off,color: Colors.black,),
+                            child: deliveryOptionsModel?.availableCOD == true ? Image.asset('assets/img/cod.png',scale: 20,):Image.asset('assets/img/cod.png',scale: 20,color: Colors.grey.withOpacity(0.2),),
+                          ),
+                          Text('COD',style: TextStyle(color: deliveryOptionsModel?.availableCOD == true ? Colors.black :Colors.grey.withOpacity(0.4),),),
+          SizedBox(width: 55,),
+
+                          // deliveryOptionsModel?.availableTakeAway == true ? Icon(Icons.radio_button_checked,color: Colors.blue,):Icon(Icons.radio_button_off,color: Colors.black,),
+                          deliveryOptionsModel?.availableTakeAway == true ? Image.asset('assets/img/takeaway.png',scale: 22,):Image.asset('assets/img/takeaway.png',scale: 22,color:Colors. grey.withOpacity(0.2)),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8,right: 20),
+                            child: Text('TakeAway',style: TextStyle(color: deliveryOptionsModel?.availableTakeAway == true ? Colors.black :Colors.grey.withOpacity(0.4)),),
+                          ),
+
+
+                        ],
                       ),
                     ],
                   ),

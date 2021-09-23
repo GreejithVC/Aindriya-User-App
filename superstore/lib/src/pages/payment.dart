@@ -520,7 +520,7 @@ class _PaymentPageState extends StateMVC<PaymentPage> {
                                       children: [
                                         Container(
                                           width:50,height:50,
-                                          child: Image(image:AssetImage('assets/img/cod.png'),
+                                          child: Image(image:AssetImage('assets/img/takeaway.png'),
                                           ),
                                         ),
                                         SizedBox(width:20),
