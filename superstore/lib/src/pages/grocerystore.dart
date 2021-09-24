@@ -483,9 +483,11 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                             child: deliveryOptionsModel?.availableCOD == true ? Image.asset('assets/img/cod.png',scale: 20,):Image.asset('assets/img/cod.png',scale: 20,color: Colors.grey.withOpacity(0.2),),
                           ),
                           Text('COD',style: TextStyle(color: deliveryOptionsModel?.availableCOD == true ? Colors.black :Colors.grey.withOpacity(0.4),),),
-          SizedBox(width: 40,),
 
-                          deliveryOptionsModel?.availableTakeAway == true ? Image.asset('assets/img/takeaway.png',scale: 22,):Image.asset('assets/img/takeaway.png',scale: 22,color:Colors. grey.withOpacity(0.2)),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30),
+                            child: deliveryOptionsModel?.availableTakeAway == true ? Image.asset('assets/img/takeaway.png',scale: 22,):Image.asset('assets/img/takeaway.png',scale: 22,color:Colors. grey.withOpacity(0.2)),
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8,right: 20),
                             child: Text('TakeAway',style: TextStyle(color: deliveryOptionsModel?.availableTakeAway == true ? Colors.black :Colors.grey.withOpacity(0.4)),),
