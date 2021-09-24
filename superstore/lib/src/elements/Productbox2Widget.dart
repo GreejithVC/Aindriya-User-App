@@ -137,7 +137,9 @@ class _ProductBox2WidgetState extends StateMVC<ProductBox2Widget> {
                                             productName:
                                                 widget.choice.product_name,
                                             price: _variantData.sale_price,
-                                            image: _variantData.image),
+                                            image: _variantData.image,
+                                        shopId: widget?.shopId
+                                        ),
                                       ),
                                     ]),
                                     SizedBox(height: 3),

@@ -1,10 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:superstore/src/models/favouriteProduct.dart';
+import 'package:superstore/src/repository/search_repository.dart';
 import 'package:superstore/src/repository/user_repository.dart';
 
 class FavProductController extends ControllerMVC {
   List<FavouriteProduct> favProductList = <FavouriteProduct>[];
+
+  void saveSearch(String search) {
+    setRecentSearch(search);
+    Navigator.of(context).pushNamed('/ProductList');
+  }
 
   addFavProduct(context, FavouriteProduct productDetails2) {
     print("addFavProduct///");

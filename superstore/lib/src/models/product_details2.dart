@@ -18,6 +18,8 @@ class ProductDetails2 {
   ProductDetails2();
 
   ProductDetails2.fromJSON(Map<String, dynamic> jsonMap) {
+    print(jsonMap);
+    print("dfffffffffffffffffffffffff");
     try {
       id = jsonMap['id'].toString();
       product_name = jsonMap['product_name'];

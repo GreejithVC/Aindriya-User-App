@@ -59,7 +59,7 @@ class RouteGenerator {
       case '/EmptyList':
         return MaterialPageRoute(builder: (_) => EmptyList());
       case '/ProductList':
-        return MaterialPageRoute(builder: (_) => ProductList(pageType: args.toString()));
+        return MaterialPageRoute(builder: (_) => ProductList(pageType: args?.toString()));
       case '/MainPage':
         return MaterialPageRoute(builder: (_) => MainPage());
       case '/OtpVerification':

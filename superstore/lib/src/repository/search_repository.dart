@@ -6,6 +6,7 @@ import '../helpers/custom_trace.dart';
 import '../models/auto_suggestion.dart';
 
 void setRecentSearch(search) async {
+  print(SharedPreferences.getInstance());
   if (search != null) {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('recent_search', search);

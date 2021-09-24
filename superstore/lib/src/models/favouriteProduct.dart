@@ -6,8 +6,9 @@ class FavouriteProduct {
   String productName;
   String price;
   String image;
+  String shopId;
 
-  FavouriteProduct({this.id, this.productName, this.price, this.image});
+  FavouriteProduct({this.id, this.productName, this.price, this.image,this.shopId});
 
   FavouriteProduct.fromJSON(Map<String, dynamic> jsonMap) {
     try {
@@ -15,11 +16,13 @@ class FavouriteProduct {
       productName = jsonMap['productName'];
       price = jsonMap['price'];
       image = jsonMap['image'];
+      shopId = jsonMap['shopId'];
     } catch (e) {
       id = '';
       productName = '';
       price = "";
       image = '';
+      shopId = '';
       print(e);
     }
   }
@@ -30,6 +33,7 @@ class FavouriteProduct {
     map["productName"] = productName;
     map["price"] = price;
     map["image"] = image;
+    map["shopId"] = shopId;
     return map;
   }
 }

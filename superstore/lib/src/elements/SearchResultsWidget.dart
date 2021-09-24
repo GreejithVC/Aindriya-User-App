@@ -44,6 +44,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
               padding: const EdgeInsets.all(20),
               child: TextField(
                 onSubmitted: (text) {
+                  print("search///////////////////");
                   _con.saveSearch(text);
                 },
                 onChanged: (e) {
@@ -99,7 +100,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                                   color: Theme.of(context).dividerColor,
                                 ))),
                                 child: ListTile(
-                                  leading: const Icon(Icons.search),
+                                  leading: const Icon(Icons.search,),
                                   title: Text(
                                     _suggestion.text,
                                     style: Theme.of(context).textTheme.subtitle2.merge(TextStyle(fontWeight: FontWeight.w600)),

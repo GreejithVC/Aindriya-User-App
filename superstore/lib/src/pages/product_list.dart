@@ -149,7 +149,7 @@ class _ProductListState extends StateMVC<ProductList> {
                 },
               ),
               title: Text(
-                currentSearch.value.shopName,
+                currentSearch?.value?.shopName ?? "",
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 style: Theme.of(context).textTheme.headline4.merge(TextStyle(
