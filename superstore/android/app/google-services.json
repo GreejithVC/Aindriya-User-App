@@ -80,6 +80,14 @@
           }
         },
         {
+          "client_id": "473854277139-gp84flg09pikpeu9v384mks6itrgqpqj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "userapp.albuysmart.com",
+            "certificate_hash": "5aa3d600ddef39c7c0198e3883c2f728722e49c3"
+          }
+        },
+        {
           "client_id": "473854277139-vq6vbmmmq970og2e1pg5bqd44p4iouf0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

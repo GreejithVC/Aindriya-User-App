@@ -192,6 +192,7 @@ class UserController extends ControllerMVC {
   }
 
   Future<void> submitPhoneNumber(String phoneNumber) async {
+    print("submitPhoneNumber");
     void verificationCompleted(PhoneAuthCredential phoneAuthCredential) {
       print('verificationCompleted');
       _phoneAuthCredential = phoneAuthCredential;
@@ -215,7 +216,7 @@ class UserController extends ControllerMVC {
 
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: "+91$phoneNumber",
-      timeout: Duration(minutes: 3),
+      timeout: Duration(minutes: 2),
       verificationCompleted: verificationCompleted,
       verificationFailed: verificationFailed,
       codeSent: codeSent,
