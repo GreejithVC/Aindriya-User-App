@@ -9,6 +9,7 @@ import 'CardWidget.dart';
 // ignore: must_be_immutable
 class CardsCarouselWidget extends StatefulWidget {
   List<Vendor> marketsList;
+
   CardsCarouselWidget({Key key, this.marketsList}) : super(key: key);
 
   @override
@@ -40,31 +41,54 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
                       offset: Offset(0, 3), // changes position of shadow
                     ),
                   ], color: Colors.pink),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                    Text('NO SHOP FOUND TO NEAR',
-                        style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)))
-                  ]),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text('NO SHOP FOUND TO NEAR',
+                            style: Theme.of(context).textTheme.subtitle1.merge(
+                                TextStyle(
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor)))
+                      ]),
                 ),
               )
             : ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.marketsList.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-
-                    if( widget.marketsList.elementAt(index).shopType=='1' ||  widget.marketsList.elementAt(index).shopType=='3'){
-
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  GroceryStoreWidget(shopDetails: widget.marketsList.elementAt(index),shopTypeID: int.parse( widget.marketsList.elementAt(index).shopType),focusId: int.parse(widget.marketsList.elementAt(index).focusType),)));
-                    }else  {
-
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  StoreViewDetails(shopDetails: widget.marketsList.elementAt(index), shopTypeID: int.parse(widget.marketsList.elementAt(index).shopType), focusId: int.parse(widget.marketsList.elementAt(index).focusType),)));
-
-                    }
-                  },
-                  child: CardWidget(market: widget.marketsList.elementAt(index)),
-                );
-              },
-            );
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.marketsList.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (widget.marketsList.elementAt(index).shopType == '1' ||
+                          widget.marketsList.elementAt(index).shopType == '3') {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => GroceryStoreWidget(
+                                  shopDetails:
+                                      widget.marketsList.elementAt(index),
+                                  shopTypeID: int.parse(widget.marketsList
+                                      .elementAt(index)
+                                      .shopType),
+                                  focusId: int.parse(widget.marketsList
+                                      .elementAt(index)
+                                      .focusType),
+                                )));
+                      } else {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => StoreViewDetails(
+                                  shopDetails:
+                                      widget.marketsList.elementAt(index),
+                                  shopTypeID: int.parse(widget.marketsList
+                                      .elementAt(index)
+                                      .shopType),
+                                  focusId: int.parse(widget.marketsList
+                                      .elementAt(index)
+                                      .focusType),
+                                )));
+                      }
+                    },
+                    child:
+                        CardWidget(market: widget.marketsList.elementAt(index)),
+                  );
+                },
+              );
   }
 }
