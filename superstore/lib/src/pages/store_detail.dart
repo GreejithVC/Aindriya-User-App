@@ -41,8 +41,8 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
   double itemsCount = 25;
 
   // ignore: non_constant_identifier_names
-  double AdBlockHeight = 130.0;
-  double itemHeight = 130.0;
+  double AdBlockHeight = 160.0;
+  double itemHeight = 160.0;
   double screenWidth = 0.0;
   double calculateSize = 0.0;
   double shopTitle = 10.0;
@@ -396,7 +396,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
             child: AnimatedContainer(
               color: Colors.transparent,
               duration: Duration(seconds: 0),
-              height: 160,
+              height: height,
               width: double.infinity,
               child: Card(
                 color: Theme.of(context).primaryColor,
