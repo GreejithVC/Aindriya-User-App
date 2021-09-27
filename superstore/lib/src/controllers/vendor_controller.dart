@@ -17,8 +17,8 @@ class VendorController extends ControllerMVC {
   List<RestaurantProduct> vendorResProductList = <RestaurantProduct>[];
   PackageTypeModel subScribedPackage;
   DeliveryOptionsModel deliveryOptionsModel;
-  VendorController();
 
+  VendorController();
 
   Future<void> listenForPackageSubscribed(String userId) async {
     print("listen for package subscribed");
@@ -31,11 +31,12 @@ class VendorController extends ControllerMVC {
         print(value.data());
         setState(() {
           subScribedPackage = PackageTypeModel.fromJSON(value.data(), userId);
-          DateTime expiryDate = subScribedPackage?.expiryDate?.isNotEmpty ==
-                  true
-              ? DateFormat("dd/mm/yyyy")?.parse(subScribedPackage?.expiryDate)
-              : DateTime.now();
-          final bool isExpired = expiryDate.isBefore(DateTime.now());
+          final bool isExpired =
+              subScribedPackage?.expiryDate?.isNotEmpty == true
+                  ? DateFormat("dd/MM/yyyy")
+                      ?.parse(subScribedPackage?.expiryDate)
+                      ?.isBefore(DateTime.now())
+                  : true;
           print(isExpired);
           if (isExpired == true) {
             storeLiveStatus(false, userId);
@@ -48,7 +49,6 @@ class VendorController extends ControllerMVC {
   }
 
   Future<void> listenForVendorList(int shopType, int focusId) async {
-
     final Stream<Vendor> stream = await getVendorList(shopType, focusId);
 
     stream.listen((Vendor _list) {
@@ -62,7 +62,6 @@ class VendorController extends ControllerMVC {
     }, onDone: () {});
   }
 
-
   Future<void> listenForCategories(shopId) async {
     final Stream<Category> stream = await getCategories(shopId);
     stream.listen((Category _category) {
@@ -72,10 +71,9 @@ class VendorController extends ControllerMVC {
     }, onDone: () {});
   }
 
-
-
   Future<void> listenForRestaurantProduct(int shopType) async {
-    final Stream<RestaurantProduct> stream = await get_restaurantProduct(shopType);
+    final Stream<RestaurantProduct> stream =
+        await get_restaurantProduct(shopType);
 
     stream.listen((RestaurantProduct _list) {
       setState(() => vendorResProductList.add(_list));
@@ -84,12 +82,10 @@ class VendorController extends ControllerMVC {
         print('list');
         print(element.category_name);
       });
-
     }, onError: (a) {
       print(a);
     }, onDone: () {});
   }
-
 
   sendChat(chatTxt, userId, shopId, shopMobile, shopName) {
     String chatRoom = '${DateTime.now().millisecondsSinceEpoch}$userId-$shopId';
@@ -123,9 +119,7 @@ class VendorController extends ControllerMVC {
     });
 
     return true;
-
-}
-
+  }
 
   Future<void> listenForDeliveryDetails(String userId) async {
     print("expiry ////subScribedPackage?.expiryDate at controller");

@@ -70,7 +70,7 @@ class MapController extends ControllerMVC {
               center: LatLng(double.tryParse(item.latitude),
                   double.tryParse(item.longitude)),
               radius: item?.deliveryRadius?.isNotEmpty == true
-                  ? double.tryParse(item.deliveryRadius)
+                  ? (double.tryParse(item.deliveryRadius)*1000)
                   : 3000,
             ));
           });

@@ -216,7 +216,7 @@ class UserController extends ControllerMVC {
 
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: "+91$phoneNumber",
-      timeout: Duration(minutes: 2),
+      timeout: Duration(seconds: 120),
       verificationCompleted: verificationCompleted,
       verificationFailed: verificationFailed,
       codeSent: codeSent,
@@ -233,7 +233,6 @@ class UserController extends ControllerMVC {
   void _signInWithCredential() async {
     try {
       await auth.signInWithCredential(_phoneAuthCredential);
-      await FirebaseAuth.instance.signInWithCredential(_phoneAuthCredential);
     } catch (e) {
       print('catch');
       showSnackBar(context, e.message);

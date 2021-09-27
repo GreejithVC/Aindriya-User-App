@@ -158,12 +158,11 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
               ),
             ];
           },
-          body: ((_con.subScribedPackage?.expiryDate?.isNotEmpty == true
-                              ? DateFormat("dd/mm/yyyy")
-                                  ?.parse(_con.subScribedPackage?.expiryDate)
-                              : DateTime.now())
-                          .isBefore(DateTime.now()) ==
-                      true) ||
+          body: (_con.subScribedPackage?.expiryDate?.isNotEmpty == true
+                      ? DateFormat("dd/MM/yyyy")
+                          ?.parse(_con.subScribedPackage?.expiryDate)
+                          ?.isBefore(DateTime.now())
+                      : true) ||
                   (_con.deliveryOptionsModel?.availableCOD != true &&
                       _con.deliveryOptionsModel?.availableTakeAway != true)
               ? Center(child: Text("Sorry this shop is currently closed"))
@@ -217,7 +216,7 @@ class TransitionAppBar extends StatelessWidget {
       this.shopTypeID,
       this.subOpacity,
       this.subscribedPackage,
-        this.deliveryOptionsModel,
+      this.deliveryOptionsModel,
       Key key})
       : super(key: key);
 
@@ -280,7 +279,6 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
         assert(extent == null || extent >= 200),
         assert(title != null);
   int selectedRadio;
-
 
   @override
   Widget build(
@@ -440,12 +438,12 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                                     Text(
                                         getStatus(
                                             expiryDateString:
-                                            subscribedPackage?.expiryDate,
+                                                subscribedPackage?.expiryDate,
                                             availableCOD: deliveryOptionsModel
                                                 ?.availableCOD,
                                             availableTakeaway:
-                                            deliveryOptionsModel
-                                                ?.availableTakeAway),
+                                                deliveryOptionsModel
+                                                    ?.availableTakeAway),
                                         style: Theme.of(context)
                                             .textTheme
                                             .subtitle2),
@@ -474,26 +472,54 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                             )
                           ],
                         ),
-
                       ),
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 20,right: 8),
-                            child: deliveryOptionsModel?.availableCOD == true ? Image.asset('assets/img/cod.png',scale: 20,):Image.asset('assets/img/cod.png',scale: 20,color: Colors.grey.withOpacity(0.2),),
+                            padding: const EdgeInsets.only(left: 20, right: 8),
+                            child: deliveryOptionsModel?.availableCOD == true
+                                ? Image.asset(
+                                    'assets/img/cod.png',
+                                    scale: 20,
+                                  )
+                                : Image.asset(
+                                    'assets/img/cod.png',
+                                    scale: 20,
+                                    color: Colors.grey.withOpacity(0.2),
+                                  ),
                           ),
-                          Text('COD',style: TextStyle(color: deliveryOptionsModel?.availableCOD == true ? Colors.black :Colors.grey.withOpacity(0.4),),),
-
+                          Text(
+                            'COD',
+                            style: TextStyle(
+                              color: deliveryOptionsModel?.availableCOD == true
+                                  ? Colors.black
+                                  : Colors.grey.withOpacity(0.4),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(left: 30),
-                            child: deliveryOptionsModel?.availableTakeAway == true ? Image.asset('assets/img/takeaway.png',scale: 22,):Image.asset('assets/img/takeaway.png',scale: 22,color:Colors. grey.withOpacity(0.2)),
+                            child:
+                                deliveryOptionsModel?.availableTakeAway == true
+                                    ? Image.asset(
+                                        'assets/img/takeaway.png',
+                                        scale: 22,
+                                      )
+                                    : Image.asset('assets/img/takeaway.png',
+                                        scale: 22,
+                                        color: Colors.grey.withOpacity(0.2)),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 8,right: 20),
-                            child: Text('TakeAway',style: TextStyle(color: deliveryOptionsModel?.availableTakeAway == true ? Colors.black :Colors.grey.withOpacity(0.4)),),
+                            padding: const EdgeInsets.only(left: 8, right: 20),
+                            child: Text(
+                              'TakeAway',
+                              style: TextStyle(
+                                  color:
+                                      deliveryOptionsModel?.availableTakeAway ==
+                                              true
+                                          ? Colors.black
+                                          : Colors.grey.withOpacity(0.4)),
+                            ),
                           ),
-
-
                         ],
                       ),
                     ],
@@ -522,15 +548,27 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   String getStatus(
       {String expiryDateString, bool availableCOD, bool availableTakeaway}) {
+    print("isexpire in grocery /////////////////////getStatus");
     print(expiryDateString);
+    print(availableCOD);
+    print(availableTakeaway);
+    print(expiryDateString);
+    print(DateFormat("dd/MM/yyyy")
+        ?.parse(expiryDateString));
+    print((expiryDateString?.isNotEmpty == true
+        ? DateFormat("dd/MM/yyyy")
+        ?.parse(expiryDateString)
+        ?.isBefore(DateTime.now())
+        : true));
+    print((availableCOD != true && availableTakeaway != true));
     print(DateTime.now());
     print("expiry ,,,,,,,,,,,,,,,,,");
-    return ((expiryDateString?.isNotEmpty == true
-        ? DateFormat("dd/mm/yyyy")?.parse(expiryDateString)
-        : DateTime.now())
-        .isBefore(DateTime.now()) ==
-        true) ||
-        (availableCOD != true && availableTakeaway != true)
+    return (expiryDateString?.isNotEmpty == true
+                ? DateFormat("dd/MM/yyyy")
+                    ?.parse(expiryDateString)
+                    ?.isBefore(DateTime.now())
+                : true) ||
+            (availableCOD != true && availableTakeaway != true)
         ? "Closed"
         : "Open";
   }

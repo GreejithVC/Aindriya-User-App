@@ -120,6 +120,10 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
         body: NestedScrollView(
           controller: controller1,
           headerSliverBuilder: (BuildContext context, bool isScrolled) {
+            print("isexpire in store");
+            print(_con?.subScribedPackage?.expiryDate);
+            print(_con.deliveryOptionsModel?.availableCOD);
+            print(_con.deliveryOptionsModel?.availableTakeAway);
             print("expiry ////subScribedPackage?.expiryDate");
             print(_con?.subScribedPackage?.expiryDate);
             print("expiry ////.deliveryOptionsModel?.availableCOD");
@@ -177,12 +181,11 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
               ),
             ];
           },
-          body: ((_con.subScribedPackage?.expiryDate?.isNotEmpty == true
-                              ? DateFormat("dd/mm/yyyy")
-                                  ?.parse(_con.subScribedPackage?.expiryDate)
-                              : DateTime.now())
-                          .isBefore(DateTime.now()) ==
-                      true) ||
+          body: (_con.subScribedPackage?.expiryDate?.isNotEmpty == true
+                              ? DateFormat("dd/MM/yyyy")
+                                  ?.parse(_con.subScribedPackage?.expiryDate)?.isBefore(DateTime.now())
+                              :true)
+                           ||
                   (_con.deliveryOptionsModel?.availableCOD != true &&
                       _con.deliveryOptionsModel?.availableTakeAway != true)
               ? Center(child: Text("Sorry this shop is currently closed"))
@@ -603,14 +606,25 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   String getStatus(
       {String expiryDateString, bool availableCOD, bool availableTakeaway}) {
+    print("isexpire in store /////////////////////getStatus");
     print(expiryDateString);
+    print(availableCOD);
+    print(availableTakeaway);
+    print(expiryDateString);
+    print(DateFormat("dd/MM/yyyy")
+        ?.parse(expiryDateString));
+    print((expiryDateString?.isNotEmpty == true
+        ? DateFormat("dd/MM/yyyy")
+        ?.parse(expiryDateString)
+        ?.isBefore(DateTime.now())
+        : true));
+    print((availableCOD != true && availableTakeaway != true));
     print(DateTime.now());
     print("expiry ,,,,,,,,,,,,,,,,,");
-    return ((expiryDateString?.isNotEmpty == true
-                        ? DateFormat("dd/mm/yyyy")?.parse(expiryDateString)
-                        : DateTime.now())
-                    .isBefore(DateTime.now()) ==
-                true) ||
+    return (expiryDateString?.isNotEmpty == true
+                        ? DateFormat("dd/MM/yyyy")?.parse(expiryDateString)?.isBefore(DateTime.now())
+                        : true)
+                    ||
             (availableCOD != true && availableTakeaway != true)
         ? "Closed"
         : "Open";

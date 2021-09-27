@@ -25,10 +25,7 @@ class SplashScreenState extends StateMVC<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 2), () {
-      loadData();
-    });
-
+    loadData();
   }
 
   void loadData() {
@@ -66,7 +63,8 @@ class SplashScreenState extends StateMVC<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.white,
+    return Scaffold(
+      backgroundColor: Colors.white,
       key: _con.scaffoldKey,
       body: 1 == 1
           ? Container(
