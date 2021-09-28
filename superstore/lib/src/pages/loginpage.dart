@@ -97,7 +97,7 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                    width: double.infinity,
+                    width: 300,
 
                     // margin: EdgeInsets.symmetric(horizontal: 100),
                     child: Image(
@@ -143,7 +143,7 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
                           labelStyle: Theme.of(context)
                               .textTheme
                               .headline1
-                              .merge(TextStyle(color: Color(0xFF4062DC))),
+                              .merge(TextStyle(color: Colors.black)),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color:Color(0xFF4062DC) ,
@@ -175,7 +175,7 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
                           labelStyle: Theme.of(context)
                               .textTheme
                               .headline1
-                              .merge(TextStyle(color: Colors.grey)),
+                              .merge(TextStyle(color: Colors.black)),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: Color(0xFF4062DC),
@@ -235,7 +235,7 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
 
                     Text(
                       "It's your first time here?",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                     ),
                     SizedBox(
                       width: 8,

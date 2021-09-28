@@ -99,7 +99,7 @@ class _RegisterState extends StateMVC<Register>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                            width: double.infinity,
+                            width: 300,
 
                             // margin: EdgeInsets.symmetric(horizontal: 100),
                             child: Image(
@@ -113,8 +113,8 @@ class _RegisterState extends StateMVC<Register>
                           S.of(context).welcome,
                           style: TextStyle(
                               color: Colors.black,
-                              fontSize: 38,
-                              fontWeight: FontWeight.bold),
+                              fontSize: 30,
+                              fontWeight: FontWeight.w400),
                         ),
                         SizedBox(
                           height: 10,
