@@ -232,7 +232,7 @@ class Helper {
     final Uint8List markerImageBytes = await markerImageFile.readAsBytes();
     final Codec markerImageCodec = await instantiateImageCodec(
       markerImageBytes,
-      targetWidth: 60,
+      targetWidth: 120,
     );
     final FrameInfo frameInfo = await markerImageCodec.getNextFrame();
     final ByteData byteData = await frameInfo.image.toByteData(
@@ -240,7 +240,7 @@ class Helper {
     );
     final Uint8List markerIcon = byteData.buffer.asUint8List();
     final Marker marker = Marker(
-        visible: zoomLevel >= 14.4746,
+        visible: zoomLevel >= 12,
         consumeTapEvents: true,
         markerId: MarkerId(res['shopId']),
         icon: BitmapDescriptor.fromBytes(markerIcon),
