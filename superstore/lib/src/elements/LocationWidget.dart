@@ -72,7 +72,7 @@ class _LocationModalPartState extends StateMVC<LocationModalPart> {
                         LocationResult result = await showLocationPicker(
                           context,
                           setting.value.googleMapsKey,
-                          initialCenter: LatLng(31.1975844, 29.9598339),
+                          initialCenter: LatLng(currentUser.value.latitude, currentUser.value.longitude),
                           automaticallyAnimateToCurrentLocation: true,
                           myLocationButtonEnabled: true,
                           layersButtonEnabled: true,

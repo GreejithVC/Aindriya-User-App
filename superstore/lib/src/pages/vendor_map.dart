@@ -70,7 +70,8 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
               showModal();
             },
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
               Text(S.of(context).delivery_location,
                   style: Theme.of(context).textTheme.headline1),
               currentUser.value.latitude == null ||
