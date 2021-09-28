@@ -49,45 +49,45 @@ class _RegisterState extends StateMVC<Register>
       key: _con.scaffoldKey,
       body: Stack(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/img/loginbg1.jpg'),
-                    fit: BoxFit.cover)),
-          ),
-          Container(
-            alignment: Alignment.topCenter,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-              Colors.transparent,
-              Colors.transparent,
-              Color(0xff161d27).withOpacity(0.9),
-              Color(0xff161d27),
-            ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-          ),
-          Positioned(
-            top: 50.0,
-            right: size.width * -0.24,
-            child: Container(
-              alignment: Alignment.center,
-              child: AnimatedBuilder(
-                animation: animationController,
-                child: Container(
-                  child: Image(
-                    image: AssetImage('assets/img/plate-food2.png'),
-                    height: size.width * 0.5,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                builder: (BuildContext context, Widget _widget) {
-                  return Transform.rotate(
-                    angle: animationController.value * 2 * pi,
-                    child: _widget,
-                  );
-                },
-              ),
-            ),
-          ),
+          // Container(
+          //   decoration: BoxDecoration(
+          //       image: DecorationImage(
+          //           image: AssetImage('assets/img/loginbg1.jpg'),
+          //           fit: BoxFit.cover)),
+          // ),
+          // Container(
+          //   alignment: Alignment.topCenter,
+          //   decoration: BoxDecoration(
+          //       gradient: LinearGradient(colors: [
+          //     Colors.transparent,
+          //     Colors.transparent,
+          //     Color(0xff161d27).withOpacity(0.9),
+          //     Color(0xff161d27),
+          //   ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+          // ),
+          // Positioned(
+          //   top: 50.0,
+          //   right: size.width * -0.24,
+          //   child: Container(
+          //     alignment: Alignment.center,
+          //     child: AnimatedBuilder(
+          //       animation: animationController,
+          //       child: Container(
+          //         child: Image(
+          //           image: AssetImage('assets/img/plate-food2.png'),
+          //           height: size.width * 0.5,
+          //           fit: BoxFit.fill,
+          //         ),
+          //       ),
+          //       builder: (BuildContext context, Widget _widget) {
+          //         return Transform.rotate(
+          //           angle: animationController.value * 2 * pi,
+          //           child: _widget,
+          //         );
+          //       },
+          //     ),
+          //   ),
+          // ),
           Form(
             key: _con.loginFormKey,
             child: Center(
@@ -98,21 +98,32 @@ class _RegisterState extends StateMVC<Register>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Container(
+                            width: double.infinity,
+
+                            // margin: EdgeInsets.symmetric(horizontal: 100),
+                            child: Image(
+                              image: AssetImage('assets/img/buysmartranst.png'),
+                              fit: BoxFit.contain,
+                            )),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Text(
                           S.of(context).welcome,
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               fontSize: 38,
                               fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Text("to ${setting.value.appName}, let's Login in",
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline1
-                                .merge(TextStyle(color: Colors.grey))),
+                        // Text("to ${setting.value.appName}, let's Login in",
+                        //     style: Theme.of(context)
+                        //         .textTheme
+                        //         .headline1
+                        //         .merge(TextStyle(color: Colors.grey))),
                         SizedBox(
                           height: 10,
                         ),
@@ -137,8 +148,7 @@ class _RegisterState extends StateMVC<Register>
                                       .textTheme
                                       .headline3
                                       .merge(TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight)),
+                                          color: Colors.black)),
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.digitsOnly
@@ -149,8 +159,7 @@ class _RegisterState extends StateMVC<Register>
                                         .textTheme
                                         .headline3
                                         .merge(TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorLight)),
+                                            color:  Colors.black)),
                                     labelText: S.of(context).mobile,
                                     labelStyle: Theme.of(context)
                                         .textTheme
@@ -158,13 +167,13 @@ class _RegisterState extends StateMVC<Register>
                                         .merge(TextStyle(color: Colors.grey)),
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Theme.of(context).accentColor,
+                                        color: Color(0xFF4062DC),
                                         width: 1.0,
                                       ),
                                     ),
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Theme.of(context).accentColor,
+                                        color: Color(0xFF4062DC),
                                         width: 1.0,
                                       ),
                                     ),
@@ -198,7 +207,7 @@ class _RegisterState extends StateMVC<Register>
                               enableInteractiveSelection: false,
                               cursor: Cursor(
                                 width: 2,
-                                color: Colors.yellowAccent,
+                                color: Color(0xFF4062DC),
                                 enabled: true,
                               ),
                             ),
@@ -245,8 +254,7 @@ class _RegisterState extends StateMVC<Register>
                                       .textTheme
                                       .headline3
                                       .merge(TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight)),
+                                          color: Colors.black)),
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
                                     labelText: S.of(context).full_name,
@@ -256,13 +264,13 @@ class _RegisterState extends StateMVC<Register>
                                         .merge(TextStyle(color: Colors.grey)),
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Theme.of(context).accentColor,
+                                        color: Color(0xFF4062DC),
                                         width: 1.0,
                                       ),
                                     ),
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Theme.of(context).accentColor,
+                                        color: Color(0xFF4062DC),
                                         width: 1.0,
                                       ),
                                     ),
@@ -285,8 +293,7 @@ class _RegisterState extends StateMVC<Register>
                                       .textTheme
                                       .headline3
                                       .merge(TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight)),
+                                          color: Colors.black)),
                                   keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
                                     labelText: S.of(context).email,
@@ -296,13 +303,13 @@ class _RegisterState extends StateMVC<Register>
                                         .merge(TextStyle(color: Colors.grey)),
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Theme.of(context).accentColor,
+                                        color: Color(0xFF4062DC),
                                         width: 1.0,
                                       ),
                                     ),
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Theme.of(context).accentColor,
+                                        color: Color(0xFF4062DC),
                                         width: 1.0,
                                       ),
                                     ),
@@ -327,8 +334,7 @@ class _RegisterState extends StateMVC<Register>
                                       .textTheme
                                       .headline3
                                       .merge(TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight)),
+                                          color: Colors.black)),
                                   keyboardType: TextInputType.text,
                                   obscureText: true,
                                   decoration: InputDecoration(
@@ -339,13 +345,13 @@ class _RegisterState extends StateMVC<Register>
                                         .merge(TextStyle(color: Colors.grey)),
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Theme.of(context).accentColor,
+                                        color: Color(0xFF4062DC),
                                         width: 1.0,
                                       ),
                                     ),
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Theme.of(context).accentColor,
+                                        color: Color(0xFF4062DC),
                                         width: 1.0,
                                       ),
                                     ),
@@ -388,7 +394,7 @@ class _RegisterState extends StateMVC<Register>
                                   });
                                 }
                               },
-                              color: Theme.of(context).accentColor,
+                              color: Color(0xFF4062DC),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -426,7 +432,7 @@ class _RegisterState extends StateMVC<Register>
                                   showSnackBar(context, "Invalid OTP");
                                 }
                               },
-                              color: Theme.of(context).accentColor,
+                              color:Color(0xFF4062DC),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -453,7 +459,7 @@ class _RegisterState extends StateMVC<Register>
                               onPressed: () {
                                 _con.register();
                               },
-                              color: Theme.of(context).accentColor,
+                              color:Color(0xFF4062DC),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -477,7 +483,7 @@ class _RegisterState extends StateMVC<Register>
                           children: <Widget>[
                             Text(
                               "${S.of(context).already_have_an_account} ?",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
                             ),
                             SizedBox(
                               width: 8,
@@ -490,7 +496,7 @@ class _RegisterState extends StateMVC<Register>
                                 child: Text(
                                   "Login",
                                   style: TextStyle(
-                                      color: Theme.of(context).accentColor,
+                                      color: Color(0xFF4062DC),
                                       fontWeight: FontWeight.bold),
                                 ))
                           ],

@@ -47,21 +47,21 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
       key: _con.scaffoldKeyState,
       body: Stack(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/img/loginbg1.jpg'), fit: BoxFit.cover)),
-          ),
+          // Container(
+          //   decoration: BoxDecoration(
+          //       image: DecorationImage(
+          //           image: AssetImage('assets/img/loginbg1.jpg'), fit: BoxFit.cover)),
+          // ),
 
-          Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  Colors.transparent,
-                  Colors.transparent,
-                  Color(0xff161d27).withOpacity(0.9),
-                  Color(0xff161d27),
-                ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-          ),
+          // Container(
+          //   decoration: BoxDecoration(
+          //       gradient: LinearGradient(colors: [
+          //         Colors.transparent,
+          //         Colors.transparent,
+          //         Color(0xff161d27).withOpacity(0.9),
+          //         Color(0xff161d27),
+          //       ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+          // ),
           Positioned(
             top: 50.0,
             right: size.width * -0.24,
@@ -69,15 +69,16 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
               alignment: Alignment.center,
               child: AnimatedBuilder(
                 animation: animationController,
-                child: Container(
-                  child: Image(
-                    image: AssetImage('assets/img/plate-food2.png'),
-
-                    height:size.width * 0.5,
-                    fit: BoxFit.fill,
-
-                  ),
-                ),
+                // child:
+                // Container(
+                //   child: Image(
+                //     image: AssetImage('assets/img/plate-food2.png'),
+                //
+                //     height:size.width * 0.5,
+                //     fit: BoxFit.fill,
+                //
+                //   ),
+                // ),
                 builder: (BuildContext context, Widget _widget) {
                   return Transform.rotate(
                     angle: animationController.value * 2 * pi,
@@ -93,22 +94,37 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
     key: _con.loginFormKey,
        child:   Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                Container(
+                    width: double.infinity,
+
+                    // margin: EdgeInsets.symmetric(horizontal: 100),
+                    child: Image(
+                      image: AssetImage('assets/img/buysmartranst.png'),
+                      fit: BoxFit.contain,
+                    )),
                 Text(
-                  S.of(context).welcome,
+                  "Welcome",
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 38,
-                      fontWeight: FontWeight.bold),
+                      fontSize: 30,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500),
                 ),
+                // Text(
+                //   S.of(context).welcome,
+                //   style: TextStyle(
+                //       color: Colors.white,
+                //       fontSize: 38,
+                //       fontWeight: FontWeight.bold),
+                // ),
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                    "to ${setting.value.appName}, let's Login in",
-                    style:Theme.of(context).textTheme.headline1.merge(TextStyle(color:Colors.grey))
-                ),
+                // Text(
+                //     "to ${setting.value.appName}, let's Login in",
+                //     style:Theme.of(context).textTheme.headline1.merge(TextStyle(color:Colors.grey))
+                // ),
                 SizedBox(
                   height: 20,
                 ),
@@ -120,23 +136,23 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
                         autocorrect: true,
                         onSaved: (input) => _con.user.email = input,
                         validator: (input) => !input.contains('@') ? S.of(context).should_be_valid_email : null,
-                        style: Theme.of(context).textTheme.headline3.merge(TextStyle(color:Theme.of(context).primaryColorLight)),
+                        style: Theme.of(context).textTheme.headline3.merge(TextStyle(color:Colors.black)),
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           labelText: S.of(context).email,
                           labelStyle: Theme.of(context)
                               .textTheme
                               .headline1
-                              .merge(TextStyle(color: Colors.grey)),
+                              .merge(TextStyle(color: Color(0xFF4062DC))),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                              color: Theme.of(context).accentColor,
+                              color:Color(0xFF4062DC) ,
                               width: 1.0,
                             ),
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                              color: Theme.of(context).accentColor,
+                              color: Color(0xFF4062DC),
                               width: 1.0,
                             ),
                           ),
@@ -151,7 +167,7 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
 
                         onSaved: (input) => _con.user.password = input,
                         validator: (input) => input.length < 3 ? S.of(context).should_be_more_than_3_characters : null,
-                        style: Theme.of(context).textTheme.headline3.merge(TextStyle(color:Theme.of(context).primaryColorLight)),
+                        style: Theme.of(context).textTheme.headline3.merge(TextStyle(color:Colors.black)),
                         keyboardType: TextInputType.text,
                         obscureText: true,
                         decoration: InputDecoration(
@@ -162,13 +178,13 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
                               .merge(TextStyle(color: Colors.grey)),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                              color: Theme.of(context).accentColor,
+                              color: Color(0xFF4062DC),
                               width: 1.0,
                             ),
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                              color: Theme.of(context).accentColor,
+                              color: Color(0xFF4062DC),
                               width: 1.0,
                             ),
                           ),
@@ -183,7 +199,7 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
                   },
                   child:Text(
                       S.of(context).forget_password,
-                      style:Theme.of(context).textTheme.subtitle2.merge(TextStyle(color: Theme.of(context).accentColor, fontWeight: FontWeight.bold))
+                      style:Theme.of(context).textTheme.subtitle2.merge(TextStyle(color: Color(0xFF4062DC), fontWeight: FontWeight.bold))
                   ),
                 ),
 
@@ -199,7 +215,7 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
                     onPressed: () {
                       _con.login();
                     },
-                    color: Theme.of(context).accentColor,
+                    color: Color(0xFF4062DC),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -230,7 +246,7 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
                         child:Text(
                           "Sign up",
                           style:
-                          TextStyle(color: Theme.of(context).accentColor, fontWeight: FontWeight.bold),
+                          TextStyle(color:Color(0xFF4062DC), fontWeight: FontWeight.bold),
                         )
                     ),
 

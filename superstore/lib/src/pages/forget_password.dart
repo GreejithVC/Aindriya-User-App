@@ -146,7 +146,7 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
         child: Ink(
           decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Theme.of(context).accentColor, Theme.of(context).accentColor],
+                colors: [Color(0xFF4062DC), Color(0xFF4062DC)],
                 begin: Alignment(-2.0, -2.0),
                 end: Alignment(1.0, 1.0),
               ),
