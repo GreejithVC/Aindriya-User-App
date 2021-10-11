@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:superstore/generated/l10n.dart';
 import 'package:superstore/src/elements/LocationWidget.dart';
+import 'package:superstore/src/elements/autoCorectTextField.dart';
 import 'package:superstore/src/repository/user_repository.dart';
 import '../controllers/map_controller.dart';
 import '../elements/CardsCarouselWidget.dart';
@@ -83,13 +84,17 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
                           TextStyle(color: Theme.of(context).backgroundColor))),
             ])),
       ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Positioned.fill(
-            child: _con.cameraPosition == null
-                ? CircularLoadingWidget(height: 0)
-                : GoogleMap(
+      body: Column(
+        children: [
+          CountryPicker(),
+          Expanded(
+            child: Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                Positioned.fill(
+                  child: _con.cameraPosition == null
+                      ? CircularLoadingWidget(height: 0)
+                      : GoogleMap(
                     onTap: (LatLng latLng) {
                       setState(() {
                         _con.topMarkets.clear();
@@ -112,20 +117,24 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
                     polylines: _con.polylines,
                     circles: Set.from(_con.allCircles),
                   ),
-          ),
-          Positioned(
-            top: _con.offsetY,
-            left: _con.offsetX,
-            child: Container(
-              width: 150,
-              height: 150,
-              child: CardsCarouselWidget(
-                marketsList: _con.topMarkets,
-              ),
+                ),
+                Positioned(
+                  top: _con.offsetY,
+                  left: _con.offsetX,
+                  child: Container(
+                    width: 150,
+                    height: 150,
+                    child: CardsCarouselWidget(
+                      marketsList: _con.topMarkets,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
-      ),
+      )
+
     );
   }
 

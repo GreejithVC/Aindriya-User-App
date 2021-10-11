@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:superstore/appTheme.dart';
 
 class CountryPicker extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -60,10 +59,10 @@ class CountryPicker extends StatelessWidget {
                 hideOnEmpty: false,
                 noItemsFoundBuilder: (context) =>
                     Padding(padding: EdgeInsets.all(8),
-                      child: Text("No Item Found"),
+                      child: Text("No Shops Found"),
                     ),
                 textFieldConfiguration: TextFieldConfiguration(
-                  decoration: InputDecoration(hintText: "Search Here",
+                  decoration: InputDecoration(hintText: "Search Shops",suffixIcon: Icon(Icons.search,size: 20,),
                     border: OutlineInputBorder(),),
                   controller: this._textEditingController,
 
