@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:superstore/src/elements/autoCorectTextField.dart';
 import 'package:superstore/src/repository/settings_repository.dart';
 
 import '../elements/CategoryLoaderWidget.dart';
@@ -94,8 +95,10 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                CountryPicker(),
                 Expanded(
-                    child: ListView(children: [
+                    child: ListView(
+                        children: [
                   Stack(children: [
                     Container(
                       // Here the height of the container is 45% of our total height
