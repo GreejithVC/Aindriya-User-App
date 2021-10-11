@@ -137,7 +137,7 @@ class _CategoryProductState extends StateMVC<CategoryProduct> {
                     coverImgUrl: widget.categoryData.image,
                     pagetitle: widget.categoryData.name),
               ),
-              SliverAppBar(
+              SliverAppBar(backgroundColor: Colors.white,
                 pinned: true,
                 floating: false,
                 primary: false,automaticallyImplyLeading: false,
