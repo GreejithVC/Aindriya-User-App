@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:superstore/src/elements/autoCorectTextField.dart';
+import 'package:superstore/src/models/vendor.dart';
+import 'package:superstore/src/pages/grocerystore.dart';
+import 'package:superstore/src/pages/store_detail.dart';
 import 'package:superstore/src/repository/settings_repository.dart';
 
 import '../elements/CategoryLoaderWidget.dart';
@@ -95,76 +98,105 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                ShopPicker(marketsList: _con?.vendorList,),
+                ShopPicker(
+                    marketsList: _con?.vendorList,
+                    onItemSelected: (selectedItem) {
+                      if (selectedItem is Vendor) {
+                        {
+                          if (selectedItem.shopType == '1' ||
+                              selectedItem.shopType == '3') {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => GroceryStoreWidget(
+                                  shopDetails: selectedItem,
+                                  shopTypeID:
+                                  int.parse(selectedItem.shopType),
+                                  focusId: int.parse(
+                                      selectedItem.focusType),
+                                )));
+                          } else {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => StoreViewDetails(
+                                  shopDetails: selectedItem,
+                                  shopTypeID:
+                                  int.parse(selectedItem.shopType),
+                                  focusId: int.parse(
+                                      selectedItem.focusType),
+                                )));
+                          }
+                        }
+                      }
+                    }),
                 Expanded(
-                    child: ListView(
-                        children: [
-                  Stack(children: [
-                    Container(
-                      // Here the height of the container is 45% of our total height
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).secondaryHeaderColor,
-                      ),
-                    ),
-                    HomeSliderWidget(slides: _con.slides),
-                  ]),
-                  Container(
-                    alignment: Alignment.center,
-                    color: Theme.of(context).accentColor,
-                    padding: EdgeInsets.only(top: 12, bottom: 8),
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Color(0xFFfbd100).withOpacity(0.5)),
-                      child: Text('Our Stores',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline1
-                              .merge(TextStyle(fontSize: 20))),
-                    ),
-                  ),
-                  _con.shopTypeList.isEmpty
-                      ? CategoryLoaderWidget()
-                      : CategoryShopType(
-                          shopType: _con.shopTypeList,
+                  child: ListView(
+                    children: [
+                      Stack(children: [
+                        Container(
+                          // Here the height of the container is 45% of our total height
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).secondaryHeaderColor,
+                          ),
                         ),
-                  SizedBox(height: 15),
-                  setting.value.noticeboard != ''
-                      ? Padding(
-                          padding: EdgeInsets.only(left: 22, right: 22),
-                          child: Text(setting.value.noticeboard,
-                              style: Theme.of(context).textTheme.subtitle1),
-                        )
-                      : Text(''),
-                  ListTile(
-                    dense: true,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                    leading: Icon(
-                      Icons.trending_up,
-                      color: Theme.of(context).hintColor,
-                    ),
-                    title: Text(
-                      'Nearby Shop',
-                      style: Theme.of(context).textTheme.headline3,
-                    ),
-                    subtitle: Text(
-                      'To Best',
-                      maxLines: 2,
-                      style: Theme.of(context).textTheme.caption,
-                    ),
+                        HomeSliderWidget(slides: _con.slides),
+                      ]),
+                      Container(
+                        alignment: Alignment.center,
+                        color: Theme.of(context).accentColor,
+                        padding: EdgeInsets.only(top: 12, bottom: 8),
+                        child: Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color(0xFFfbd100).withOpacity(0.5)),
+                          child: Text('Our Stores',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1
+                                  .merge(TextStyle(fontSize: 20))),
+                        ),
+                      ),
+                      _con.shopTypeList.isEmpty
+                          ? CategoryLoaderWidget()
+                          : CategoryShopType(
+                              shopType: _con.shopTypeList,
+                            ),
+                      SizedBox(height: 15),
+                      setting.value.noticeboard != ''
+                          ? Padding(
+                              padding: EdgeInsets.only(left: 22, right: 22),
+                              child: Text(setting.value.noticeboard,
+                                  style: Theme.of(context).textTheme.subtitle1),
+                            )
+                          : Text(''),
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                        leading: Icon(
+                          Icons.trending_up,
+                          color: Theme.of(context).hintColor,
+                        ),
+                        title: Text(
+                          'Nearby Shop',
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
+                        subtitle: Text(
+                          'To Best',
+                          maxLines: 2,
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                      ),
+                      SizedBox(height: 2),
+                      ShopTopSlider(
+                        vendorList: _con.vendorList,
+                        key: null,
+                      ),
+                      SizedBox(height: 2),
+                      MiddleSliderWidget(slides: _con.middleSlides),
+                      SizedBox(height: 15),
+                    ],
                   ),
-                  SizedBox(height: 2),
-                  ShopTopSlider(
-                    vendorList: _con.vendorList,
-                    key: null,
-                  ),
-                  SizedBox(height: 2),
-                  MiddleSliderWidget(slides: _con.middleSlides),
-                  SizedBox(height: 15),
-                ])),
+                ),
               ],
             ),
           ),
