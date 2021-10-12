@@ -104,6 +104,7 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
                     onTap: (LatLng latLng) {
                       setState(() {
                         _con.topMarkets.clear();
+                        _con.allCircles.clear();
                       });
                     },
                     mapToolbarEnabled: false,
