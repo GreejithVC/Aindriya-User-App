@@ -232,7 +232,7 @@ class Helper {
     final Uint8List markerImageBytes = await markerImageFile.readAsBytes();
     final Codec markerImageCodec = await instantiateImageCodec(
       markerImageBytes,
-      targetWidth: 120,
+      targetWidth: 90,
     );
     final FrameInfo frameInfo = await markerImageCodec.getNextFrame();
     final ByteData byteData = await frameInfo.image.toByteData(
