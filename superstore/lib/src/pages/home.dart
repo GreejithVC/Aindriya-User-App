@@ -95,7 +95,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                CountryPicker(),
+                ShopPicker(marketsList: _con?.vendorList,),
                 Expanded(
                     child: ListView(
                         children: [

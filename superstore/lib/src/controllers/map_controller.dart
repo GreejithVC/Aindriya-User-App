@@ -15,6 +15,7 @@ import '../repository/market_repository.dart';
 
 class MapController extends ControllerMVC {
   List<Vendor> topMarkets = <Vendor>[];
+  List<Vendor> vendorList = <Vendor>[];
   List<Marker> allMarkers = <Marker>[];
   Address currentAddress;
   Set<Polyline> polylines = new Set();
@@ -34,10 +35,14 @@ class MapController extends ControllerMVC {
   GoogleMapController googleMapController;
 
   void listenForNearMarkets(Address myLocation, Address areaLocation) async {
+    vendorList.clear();
+
     double zoomLevel = await googleMapController.getZoomLevel();
+
     final Stream<Vendor> stream =
         await getNearMarkets(myLocation, areaLocation);
     stream.listen((Vendor _market) {
+      vendorList.add(_market);
       // Helper.calculateDistance();
       print('loaddata');
 
@@ -137,6 +142,21 @@ class MapController extends ControllerMVC {
       target: LatLng(currentUser.value.latitude, currentUser.value.longitude),
       zoom: 14.4746,
     )));
+  }
+  Future<void> goSelectedShopLocation(String latitude,String longitude) async {
+    print("goSelectedShopLocation");
+    print(double.parse(latitude));
+    print("double.parse(latitude)");
+    final GoogleMapController controller = await mapController.future;
+
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      target: LatLng(double.parse(latitude), double.parse(longitude)),
+      zoom: 14.4746,
+
+    ))
+    );
+    print(double.parse(latitude));
+    print("double.parse(latitude)");
   }
 
   void getMarketsOfArea() async {

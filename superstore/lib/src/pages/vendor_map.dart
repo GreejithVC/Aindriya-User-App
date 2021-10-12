@@ -4,6 +4,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:superstore/generated/l10n.dart';
 import 'package:superstore/src/elements/LocationWidget.dart';
 import 'package:superstore/src/elements/autoCorectTextField.dart';
+import 'package:superstore/src/models/vendor.dart';
 import 'package:superstore/src/repository/user_repository.dart';
 import '../controllers/map_controller.dart';
 import '../elements/CardsCarouselWidget.dart';
@@ -86,7 +87,12 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
       ),
       body: Column(
         children: [
-          CountryPicker(),
+          ShopPicker(marketsList: _con?.vendorList, onItemSelected: (selectedItem)  {
+            if(selectedItem is Vendor){
+              _con?.goSelectedShopLocation(selectedItem.latitude, selectedItem.longitude);
+            }
+
+          }),
           Expanded(
             child: Stack(
               fit: StackFit.expand,
