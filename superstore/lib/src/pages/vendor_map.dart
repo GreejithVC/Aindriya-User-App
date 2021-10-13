@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_floating_map_marker_titles_core/controller/fmto_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter_floating_marker_titles/google_maps_flutter_floating_marker_titles.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -106,6 +107,7 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
                         ? CircularLoadingWidget(height: 0)
                         : GoogleMapWithFMTO(
                             _con.floatingTitles,
+                            fmtoOptions: FMTOOptions(),
                             onTap: (LatLng latLng) {
                               setState(() {
                                 _con.topMarkets.clear();
