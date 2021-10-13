@@ -88,8 +88,8 @@ dependencies:
   flutter_spinkit: ^4.1.2
   flutter_typeahead: ^3.2.1
   google_maps_flutter_floating_marker_titles: ^0.0.3+3
-
-
+  flutter_floating_map_marker_titles_core: ^0.0.3+3
+#  latlng: ^0.1.0
 
 dependency_overrides:
   intl: 0.17.0

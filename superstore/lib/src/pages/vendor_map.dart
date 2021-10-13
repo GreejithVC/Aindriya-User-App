@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter_floating_marker_titles/google_maps_flutter_floating_marker_titles.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:superstore/generated/l10n.dart';
 import 'package:superstore/src/elements/LocationWidget.dart';
@@ -44,105 +45,107 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: InkWell(
-          onTap: () => widget.parentScaffoldKey.currentState.openDrawer(),
-          child: Icon(Icons.menu, color: Theme.of(context).hintColor),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.my_location,
-              color: Theme.of(context).hintColor,
-            ),
-            onPressed: () {
-              _con.goCurrentLocation();
-            },
+        appBar: AppBar(
+          leading: InkWell(
+            onTap: () => widget.parentScaffoldKey.currentState.openDrawer(),
+            child: Icon(Icons.menu, color: Theme.of(context).hintColor),
           ),
-        ],
-        automaticallyImplyLeading: false,
-        backgroundColor: Theme.of(context).accentColor,
-        elevation: 0,
-        centerTitle: false,
-        titleSpacing: 0,
-        title: GestureDetector(
-            onTap: () {
-              //DeliveryAddressDialog(context: context);
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.my_location,
+                color: Theme.of(context).hintColor,
+              ),
+              onPressed: () {
+                _con.goCurrentLocation();
+              },
+            ),
+          ],
+          automaticallyImplyLeading: false,
+          backgroundColor: Theme.of(context).accentColor,
+          elevation: 0,
+          centerTitle: false,
+          titleSpacing: 0,
+          title: GestureDetector(
+              onTap: () {
+                //DeliveryAddressDialog(context: context);
 
-              showModal();
-            },
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-              Text(S.of(context).delivery_location,
-                  style: Theme.of(context).textTheme.headline1),
-              currentUser.value.latitude == null ||
-                      currentUser.value.longitude == null
-                  ? Text(S.of(context).select_your_address,
-                      style: Theme.of(context).textTheme.caption)
-                  : Text(currentUser.value.selected_address,
-                      style: Theme.of(context).textTheme.caption.merge(
-                          TextStyle(color: Theme.of(context).backgroundColor))),
-            ])),
-      ),
-      body: Column(
-        children: [
-          ShopPicker(marketsList: _con?.vendorList, onItemSelected: (selectedItem)  {
-            if(selectedItem is Vendor){
-              _con?.goSelectedShopLocation(selectedItem.latitude, selectedItem.longitude);
-            }
-
-          }),
-          Expanded(
-            child: Stack(
-              fit: StackFit.expand,
-              children: <Widget>[
-                Positioned.fill(
-                  child: _con.cameraPosition == null
-                      ? CircularLoadingWidget(height: 0)
-                      : GoogleMap(
-                    onTap: (LatLng latLng) {
-                      setState(() {
-                        _con.topMarkets.clear();
-                        _con.allCircles.clear();
-                      });
-                    },
-                    mapToolbarEnabled: false,
-                    mapType: MapType.hybrid,
-                    initialCameraPosition: _con.cameraPosition,
-                    markers: Set.from(_con.allMarkers),
-                    onMapCreated: (GoogleMapController controller) {
-                      _con.googleMapController = controller;
-                      _con.mapController.complete(controller);
-                    },
-                    onCameraMove: (CameraPosition cameraPosition) {
-                      _con.cameraPosition = cameraPosition;
-                    },
-                    onCameraIdle: () {
-                      _con.getMarketsOfArea();
-                    },
-                    polylines: _con.polylines,
-                    circles: Set.from(_con.allCircles),
+                showModal();
+              },
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(S.of(context).delivery_location,
+                        style: Theme.of(context).textTheme.headline1),
+                    currentUser.value.latitude == null ||
+                            currentUser.value.longitude == null
+                        ? Text(S.of(context).select_your_address,
+                            style: Theme.of(context).textTheme.caption)
+                        : Text(currentUser.value.selected_address,
+                            style: Theme.of(context).textTheme.caption.merge(
+                                TextStyle(
+                                    color: Theme.of(context).backgroundColor))),
+                  ])),
+        ),
+        body: Column(
+          children: [
+            ShopPicker(
+                marketsList: _con?.vendorList,
+                onItemSelected: (selectedItem) {
+                  if (selectedItem is Vendor) {
+                    _con?.goSelectedShopLocation(
+                        selectedItem.latitude, selectedItem.longitude);
+                  }
+                }),
+            Expanded(
+              child: Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  Positioned.fill(
+                    child: _con.cameraPosition == null
+                        ? CircularLoadingWidget(height: 0)
+                        : GoogleMapWithFMTO(
+                            _con.floatingTitles,
+                            onTap: (LatLng latLng) {
+                              setState(() {
+                                _con.topMarkets.clear();
+                                _con.allCircles.clear();
+                              });
+                            },
+                            mapToolbarEnabled: false,
+                            mapType: MapType.hybrid,
+                            initialCameraPosition: _con.cameraPosition,
+                            markers: Set.from(_con.allMarkers),
+                            onMapCreated: (GoogleMapController controller) {
+                              _con.googleMapController = controller;
+                              _con.mapController.complete(controller);
+                            },
+                            onCameraMove: (CameraPosition cameraPosition) {
+                              _con.cameraPosition = cameraPosition;
+                            },
+                            onCameraIdle: () {
+                              _con.getMarketsOfArea();
+                            },
+                            polylines: _con.polylines,
+                            circles: Set.from(_con.allCircles),
+                          ),
                   ),
-                ),
-                Positioned(
-                  top: _con.offsetY,
-                  left: _con.offsetX,
-                  child: Container(
-                    width: 150,
-                    height: 150,
-                    child: CardsCarouselWidget(
-                      marketsList: _con.topMarkets,
+                  Positioned(
+                    top: _con.offsetY,
+                    left: _con.offsetX,
+                    child: Container(
+                      width: 150,
+                      height: 150,
+                      child: CardsCarouselWidget(
+                        marketsList: _con.topMarkets,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      )
-
-    );
+          ],
+        ));
   }
 
   void showModal() {

@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_floating_map_marker_titles_core/model/floating_marker_title_info.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:superstore/src/helpers/map_pointer.dart';
 import 'package:superstore/src/models/vendor.dart';
 
 import '../repository/user_repository.dart';
@@ -17,6 +18,7 @@ class MapController extends ControllerMVC {
   List<Vendor> topMarkets = <Vendor>[];
   List<Vendor> vendorList = <Vendor>[];
   List<Marker> allMarkers = <Marker>[];
+  List<FloatingMarkerTitleInfo> floatingTitles = <FloatingMarkerTitleInfo>[];
   Address currentAddress;
   Set<Polyline> polylines = new Set();
   List<Circle> allCircles = <Circle>[];
@@ -75,7 +77,7 @@ class MapController extends ControllerMVC {
               center: LatLng(double.tryParse(item.latitude),
                   double.tryParse(item.longitude)),
               radius: item?.deliveryRadius?.isNotEmpty == true
-                  ? (double.tryParse(item.deliveryRadius)*1000)
+                  ? (double.tryParse(item.deliveryRadius) * 1000)
                   : 3000,
             ));
           });
@@ -83,6 +85,7 @@ class MapController extends ControllerMVC {
       ).then((marker) {
         setState(() {
           allMarkers.add(marker);
+          floatingTitles.add(MapPointer.getFloatingMarkerTitleInfo(_market));
         });
       });
     }, onError: (a) {}, onDone: () {});
@@ -143,7 +146,8 @@ class MapController extends ControllerMVC {
       zoom: 14.4746,
     )));
   }
-  Future<void> goSelectedShopLocation(String latitude,String longitude) async {
+
+  Future<void> goSelectedShopLocation(String latitude, String longitude) async {
     print("goSelectedShopLocation");
     print(double.parse(latitude));
     print("double.parse(latitude)");
@@ -152,9 +156,7 @@ class MapController extends ControllerMVC {
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
       target: LatLng(double.parse(latitude), double.parse(longitude)),
       zoom: 14.4746,
-
-    ))
-    );
+    )));
     print(double.parse(latitude));
     print("double.parse(latitude)");
   }
