@@ -238,12 +238,14 @@ class Helper {
     final ByteData byteData = await frameInfo.image.toByteData(
       format: ImageByteFormat.png,
     );
+
     final Uint8List markerIcon = byteData.buffer.asUint8List();
+    final bitIcon = await createCustomMarkerBitmap(res["shopName"],res["previewImage"]);
     final Marker marker = Marker(
         visible: zoomLevel >= 12,
         consumeTapEvents: true,
         markerId: MarkerId(res['shopId']),
-        icon: BitmapDescriptor.fromBytes(markerIcon),
+        icon: bitIcon,
         onTap: () {
           onItemSelected(res);
         },
@@ -259,6 +261,52 @@ class Helper {
 
     return marker;
   }
+
+  static Future<BitmapDescriptor> createCustomMarkerBitmap(String title,String image) async {
+    TextSpan span = new TextSpan(
+      style: new TextStyle(
+        color: Colors.black,
+        fontSize: 35.0,
+        fontWeight: FontWeight.bold,
+      ),
+      text: title,
+    );
+
+    TextPainter tp = new TextPainter(
+      text: span,
+      textAlign: TextAlign.end,
+      textDirection: TextDirection.ltr,
+    );
+    tp.text = TextSpan(
+      text: title,
+      style: TextStyle(
+        fontSize: 45.0,
+        color: Colors.white,
+        letterSpacing: 0.2,backgroundColor: Colors.blue,
+        fontFamily: 'Roboto Bold',
+      ),
+    );
+
+
+    PictureRecorder recorder = new PictureRecorder();
+    Canvas c = new Canvas(recorder);
+
+    tp.layout();
+    tp.paint(c, new Offset(20.0, 10.0));
+
+    /* Do your painting of the custom icon here, including drawing text, shapes, etc. */
+
+    Picture p = recorder.endRecording();
+    ByteData pngBytes =
+    await (await p.toImage(tp.width.toInt() + 40, tp.height.toInt() + 20))
+        .toByteData(format: ImageByteFormat.png);
+
+
+    Uint8List data = Uint8List.view(pngBytes.buffer);
+
+    return BitmapDescriptor.fromBytes(data);
+  }
+
 
   static distance(
       double lat1, double lon1, double lat2, double lon2, String unit) {
