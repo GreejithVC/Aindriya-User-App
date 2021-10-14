@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_map_marker_titles_core/controller/fmto_controller.dart';
+import 'package:flutter_floating_map_marker_titles_core/model/floating_marker_title_info.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter_floating_marker_titles/google_maps_flutter_floating_marker_titles.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:superstore/generated/l10n.dart';
 import 'package:superstore/src/elements/LocationWidget.dart';
 import 'package:superstore/src/elements/autoCorectTextField.dart';
+import 'package:superstore/src/helpers/map_pointer.dart';
 import 'package:superstore/src/models/vendor.dart';
 import 'package:superstore/src/repository/user_repository.dart';
 import '../controllers/map_controller.dart';
@@ -45,6 +47,8 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print("_con.floatingTitles.length");
+    print(_con.floatingTitles.length);
     return Scaffold(
         appBar: AppBar(
           leading: InkWell(
@@ -106,8 +110,11 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
                     child: _con.cameraPosition == null
                         ? CircularLoadingWidget(height: 0)
                         : GoogleMapWithFMTO(
-                            _con.floatingTitles,
-                            fmtoOptions: FMTOOptions(),
+                      _con?.floatingTitles,
+                            // [MapPointer.getFloatingMarkerTitleInfo()],
+                            fmtoOptions: FMTOOptions(
+                              titlePlacementPolicy :const FloatingMarkerPlacementPolicy(FloatingMarkerGravity.top, 24,),
+                            ),
                             onTap: (LatLng latLng) {
                               setState(() {
                                 _con.topMarkets.clear();

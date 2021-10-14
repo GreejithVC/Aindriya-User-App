@@ -5,12 +5,16 @@ import 'package:superstore/src/models/vendor.dart';
 
 class MapPointer {
   static FloatingMarkerTitleInfo getFloatingMarkerTitleInfo(Vendor data) {
+    print(data.shopName);
+    print("data.shopName");
     return FloatingMarkerTitleInfo(
-      id: data?.shopId ?? 0,
+      id: int.parse(data?.shopId) ?? 0,
       latLng: LatLng(
-          double.tryParse(data.latitude), double.tryParse(data.longitude)),
-      title: data?.shopName ?? "",
-      color: Colors.purple,
+          // 10.3468925,  76.2074124
+          double.tryParse(data.latitude), double.tryParse(data.longitude)
+      ),
+      title: data.shopName ?? "",isBold: true,
+      color: Colors.blue,
     );
   }
 }

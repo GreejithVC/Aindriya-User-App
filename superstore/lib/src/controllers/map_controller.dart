@@ -69,6 +69,8 @@ class MapController extends ControllerMVC {
           allCircles.clear();
           setState(() {
             topMarkets.add(item);
+            // floatingTitles.add(MapPointer.getFloatingMarkerTitleInfo(_market));
+
             allCircles.add(Circle(
               strokeWidth: 1,
               strokeColor: Colors.amberAccent,
