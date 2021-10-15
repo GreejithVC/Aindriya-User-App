@@ -24,6 +24,7 @@ class MapController extends ControllerMVC {
   List<Circle> allCircles = <Circle>[];
   double offsetX;
   double offsetY;
+  bool showSearchField = false;
 
   // Set<Circle> circles = Set.from([Circle(
   //   circleId: CircleId(id),

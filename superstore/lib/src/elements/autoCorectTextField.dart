@@ -21,9 +21,10 @@ class ShopPicker extends StatelessWidget {
     print(marketsList);
     print("marketsList");
     return Container(
-      color: Theme.of(context).accentColor,
-      height: 65,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      // color: Theme.of(context).accentColor,
+      color: Colors.transparent,
+      height: 50,
+      padding: EdgeInsets.only(top: 5),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -31,7 +32,7 @@ class ShopPicker extends StatelessWidget {
             key: _formKey,
             child: Container(
 
-              height: 50,
+              height: 40,
               decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(8)
@@ -43,6 +44,7 @@ class ShopPicker extends StatelessWidget {
                     item.shopName.toLowerCase().contains(pattern.toLowerCase()) ?? false,),
                 itemBuilder: (_, Vendor item) => ListTile(title: Text(item.shopName ?? ""),),
                 onSuggestionSelected: (Vendor val) {
+
                   this._textEditingController.text = val.shopName ?? "";
                   onItemSelected(val);
                   print(val?.latitude);
@@ -61,7 +63,7 @@ class ShopPicker extends StatelessWidget {
                       child: Text("No Shops Found"),
                     ),
                 textFieldConfiguration: TextFieldConfiguration(
-                  decoration: InputDecoration(hintText: "Search Shops",suffixIcon: Icon(Icons.search,size: 20,),
+                  decoration: InputDecoration(contentPadding: EdgeInsets.all(5),hintText: "Search Shops",suffixIcon: Icon(Icons.search,size: 20,),
                     border: OutlineInputBorder(),),
                   controller: this._textEditingController,
 

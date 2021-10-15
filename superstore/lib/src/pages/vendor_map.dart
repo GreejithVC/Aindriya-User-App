@@ -28,6 +28,7 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
 
   _VendorMapWidgetState() : super(MapController()) {
     _con = controller;
+
   }
 
   @override
@@ -41,7 +42,9 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
         _con.getCurrentLocation();
         } */
 
+
     _con.getCurrentLocation();
+    _con.showSearchField = false;
     super.initState();
   }
 
@@ -50,109 +53,58 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
     print("_con.floatingTitles.length");
     print(_con.floatingTitles.length);
     return Scaffold(
-        appBar: AppBar(
-          leading: InkWell(
-            onTap: () => widget.parentScaffoldKey.currentState.openDrawer(),
-            child: Icon(Icons.menu, color: Theme.of(context).hintColor),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.my_location,
-                color: Theme.of(context).hintColor,
-              ),
-              onPressed: () {
-                _con.goCurrentLocation();
-              },
-            ),
-          ],
-          automaticallyImplyLeading: false,
-          backgroundColor: Theme.of(context).accentColor,
-          elevation: 0,
-          centerTitle: false,
-          titleSpacing: 0,
-          title: GestureDetector(
-              onTap: () {
-                //DeliveryAddressDialog(context: context);
-
-                showModal();
-              },
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(S.of(context).delivery_location,
-                        style: Theme.of(context).textTheme.headline1),
-                    currentUser.value.latitude == null ||
-                            currentUser.value.longitude == null
-                        ? Text(S.of(context).select_your_address,
-                            style: Theme.of(context).textTheme.caption)
-                        : Text(currentUser.value.selected_address,
-                            style: Theme.of(context).textTheme.caption.merge(
-                                TextStyle(
-                                    color: Theme.of(context).backgroundColor))),
-                  ])),
-        ),
-        body: Column(
-          children: [
-            ShopPicker(
-                marketsList: _con?.vendorList,
-                onItemSelected: (selectedItem) {
-                  if (selectedItem is Vendor) {
-                    _con?.goSelectedShopLocation(
-                        selectedItem.latitude, selectedItem.longitude);
-                  }
-                }),
-            Expanded(
-              child: Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  Positioned.fill(
-                    child: _con.cameraPosition == null
-                        ? CircularLoadingWidget(height: 0)
-                        : GoogleMapWithFMTO(
+        body: Stack(
+          // fit: StackFit.expand,
+          children: <Widget>[
+            Container(
+              child: _con.cameraPosition == null
+                  ? CircularLoadingWidget(height: 0)
+                  : GoogleMapWithFMTO(
                       _con?.floatingTitles,
-                            // [MapPointer.getFloatingMarkerTitleInfo()],
-                            fmtoOptions: FMTOOptions(
-                              titlePlacementPolicy :const FloatingMarkerPlacementPolicy(FloatingMarkerGravity.top, 24,),
-                            ),
-                            onTap: (LatLng latLng) {
-                              setState(() {
-                                _con.topMarkets.clear();
-                                _con.allCircles.clear();
-                              });
-                            },
-                            mapToolbarEnabled: false,
-                            mapType: MapType.hybrid,
-                            initialCameraPosition: _con.cameraPosition,
-                            markers: Set.from(_con.allMarkers),
-                            onMapCreated: (GoogleMapController controller) {
-                              _con.googleMapController = controller;
-                              _con.mapController.complete(controller);
-                            },
-                            onCameraMove: (CameraPosition cameraPosition) {
-                              _con.cameraPosition = cameraPosition;
-                            },
-                            onCameraIdle: () {
-                              _con.getMarketsOfArea();
-                            },
-                            polylines: _con.polylines,
-                            circles: Set.from(_con.allCircles),
-                          ),
-                  ),
-                  Positioned(
-                    top: _con.offsetY,
-                    left: _con.offsetX,
-                    child: Container(
-                      width: 150,
-                      height: 150,
-                      child: CardsCarouselWidget(
-                        marketsList: _con.topMarkets,
+                      // [MapPointer.getFloatingMarkerTitleInfo()],
+                      fmtoOptions: FMTOOptions(
+                        titlePlacementPolicy:
+                            const FloatingMarkerPlacementPolicy(
+                          FloatingMarkerGravity.top,
+                          24,
+                        ),
                       ),
+                      onTap: (LatLng latLng) {
+                        setState(() {
+                          _con.topMarkets.clear();
+                          _con.allCircles.clear();
+                        });
+                      },
+                      mapToolbarEnabled: false,
+                      mapType: MapType.hybrid,
+                      initialCameraPosition: _con.cameraPosition,
+                      markers: Set.from(_con.allMarkers),
+                      onMapCreated: (GoogleMapController controller) {
+                        _con.googleMapController = controller;
+                        _con.mapController.complete(controller);
+                      },
+                      onCameraMove: (CameraPosition cameraPosition) {
+                        _con.cameraPosition = cameraPosition;
+                      },
+                      onCameraIdle: () {
+                        _con.getMarketsOfArea();
+                      },
+                      polylines: _con.polylines,
+                      circles: Set.from(_con.allCircles),
                     ),
-                  ),
-                ],
+            ),
+            Positioned(
+              top: _con.offsetY,
+              left: _con.offsetX,
+              child: Container(
+                width: 150,
+                height: 150,
+                child: CardsCarouselWidget(
+                  marketsList: _con.topMarkets,
+                ),
               ),
             ),
+            _appBar()
           ],
         ));
   }
@@ -221,4 +173,78 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
           );
         });
   }
+
+  Widget _appBar() {
+    return Container(
+      height: 80,
+      child: AppBar(
+        leading: InkWell(
+          onTap: () => widget.parentScaffoldKey.currentState.openDrawer(),
+          child: Icon(Icons.menu, color: Theme.of(context).hintColor),
+        ),
+        actions: <Widget>[
+          Visibility(
+            visible: _con?.showSearchField == false,
+            child: IconButton(
+              icon: Icon(
+                Icons.search_outlined,size:25,
+                color: Theme.of(context).hintColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  _con?.showSearchField = true;
+                });
+              },
+            ),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.my_location,
+              color: Theme.of(context).hintColor,
+            ),
+            onPressed: () {
+              _con.goCurrentLocation();
+            },
+          ),
+        ],
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white.withOpacity(0.5),
+        elevation: 0,
+        centerTitle: false,
+        titleSpacing: 0,
+        title: _con?.showSearchField == true ?
+        ShopPicker(
+            marketsList: _con?.vendorList,
+            onItemSelected: (selectedItem) {
+              setState(() {
+                _con.showSearchField = false;
+              });
+
+              if (selectedItem is Vendor) {
+                _con?.goSelectedShopLocation(
+                    selectedItem.latitude, selectedItem.longitude);
+              }
+            }):GestureDetector(
+            onTap: () {
+              //DeliveryAddressDialog(context: context);
+
+              showModal();
+            },
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(S.of(context).delivery_location,
+                  style: Theme.of(context).textTheme.headline1),
+              currentUser.value.latitude == null ||
+                      currentUser.value.longitude == null
+                  ? Text(S.of(context).select_your_address,
+                      style: Theme.of(context).textTheme.caption)
+                  : Text(currentUser.value.selected_address,
+                      style: Theme.of(context).textTheme.caption.merge(
+                          TextStyle(color: Theme.of(context).backgroundColor))),
+            ]))
+      ),
+    );
+  }
+
+
 }
