@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:superstore/generated/l10n.dart';
 import 'package:superstore/src/pages/fav_shops.dart';
@@ -84,62 +85,155 @@ class _PagesWidgetState extends State<PagesWidget> {
         drawer: DrawerWidget(),
         //backgroundColor: Colors.transparent,
         body: widget.currentPage,
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Theme.of(context).accentColor,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          selectedLabelStyle: TextStyle(
-              color: Theme.of(context).accentColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 12),
-          unselectedItemColor: Color(0xFFaeaeae),
-          unselectedLabelStyle: TextStyle(
-            color: Color(0xFFaeaeae),
-            fontSize: 12.0,
-          ),
-          backgroundColor: Theme.of(context).primaryColor,
-          currentIndex: widget.currentTab,
+        // bottomNavigationBar: BottomNavigationBar(
+        //   selectedItemColor: Theme.of(context).accentColor,
+        //   showSelectedLabels: true,
+        //   showUnselectedLabels: true,
+        //   selectedLabelStyle: TextStyle(
+        //       color: Theme.of(context).accentColor,
+        //       fontWeight: FontWeight.w600,
+        //       fontSize: 12),
+        //   unselectedItemColor: Color(0xFFaeaeae),
+        //   unselectedLabelStyle: TextStyle(
+        //     color: Color(0xFFaeaeae),
+        //     fontSize: 12.0,
+        //   ),
+        //   backgroundColor: Theme.of(context).primaryColor,
+        //   currentIndex: widget.currentTab,
+        //   onTap: (int i) {
+        //     this._selectTab(i);
+        //   },
+        //   // this will be set when a new tab is tapped
+        //   items: [
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.location_on_outlined),
+        //       // ignore: deprecated_member_use
+        //       title: Text('Map'),
+        //     ),
+        //     BottomNavigationBarItem(
+        //         icon: Icon(Icons.shop),
+        //         // ignore: deprecated_member_use
+        //         title: Text('Favorite')),
+        //     BottomNavigationBarItem(
+        //         icon: Icon(Icons.chat),
+        //         // ignore: deprecated_member_use
+        //         title: Text('Chats')),
+        //     BottomNavigationBarItem(
+        //         icon: Image(
+        //           image: AssetImage('assets/img/logo.png'),
+        //           width: 35,
+        //           height: 35,
+        //
+        //         ),
+        //         // ignore: deprecated_member_use
+        //         title: Text('Home')),
+        //     BottomNavigationBarItem(
+        //         icon: Icon(Icons.favorite),
+        //         // ignore: deprecated_member_use
+        //         title: Text('Wishlist')),
+        //     BottomNavigationBarItem(
+        //         icon: new Icon(Icons.shopping_bag_outlined),
+        //         // ignore: deprecated_member_use
+        //         title: Text('Orders')),
+        //     BottomNavigationBarItem(
+        //       icon: new Icon(Icons.person),
+        //       // ignore: deprecated_member_use
+        //       title: Text(S.of(context).profile),
+        //     ),
+        //   ],
+        // ),
+        bottomNavigationBar: CurvedNavigationBar(
+          height: 50,
+          animationCurve: Curves.fastOutSlowIn,
+          color: Theme.of(context).secondaryHeaderColor,
+          backgroundColor: Colors.white,
+          buttonBackgroundColor: Theme.of(context).secondaryHeaderColor,
+          index: widget.currentTab,
           onTap: (int i) {
             this._selectTab(i);
           },
-          // this will be set when a new tab is tapped
+          //   // this will be set when a new tab is tapped
+
           items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.location_on_outlined),
-              // ignore: deprecated_member_use
-              title: Text('Map'),
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.shop),
-                // ignore: deprecated_member_use
-                title: Text('Favorite')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.chat),
-                // ignore: deprecated_member_use
-                title: Text('Chats')),
-            BottomNavigationBarItem(
-                icon: Image(
-                  image: AssetImage('assets/img/logo.png'),
-                  width: 35,
-                  height: 35,
+            bottomBarIcons(
+                Image(
+                  image: AssetImage('assets/img/mapPin.png'),
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
                 ),
-                // ignore: deprecated_member_use
-                title: Text('Home')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                // ignore: deprecated_member_use
-                title: Text('Wishlist')),
-            BottomNavigationBarItem(
-                icon: new Icon(Icons.shopping_bag_outlined),
-                // ignore: deprecated_member_use
-                title: Text('Orders')),
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.person),
-              // ignore: deprecated_member_use
-              title: Text(S.of(context).profile),
-            ),
+                "Map"),
+            bottomBarIcons(
+                Image(
+                  image: AssetImage('assets/img/housewithheart.png'),
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
+                "Favorite"),
+            bottomBarIcons(Icon(Icons.chat, color: Colors.white), "Chats"),
+            bottomBarIcons(Icon(Icons.home,size: 32, color: Colors.white), "Home"),
+            bottomBarIcons(
+                Icon(Icons.favorite, color: Colors.white), "Wishlist"),
+            bottomBarIcons(
+                Icon(Icons.shopping_bag_outlined, color: Colors.white),
+                "Orders"),
+            bottomBarIcons(Icon(Icons.person, color: Colors.white), "Profile"),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.location_on_outlined),
+            //   // ignore: deprecated_member_use
+            //   title: Text('Map'),
+            // ),
+            // BottomNavigationBarItem(
+            //     icon: Icon(Icons.shop),
+            //     // ignore: deprecated_member_use
+            //     title: Text('Favorite')),
+            // BottomNavigationBarItem(
+            //     icon: Icon(Icons.chat),
+            //     // ignore: deprecated_member_use
+            //     title: Text('Chats')),
+            // BottomNavigationBarItem(
+            //     icon: Image(
+            //       image: AssetImage('assets/img/logo.png'),
+            //       width: 35,
+            //       height: 35,
+            //
+            //     ),
+            //     // ignore: deprecated_member_use
+            //     title: Text('Home')),
+            // BottomNavigationBarItem(
+            //     icon: Icon(Icons.favorite),
+            //     // ignore: deprecated_member_use
+            //     title: Text('Wishlist')),
+            // BottomNavigationBarItem(
+            //     icon: new Icon(Icons.shopping_bag_outlined),
+            //     // ignore: deprecated_member_use
+            //     title: Text('Orders')),
+            // BottomNavigationBarItem(
+            //   icon: new Icon(Icons.person),
+            //   // ignore: deprecated_member_use
+            //   title: Text(S.of(context).profile),
+            // ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget bottomBarIcons(Widget iconData, String title) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          iconData,
+          // ignore: deprecated_member_use
+          // Text(
+          //   title,
+          //   style: TextStyle(color: Colors.white),
+          //   maxLines: 1,
+          //   overflow: TextOverflow.ellipsis,
+          // ),
+        ],
       ),
     );
   }
