@@ -88,7 +88,7 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
                       },
                       polylines: _con.polylines,
                       circles: Set.from(_con.allCircles),
-                myLocationButtonEnabled: true,zoomControlsEnabled: true,
+                zoomControlsEnabled: true,
                     ),
             ),
             Positioned(
