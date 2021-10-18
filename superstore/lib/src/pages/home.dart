@@ -98,34 +98,38 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                ShopPicker(
-                    marketsList: _con?.vendorList,
-                    onItemSelected: (selectedItem) {
-                      if (selectedItem is Vendor) {
-                        {
-                          if (selectedItem.shopType == '1' ||
-                              selectedItem.shopType == '3') {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => GroceryStoreWidget(
-                                  shopDetails: selectedItem,
-                                  shopTypeID:
-                                  int.parse(selectedItem.shopType),
-                                  focusId: int.parse(
-                                      selectedItem.focusType),
-                                )));
-                          } else {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => StoreViewDetails(
-                                  shopDetails: selectedItem,
-                                  shopTypeID:
-                                  int.parse(selectedItem.shopType),
-                                  focusId: int.parse(
-                                      selectedItem.focusType),
-                                )));
+                Container(
+                  color:Theme.of(context).accentColor ,
+                  padding: const EdgeInsets.only(left: 20,right: 20,bottom: 8),
+                  child: ShopPicker(
+                      marketsList: _con?.vendorList,
+                      onItemSelected: (selectedItem) {
+                        if (selectedItem is Vendor) {
+                          {
+                            if (selectedItem.shopType == '1' ||
+                                selectedItem.shopType == '3') {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => GroceryStoreWidget(
+                                    shopDetails: selectedItem,
+                                    shopTypeID:
+                                    int.parse(selectedItem.shopType),
+                                    focusId: int.parse(
+                                        selectedItem.focusType),
+                                  )));
+                            } else {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => StoreViewDetails(
+                                    shopDetails: selectedItem,
+                                    shopTypeID:
+                                    int.parse(selectedItem.shopType),
+                                    focusId: int.parse(
+                                        selectedItem.focusType),
+                                  )));
+                            }
                           }
                         }
-                      }
-                    }),
+                      }),
+                ),
                 Expanded(
                   child: ListView(
                     children: [
