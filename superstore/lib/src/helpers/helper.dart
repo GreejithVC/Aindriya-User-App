@@ -191,10 +191,14 @@ class Helper {
   }
 
   static Future<Marker> getMyPositionMarker(
-      double latitude, double longitude) async {
+
+      double latitude, double longitude,{OnItemSelected onItemSelected}) async {
     final Uint8List markerIcon =
         await getBytesFromAsset('assets/img/my_marker.png', 120);
-    final Marker marker = Marker(
+    final Marker marker = Marker(onTap: (){
+      onItemSelected("");
+
+    },
         markerId: MarkerId(Random().nextInt(100).toString()),
         icon: BitmapDescriptor.fromBytes(markerIcon),
         anchor: Offset(0.5, 0.5),

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_floating_map_marker_titles_core/model/floating_marker_title_info.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:superstore/generated/l10n.dart';
+import 'package:superstore/src/elements/LocationWidget.dart';
 import 'package:superstore/src/helpers/map_pointer.dart';
 import 'package:superstore/src/models/vendor.dart';
 
@@ -24,7 +26,6 @@ class MapController extends ControllerMVC {
   List<Circle> allCircles = <Circle>[];
   double offsetX;
   double offsetY;
-  bool showSearchField = false;
 
   // Set<Circle> circles = Set.from([Circle(
   //   circleId: CircleId(id),
@@ -105,10 +106,16 @@ class MapController extends ControllerMVC {
       });
 
       Helper.getMyPositionMarker(
-              currentUser.value.latitude, currentUser.value.longitude)
-          .then((marker) {
+        currentUser.value.latitude,
+        currentUser.value.longitude,
+        onItemSelected: (selectedItem) async {
+          showModal();
+        },
+      ).then((marker) {
         setState(() {
           allMarkers.add(marker);
+          floatingTitles
+              .add(MapPointer.getMyPositionTitleInfo(currentUser.value));
         });
       });
     } on PlatformException catch (e) {
@@ -116,6 +123,71 @@ class MapController extends ControllerMVC {
         print('Permission denied');
       }
     }
+  }
+
+  void showModal() {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.7,
+            color: Color(0xff737373),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12.0),
+                    topRight: Radius.circular(12.0)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              LocationModalPart(),
+                            ]),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15, right: 15, top: 5, bottom: 5),
+                      child: Container(
+                        width: double.infinity,
+                        // ignore: deprecated_member_use
+                        child: FlatButton(
+                            onPressed: () {
+                              setState(() => currentUser.value);
+                              Navigator.pop(context);
+                            },
+                            padding: EdgeInsets.all(15),
+                            color: Theme.of(context).accentColor.withOpacity(1),
+                            child: Text(
+                              S.of(context).proceed_and_close,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  .merge(TextStyle(color: Colors.white)),
+                            )),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   void getMarketLocation() async {
@@ -132,6 +204,8 @@ class MapController extends ControllerMVC {
           .then((marker) {
         setState(() {
           allMarkers.add(marker);
+          floatingTitles
+              .add(MapPointer.getMyPositionTitleInfo(currentUser.value));
         });
       });
     } on PlatformException catch (e) {
