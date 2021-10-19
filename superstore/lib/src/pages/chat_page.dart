@@ -23,7 +23,7 @@ class _ChatPageState extends State<ChatPage> {
           ? PermissionDeniedWidget()
           : Container(
         width: double.infinity,
-        color: Theme.of(context).primaryColorDark,
+        color: Color(0xFF333D37),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

@@ -155,8 +155,8 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
 
         ],
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        elevation: 0,
+        backgroundColor: Color(0xFF333D37),
+        elevation: 2,
         centerTitle: false,
         titleSpacing: 0,
         title:

@@ -48,7 +48,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
         appBar: AppBar(
           leading: InkWell(
             onTap: () => widget.parentScaffoldKey.currentState.openDrawer(),
-            child: Icon(Icons.menu, color: Theme.of(context).hintColor),
+            child: Icon(Icons.menu, color: Colors.white60),
           ),
           /**actions: [
               Icon(Icons.local_mall, color: Theme.of(context).hintColor, size: 19),
@@ -63,11 +63,11 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                     child: RefreshProgressIndicator(),
                   )
                 : ShoppingCartButtonWidget(
-                    iconColor: Theme.of(context).hintColor,
+                    iconColor:Colors.white60,
                     labelColor: Theme.of(context).splashColor),
           ],
           automaticallyImplyLeading: false,
-          backgroundColor: Theme.of(context).accentColor,
+          backgroundColor: Color(0xFF333D37),
           elevation: 0,
           centerTitle: false,
           titleSpacing: 0,
@@ -81,15 +81,19 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(S.of(context).delivery_location,
-                        style: Theme.of(context).textTheme.headline1),
+                        style: Theme.of(context).textTheme.headline1.merge(
+                            TextStyle(
+                                color: Colors.white60))),
                     currentUser.value.latitude == null ||
                             currentUser.value.longitude == null
                         ? Text(S.of(context).select_your_address,
-                            style: Theme.of(context).textTheme.caption)
+                            style: Theme.of(context).textTheme.caption.merge(
+                                TextStyle(
+                                    color: Colors.white60)))
                         : Text(currentUser.value.selected_address,
                             style: Theme.of(context).textTheme.caption.merge(
                                 TextStyle(
-                                    color: Theme.of(context).backgroundColor))),
+                                    color: Colors.white60))),
                   ])),
         ),
         body: SafeArea(
@@ -99,7 +103,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  color:Theme.of(context).accentColor ,
+                  color:Color(0xFF333D37),
                   padding: const EdgeInsets.only(left: 20,right: 20,bottom: 8),
                   child: ShopPicker(
                       marketsList: _con?.vendorList,

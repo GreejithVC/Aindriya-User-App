@@ -35,7 +35,7 @@ class _FavShopsState extends StateMVC<FavShops> {
         appBar: AppBar(
           elevation: 0,
           automaticallyImplyLeading: false,
-          backgroundColor: Theme.of(context).primaryColorDark,
+          backgroundColor: Color(0xFF333D37),
           leading: startSelecting!= true ? IconButton(
             onPressed: () {
               Navigator.of(context)

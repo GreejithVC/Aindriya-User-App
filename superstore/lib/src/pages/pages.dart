@@ -88,9 +88,9 @@ class _PagesWidgetState extends State<PagesWidget> {
         bottomNavigationBar: CurvedNavigationBar(
           height: 50,
           animationCurve: Curves.fastOutSlowIn,
-          color: Theme.of(context).secondaryHeaderColor,
+          color: Color(0xFF333D37),
           backgroundColor: Colors.white,
-          buttonBackgroundColor: Theme.of(context).secondaryHeaderColor,
+          buttonBackgroundColor: Color(0xFF333D37),
           index: widget.currentTab,
           onTap: (int i) {
             this._selectTab(i);
@@ -117,11 +117,11 @@ class _PagesWidgetState extends State<PagesWidget> {
             bottomBarIcons(Icon(Icons.chat, color: Colors.white), "Chats"),
             bottomBarIcons(Icon(Icons.home,size: 32, color: Colors.white), "Home"),
             bottomBarIcons(
-                Icon(Icons.favorite, color: Colors.white), "Wishlist"),
+                Icon(Icons.favorite, color: Colors.white,size: 26,), "Wishlist"),
             bottomBarIcons(
-                Icon(Icons.shopping_bag_outlined, color: Colors.white),
+                Icon(Icons.shopping_bag_outlined, color: Colors.white,size: 27,),
                 "Orders"),
-            bottomBarIcons(Icon(Icons.person, color: Colors.white), "Profile"),
+            bottomBarIcons(Icon(Icons.person, color: Colors.white,size: 28,), "Profile"),
             // BottomNavigationBarItem(
             //   icon: Icon(Icons.location_on_outlined),
             //   // ignore: deprecated_member_use
