@@ -80,11 +80,11 @@ class _ShopListBoxWidgetState extends StateMVC<ShopListBoxWidget> {
                                             .backgroundColor))),
                           ),
                           /**  Padding(
-                        padding: EdgeInsets.only(top: 5),
-                        child: Icon(Icons.filter_list, size: 19),
-                        ),
-                        SizedBox(width: 8),
-                        Text('SORT/FILTER', style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).backgroundColor))) */
+                            padding: EdgeInsets.only(top: 5),
+                            child: Icon(Icons.filter_list, size: 19),
+                            ),
+                            SizedBox(width: 8),
+                            Text('SORT/FILTER', style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).backgroundColor))) */
                         ],
                       ),
                     ),
@@ -97,6 +97,12 @@ class _ShopListBoxWidgetState extends StateMVC<ShopListBoxWidget> {
                     padding: EdgeInsets.only(top: 16),
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, int index) {
+                      ShopListGrid(
+                        choice: widget.con.vendorList[index],
+                        shopType: widget.shopType,
+                        focusId: widget.focusId,
+                        previewImage: widget.previewImage,
+                      );
                       return ShopList(
                         choice: widget.con.vendorList[index],
                         shopType: widget.shopType,
@@ -325,6 +331,188 @@ class ShopList extends StatelessWidget {
                                 ),
                               ],
                             ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        : NoShopFoundWidget();
+  }
+}
+
+class ShopListGrid extends StatelessWidget {
+  const ShopListGrid(
+      {Key key, this.choice, this.shopType, this.focusId, this.previewImage})
+      : super(key: key);
+  final Vendor choice;
+  final int shopType;
+  final int focusId;
+  final String previewImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return choice.shopId != 'no_data'
+        ? Hero(
+            tag: choice.shopId,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(
+                        width: 1, color: Theme.of(context).dividerColor)),
+              ),
+              padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    if (choice.openStatus) {
+                      if (shopType == 1 || shopType == 3) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => GroceryStoreWidget(
+                                  shopDetails: choice,
+                                  shopTypeID: shopType,
+                                  focusId: focusId,
+                                )));
+                      } else {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => StoreViewDetails(
+                                  shopDetails: choice,
+                                  shopTypeID: shopType,
+                                  focusId: focusId,
+                                )));
+                      }
+                    } else {
+                      Toast.show(
+                        'Sorry this shop is currently closed',
+                        context,
+                        duration: Toast.LENGTH_LONG,
+                        gravity: Toast.BOTTOM,
+                      );
+                    }
+                  },
+                  child: Container(
+                    height: 250,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12.withOpacity(0.1),
+                            blurRadius: 3.0,
+                            spreadRadius: 1.5,
+                          ),
+                        ]),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        ColorFiltered(
+                          colorFilter: ColorFilter.mode(
+                            choice.openStatus
+                                ? Colors.black.withOpacity(0)
+                                : Colors.black.withOpacity(0.91),
+                            // 0 = Colored, 1 = Black & White
+                            BlendMode.saturation,
+                          ),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(0),
+                                bottomRight: Radius.circular(0),
+                              ),
+                              child: choice.logo != 'no_image'
+                                  ? CachedNetworkImage(
+                                      imageUrl: choice.logo,
+                                      placeholder: (context, url) =>
+                                          new CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          new Icon(Icons.error),
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: 160,
+                                    )
+                                  : CachedNetworkImage(
+                                      imageUrl: previewImage,
+                                      placeholder: (context, url) =>
+                                          new CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          new Icon(Icons.error),
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: 160,
+                                    )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Flexible(
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        choice.shopName,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                              child: Text(choice.subtitle,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .caption)),
+                                          FavButton(vendorData: choice)
+                                        ],
+                                      ),
+                                      SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.01),
+                                      Wrap(children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 3),
+                                          child: Text(
+                                              Helper.priceDistance(
+                                                  choice.distance),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 3),
+                                          child: Text(
+                                              '     ${Helper.calculateTime(double.parse(choice.distance.replaceAll(',', '')))}',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2),
+                                        ),
+                                      ]),
+                                      SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.01),
+                                    ]),
+                              ),
+                            ],
                           ),
                         ),
                       ],

@@ -85,63 +85,6 @@ class _PagesWidgetState extends State<PagesWidget> {
         drawer: DrawerWidget(),
         //backgroundColor: Colors.transparent,
         body: widget.currentPage,
-        // bottomNavigationBar: BottomNavigationBar(
-        //   selectedItemColor: Theme.of(context).accentColor,
-        //   showSelectedLabels: true,
-        //   showUnselectedLabels: true,
-        //   selectedLabelStyle: TextStyle(
-        //       color: Theme.of(context).accentColor,
-        //       fontWeight: FontWeight.w600,
-        //       fontSize: 12),
-        //   unselectedItemColor: Color(0xFFaeaeae),
-        //   unselectedLabelStyle: TextStyle(
-        //     color: Color(0xFFaeaeae),
-        //     fontSize: 12.0,
-        //   ),
-        //   backgroundColor: Theme.of(context).primaryColor,
-        //   currentIndex: widget.currentTab,
-        //   onTap: (int i) {
-        //     this._selectTab(i);
-        //   },
-        //   // this will be set when a new tab is tapped
-        //   items: [
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.location_on_outlined),
-        //       // ignore: deprecated_member_use
-        //       title: Text('Map'),
-        //     ),
-        //     BottomNavigationBarItem(
-        //         icon: Icon(Icons.shop),
-        //         // ignore: deprecated_member_use
-        //         title: Text('Favorite')),
-        //     BottomNavigationBarItem(
-        //         icon: Icon(Icons.chat),
-        //         // ignore: deprecated_member_use
-        //         title: Text('Chats')),
-        //     BottomNavigationBarItem(
-        //         icon: Image(
-        //           image: AssetImage('assets/img/logo.png'),
-        //           width: 35,
-        //           height: 35,
-        //
-        //         ),
-        //         // ignore: deprecated_member_use
-        //         title: Text('Home')),
-        //     BottomNavigationBarItem(
-        //         icon: Icon(Icons.favorite),
-        //         // ignore: deprecated_member_use
-        //         title: Text('Wishlist')),
-        //     BottomNavigationBarItem(
-        //         icon: new Icon(Icons.shopping_bag_outlined),
-        //         // ignore: deprecated_member_use
-        //         title: Text('Orders')),
-        //     BottomNavigationBarItem(
-        //       icon: new Icon(Icons.person),
-        //       // ignore: deprecated_member_use
-        //       title: Text(S.of(context).profile),
-        //     ),
-        //   ],
-        // ),
         bottomNavigationBar: CurvedNavigationBar(
           height: 50,
           animationCurve: Curves.fastOutSlowIn,

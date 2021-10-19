@@ -129,15 +129,6 @@ class _VendorMapWidgetState extends StateMVC<VendorMapWidget> {
 
 
 
-  // IconButton(
-  // icon: Icon(
-  // Icons.my_location,
-  // color: Theme.of(context).hintColor,
-  // ),
-  // onPressed: () {
-  // _con.goCurrentLocation();
-  // },
-  // ),
   Widget _appBar() {
     return Container(
       height: 80,

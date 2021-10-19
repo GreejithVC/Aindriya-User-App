@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:superstore/src/controllers/fav_shop_controller.dart';
 import 'package:superstore/src/elements/EmptyOrdersWidget.dart';
@@ -28,45 +29,45 @@ class _FavShopsState extends StateMVC<FavShops> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-      elevation: 0,
-      automaticallyImplyLeading: false,
-      backgroundColor: Theme.of(context).primaryColorDark,
-      leading:  IconButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => PagesWidget()));
-        },
-        icon: Icon(Icons.arrow_back_ios),
-        color: Theme.of(context).backgroundColor,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).primaryColorDark,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => PagesWidget()));
+          },
+          icon: Icon(Icons.arrow_back_ios),
+          color: Theme.of(context).backgroundColor,
+        ),
+        title: Text(
+          "Favourite Shops",
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+        ),
+        centerTitle: true,
       ),
-      title: Text(
-        "Favourite Shops",
-        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-      ),
-      centerTitle: true,
-    ),
       body: _con.favShopList.isEmpty
           ? EmptyOrdersWidget()
-          : ListView.separated(
+          : StaggeredGridView.countBuilder(
               scrollDirection: Axis.vertical,
               itemCount: _con.favShopList.length,
               shrinkWrap: true,
+              crossAxisCount: 2,
               primary: false,
               padding: EdgeInsets.only(top: 16),
-              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, int index) {
                 Vendor _shopTypeData = _con.favShopList.elementAt(index);
 
-                return ShopList(
+                return ShopListGrid(
                   choice: _shopTypeData,
                   shopType: int.parse(_shopTypeData.shopType) ?? 0,
                   focusId: int.parse(_shopTypeData.focusType) ?? 0,
                   previewImage: _shopTypeData?.shopTypePreviewImage,
                 );
               },
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 0);
-              },
+              staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 5,
             ),
     );
   }
