@@ -67,11 +67,19 @@ class FavShopController extends ControllerMVC {
   }
 
   deleteSelectedFavShop(context) {
+    print("deleteSelectedFavShop");
     List<Vendor> selectedShopList =
-        favShopList.where((element) => element.isSelected == true);
+        favShopList.where((element) => element.isSelected == true).toList();
     selectedShopList?.forEach((element) {
-      deleteFavShop(context, element);
+      print("selectedShopList?.forEach((element)");
+      FirebaseFirestore.instance
+          .collection('Favourites')
+          .doc(currentUser.value.id)
+          .collection("favouriteShops")
+          .doc(element.shopId)
+          .delete();
     });
+    listenForFavShopList();
   }
 
   deleteFavShop(context, Vendor vendor) {
@@ -93,6 +101,7 @@ class FavShopController extends ControllerMVC {
   }
 
   Future<void> listenForFavShopList() async {
+    // setState(() => favShopList.clear());
     favShopList.clear();
     print("listenForFavShopList///");
     FirebaseFirestore.instance
