@@ -7,7 +7,6 @@ import 'package:superstore/src/repository/user_repository.dart';
 class FavShopController extends ControllerMVC {
   List<Vendor> favShopList = <Vendor>[];
 
-
   // addPackageType(context, id, pageType) {
   //   if (generalFormKey.currentState.validate()) {
   //     generalFormKey.currentState.save();
@@ -67,6 +66,14 @@ class FavShopController extends ControllerMVC {
     });
   }
 
+  deleteSelectedFavShop(context) {
+    List<Vendor> selectedShopList =
+        favShopList.where((element) => element.isSelected == true);
+    selectedShopList?.forEach((element) {
+      deleteFavShop(context, element);
+    });
+  }
+
   deleteFavShop(context, Vendor vendor) {
     print("deleteFavShop///");
     FirebaseFirestore.instance
@@ -108,5 +115,4 @@ class FavShopController extends ControllerMVC {
       print(favShopList.length);
     });
   }
-
 }

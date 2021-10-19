@@ -18,6 +18,7 @@ class Vendor {
   String shopTypePreviewImage;
   String openTime;
   String closeTime;
+  bool isSelected;
 
   Vendor();
 

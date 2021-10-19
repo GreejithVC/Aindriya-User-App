@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:superstore/src/controllers/fav_shop_controller.dart';
+import 'package:superstore/src/listener/item_selected_listener.dart';
 import 'package:toast/toast.dart';
 import '../helpers/helper.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -344,20 +346,32 @@ class ShopList extends StatelessWidget {
   }
 }
 
-class ShopListGrid extends StatelessWidget {
-  const ShopListGrid(
-      {Key key, this.choice, this.shopType, this.focusId, this.previewImage})
-      : super(key: key);
+class ShopListGrid extends StatefulWidget {
+  const ShopListGrid({
+    Key key,
+    this.choice,
+    this.shopType,
+    this.focusId,
+    this.previewImage,
+    this.startSelecting,
+  }) : super(key: key);
   final Vendor choice;
   final int shopType;
   final int focusId;
   final String previewImage;
+  final bool startSelecting;
+
+  @override
+  State<ShopListGrid> createState() => _ShopListGridState();
+}
+
+class _ShopListGridState extends State<ShopListGrid> {
 
   @override
   Widget build(BuildContext context) {
-    return choice.shopId != 'no_data'
+    return widget.choice.shopId != 'no_data'
         ? Hero(
-            tag: choice.shopId,
+            tag: widget.choice.shopId,
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
@@ -369,32 +383,39 @@ class ShopListGrid extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () {
-                    if (choice.openStatus) {
-                      if (shopType == 1 || shopType == 3) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => GroceryStoreWidget(
-                                  shopDetails: choice,
-                                  shopTypeID: shopType,
-                                  focusId: focusId,
-                                )));
-                      } else {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => StoreViewDetails(
-                                  shopDetails: choice,
-                                  shopTypeID: shopType,
-                                  focusId: focusId,
-                                )));
-                      }
+                    if (widget.startSelecting == true) {
+                      setState(() {
+                        widget?.choice?.isSelected = !(widget?.choice?.isSelected ?? false);
+                      });
                     } else {
-                      Toast.show(
-                        'Sorry this shop is currently closed',
-                        context,
-                        duration: Toast.LENGTH_LONG,
-                        gravity: Toast.BOTTOM,
-                      );
+                      if (widget.choice.openStatus) {
+                        if (widget.shopType == 1 || widget.shopType == 3) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => GroceryStoreWidget(
+                                    shopDetails: widget.choice,
+                                    shopTypeID: widget.shopType,
+                                    focusId: widget.focusId,
+                                  )));
+                        } else {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => StoreViewDetails(
+                                    shopDetails: widget.choice,
+                                    shopTypeID: widget.shopType,
+                                    focusId: widget.focusId,
+                                  )));
+                        }
+                      } else {
+                        Toast.show(
+                          'Sorry this shop is currently closed',
+                          context,
+                          duration: Toast.LENGTH_LONG,
+                          gravity: Toast.BOTTOM,
+                        );
+                      }
                     }
                   },
                   child: Container(
+                    clipBehavior: Clip.antiAlias,
                     height: 250,
                     decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
@@ -406,115 +427,135 @@ class ShopListGrid extends StatelessWidget {
                             spreadRadius: 1.5,
                           ),
                         ]),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        ColorFiltered(
-                          colorFilter: ColorFilter.mode(
-                            choice.openStatus
-                                ? Colors.black.withOpacity(0)
-                                : Colors.black.withOpacity(0.91),
-                            // 0 = Colored, 1 = Black & White
-                            BlendMode.saturation,
-                          ),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(0),
-                                bottomRight: Radius.circular(0),
+                    child: Stack(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            ColorFiltered(
+                              colorFilter: ColorFilter.mode(
+                                widget.choice.openStatus
+                                    ? Colors.black.withOpacity(0)
+                                    : Colors.black.withOpacity(0.91),
+                                // 0 = Colored, 1 = Black & White
+                                BlendMode.saturation,
                               ),
-                              child: choice.logo != 'no_image'
-                                  ? CachedNetworkImage(
-                                      imageUrl: choice.logo,
-                                      placeholder: (context, url) =>
-                                          new CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) =>
-                                          new Icon(Icons.error),
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: 160,
-                                    )
-                                  : CachedNetworkImage(
-                                      imageUrl: previewImage,
-                                      placeholder: (context, url) =>
-                                          new CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) =>
-                                          new Icon(Icons.error),
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: 160,
-                                    )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Flexible(
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        choice.shopName,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline1,
-                                      ),
-                                      Row(
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                    bottomLeft: Radius.circular(0),
+                                    bottomRight: Radius.circular(0),
+                                  ),
+                                  child: widget.choice.logo != 'no_image'
+                                      ? CachedNetworkImage(
+                                          imageUrl: widget.choice.logo,
+                                          placeholder: (context, url) =>
+                                              new CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              new Icon(Icons.error),
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: 160,
+                                        )
+                                      : CachedNetworkImage(
+                                          imageUrl: widget.previewImage,
+                                          placeholder: (context, url) =>
+                                              new CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              new Icon(Icons.error),
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: 160,
+                                        )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Flexible(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Expanded(
-                                              child: Text(choice.subtitle,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 1,
+                                          Text(
+                                            widget.choice.shopName,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline1,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text(
+                                                      widget.choice.subtitle,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .caption)),
+                                              FavButton(
+                                                  vendorData: widget.choice)
+                                            ],
+                                          ),
+                                          SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.01),
+                                          Wrap(children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 3),
+                                              child: Text(
+                                                  Helper.priceDistance(
+                                                      widget.choice.distance),
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .caption)),
-                                          FavButton(vendorData: choice)
-                                        ],
-                                      ),
-                                      SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01),
-                                      Wrap(children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 3),
-                                          child: Text(
-                                              Helper.priceDistance(
-                                                  choice.distance),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText2),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 3),
-                                          child: Text(
-                                              '     ${Helper.calculateTime(double.parse(choice.distance.replaceAll(',', '')))}',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText2),
-                                        ),
-                                      ]),
-                                      SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01),
-                                    ]),
+                                                      .bodyText2),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 3),
+                                              child: Text(
+                                                  '     ${Helper.calculateTime(double.parse(widget.choice.distance.replaceAll(',', '')))}',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2),
+                                            ),
+                                          ]),
+                                          SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.01),
+                                        ]),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
+                        Visibility(
+                            visible: widget.startSelecting == true,
+                            child: Container(
+                              color: Colors.black.withOpacity(0.5),
+                              alignment: Alignment.topLeft,
+                              padding: EdgeInsets.all(16),
+                              child: Icon(
+                                widget?.choice?.isSelected == true
+                                    ? Icons.check_circle
+                                    : Icons.circle_outlined,
+                                size: 25,
+                                color: Colors.blue,
+                              ),
+                            ))
                       ],
                     ),
                   ),

@@ -14,6 +14,7 @@ class FavShops extends StatefulWidget {
 
 class _FavShopsState extends StateMVC<FavShops> {
   FavShopController _con;
+  bool startSelecting;
 
   _FavShopsState() : super(FavShopController()) {
     _con = controller;
@@ -27,48 +28,72 @@ class _FavShopsState extends StateMVC<FavShops> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: Theme.of(context).primaryColorDark,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => PagesWidget()));
-          },
-          icon: Icon(Icons.arrow_back_ios),
-          color: Theme.of(context).backgroundColor,
+    return WillPopScope(
+      onWillPop: () async {
+        print("WillPopScope");
+        if (startSelecting == true) {
+          setState(() {
+            startSelecting = false;
+          });
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          backgroundColor: Theme.of(context).primaryColorDark,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => PagesWidget()));
+            },
+            icon: Icon(Icons.arrow_back_ios),
+            color: Theme.of(context).backgroundColor,
+          ),
+          title: Text(
+            "Favourite Shops",
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+          ),
+          centerTitle: true,
         ),
-        title: Text(
-          "Favourite Shops",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-        ),
-        centerTitle: true,
-      ),
-      body: _con.favShopList.isEmpty
-          ? EmptyOrdersWidget()
-          : StaggeredGridView.countBuilder(
-              scrollDirection: Axis.vertical,
-              itemCount: _con.favShopList.length,
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              primary: false,
-              padding: EdgeInsets.only(top: 16),
-              itemBuilder: (context, int index) {
-                Vendor _shopTypeData = _con.favShopList.elementAt(index);
+        body: _con.favShopList.isEmpty
+            ? EmptyOrdersWidget()
+            : StaggeredGridView.countBuilder(
+                scrollDirection: Axis.vertical,
+                itemCount: _con.favShopList.length,
+                shrinkWrap: true,
+                crossAxisCount: 2,
+                primary: false,
+                padding: EdgeInsets.only(top: 16),
+                itemBuilder: (context, int index) {
+                  Vendor _shopTypeData = _con.favShopList.elementAt(index);
 
-                return ShopListGrid(
-                  choice: _shopTypeData,
-                  shopType: int.parse(_shopTypeData.shopType) ?? 0,
-                  focusId: int.parse(_shopTypeData.focusType) ?? 0,
-                  previewImage: _shopTypeData?.shopTypePreviewImage,
-                );
-              },
-              staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 5,
-            ),
+                  return GestureDetector(
+                    onLongPress: () {
+                      setState(() {
+                        startSelecting = true;
+                      });
+                    },
+                    child: ShopListGrid(
+                      choice: _shopTypeData,
+                      shopType: int.parse(_shopTypeData.shopType) ?? 0,
+                      focusId: int.parse(_shopTypeData.focusType) ?? 0,
+                      previewImage: _shopTypeData?.shopTypePreviewImage,
+                      startSelecting: startSelecting,
+                      // onItemSelected: (selectedItem) {
+                      //                   //      _con?.isSelected = false;
+                      //                   // },
+                    ),
+                  );
+                },
+                staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 5,
+              ),
+      ),
     );
   }
 }
