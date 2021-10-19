@@ -36,45 +36,70 @@ class _FavShopsState extends StateMVC<FavShops> {
           elevation: 0,
           automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).primaryColorDark,
-          leading: IconButton(
+          leading: startSelecting!= true ? IconButton(
             onPressed: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => PagesWidget()));
             },
             icon: Icon(Icons.arrow_back_ios),
             // color: Theme.of(context).backgroundColor,
-          ),
+          ):null,
           title: startSelecting == false ?Text(
             "Favourite Shops",
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-          ): Text("Select All",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500),),
-          centerTitle: true,
-          actions: [
-            Visibility(
-                visible: startSelecting == true,
-                child: GestureDetector(
-                    onTap: () {
-                      print(startSelecting);
-                      print("startSelecting");
-                      print("select all");
+          ): GestureDetector(
+            onTap: () {
+              print(startSelecting);
+              print("startSelecting");
+              print("select all");
 
-                      setState(() {
-                        selectAll = !(selectAll);
-                       if(selectAll== true){
-                         _con?.favShopList?.forEach((element) {element.isSelected=true;});
-                       } else {
-                         _con?.favShopList?.forEach((element) {element.isSelected=false;});
-                       }
-                        // startSelecting = false;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 24, left: 4),
-                      child: Icon(
-                         selectAll == true?Icons.check_circle:Icons.circle_outlined,
-                        size: 25,
-                      ),
-                    ))),
+              setState(() {
+                selectAll = !(selectAll);
+                if(selectAll== true){
+                  _con?.favShopList?.forEach((element) {element.isSelected=true;});
+                } else {
+                  _con?.favShopList?.forEach((element) {element.isSelected=false;});
+                }
+                // startSelecting = false;
+              });
+            },
+            child: Row(mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  selectAll == true?Icons.check_circle:Icons.circle_outlined,
+                  size: 25,
+                ),
+                Text("  Select All",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),),
+              ],
+            ),
+          ),
+          centerTitle: startSelecting != true,
+          actions: [
+            // Visibility(
+            //     visible: startSelecting == true,
+            //     child: GestureDetector(
+            //         onTap: () {
+            //           print(startSelecting);
+            //           print("startSelecting");
+            //           print("select all");
+            //
+            //           setState(() {
+            //             selectAll = !(selectAll);
+            //            if(selectAll== true){
+            //              _con?.favShopList?.forEach((element) {element.isSelected=true;});
+            //            } else {
+            //              _con?.favShopList?.forEach((element) {element.isSelected=false;});
+            //            }
+            //             // startSelecting = false;
+            //           });
+            //         },
+            //         child: Padding(
+            //           padding: const EdgeInsets.only(right: 24, left: 4),
+            //           child: Icon(
+            //              selectAll == true?Icons.check_circle:Icons.circle_outlined,
+            //             size: 25,
+            //           ),
+            //         ))),
             Visibility(
                 visible: startSelecting == true,
                 child: GestureDetector(
