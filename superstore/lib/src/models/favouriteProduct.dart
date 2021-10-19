@@ -7,6 +7,7 @@ class FavouriteProduct {
   String price;
   String image;
   String shopId;
+  bool isSelected;
 
   FavouriteProduct({this.id, this.productName, this.price, this.image,this.shopId});
 

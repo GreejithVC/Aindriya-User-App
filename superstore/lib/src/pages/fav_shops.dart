@@ -60,7 +60,6 @@ class _FavShopsState extends StateMVC<FavShops> {
                 } else {
                   _con?.favShopList?.forEach((element) {element.isSelected=false;});
                 }
-                // startSelecting = false;
               });
             },
             child: Row(mainAxisSize: MainAxisSize.min,
@@ -75,31 +74,6 @@ class _FavShopsState extends StateMVC<FavShops> {
           ),
           centerTitle: startSelecting != true,
           actions: [
-            // Visibility(
-            //     visible: startSelecting == true,
-            //     child: GestureDetector(
-            //         onTap: () {
-            //           print(startSelecting);
-            //           print("startSelecting");
-            //           print("select all");
-            //
-            //           setState(() {
-            //             selectAll = !(selectAll);
-            //            if(selectAll== true){
-            //              _con?.favShopList?.forEach((element) {element.isSelected=true;});
-            //            } else {
-            //              _con?.favShopList?.forEach((element) {element.isSelected=false;});
-            //            }
-            //             // startSelecting = false;
-            //           });
-            //         },
-            //         child: Padding(
-            //           padding: const EdgeInsets.only(right: 24, left: 4),
-            //           child: Icon(
-            //              selectAll == true?Icons.check_circle:Icons.circle_outlined,
-            //             size: 25,
-            //           ),
-            //         ))),
             Visibility(
                 visible: startSelecting == true,
                 child: GestureDetector(
@@ -159,17 +133,17 @@ class _FavShopsState extends StateMVC<FavShops> {
 
                   return GestureDetector(
                     onLongPress: () {
-                      _con?.favShopList?.forEach((element) {
-                        element.isSelected = false;
-                      });
-                      setState(() {
-                        startSelecting = true;
-                        selectAll =false;
+                    _con?.favShopList?.forEach((element) {
+                      element.isSelected = false;
+                    });
+                    setState(() {
+                      startSelecting = true;
+                      selectAll =false;
 
-                        print(startSelecting);
-                        print("startSelecting");
-                      });
-                    },
+                      print(startSelecting);
+                      print("startSelecting");
+                    });
+                  },
                     child: ShopListGrid(
                       choice: _shopTypeData,
                       shopType: int.parse(_shopTypeData.shopType) ?? 0,

@@ -29,6 +29,21 @@ class FavProductController extends ControllerMVC {
       // Helper.hideLoader(loader);
     });
   }
+  deleteSelectedFavProduct(context){
+    print("deleteSelectedFavProduct");
+    List<FavouriteProduct> selectedProductList =
+    favProductList.where((element) => element.isSelected == true).toList();
+    selectedProductList?.forEach((element) {
+      print("selectedProductList?.forEach((element)");
+      FirebaseFirestore.instance
+          .collection('Favourites')
+          .doc(currentUser.value.id)
+          .collection("favouriteProducts")
+          .doc(element.id)
+          .delete();
+    });
+    listenForFavProductList();
+  }
 
   deleteFavProduct(context, FavouriteProduct productDetails2) {
     print("deleteFavProduct///");
