@@ -50,6 +50,8 @@ class _ProductBox2WidgetState extends StateMVC<ProductBox2Widget> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget?.shopName);
+    print("widget?.shopName");
     return Container(
       padding: EdgeInsets.only(
         left: 10,
@@ -138,7 +140,9 @@ class _ProductBox2WidgetState extends StateMVC<ProductBox2Widget> {
                                                 widget.choice.product_name,
                                             price: _variantData.sale_price,
                                             image: _variantData.image,
-                                        shopId: widget?.shopId
+                                            shopId: widget?.shopId,
+                                            shopName: widget?.shopName,
+
                                         ),
                                       ),
                                     ]),

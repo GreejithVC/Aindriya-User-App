@@ -9,6 +9,7 @@ class Vendor {
   String distance;
   String logo;
   String cover;
+  List<String> coverImageList;
   bool openStatus;
   String longitude;
   String latitude;
@@ -34,6 +35,12 @@ class Vendor {
       logo = jsonMap['logo'] ?? "";
       shopTypePreviewImage = jsonMap['previewImage'] ?? "";
       cover = jsonMap['cover'] ?? "";
+      coverImageList = (jsonMap["coverImageList"] as List<dynamic>)
+          ?.map((val) => val.toString() ?? "")
+          ?.toList();
+      if((coverImageList?.length ?? 0) <= 0){
+        coverImageList = [cover ??""];
+      }
       openStatus = jsonMap['openStatus'] ?? false;
       longitude = jsonMap['longitude'] ?? "";
       latitude = jsonMap['latitude'] ?? "";
@@ -51,6 +58,7 @@ class Vendor {
       distance = '';
       logo = '';
       cover = '';
+      coverImageList = [];
       openStatus = false;
       longitude = '';
       latitude = '';
@@ -73,6 +81,7 @@ class Vendor {
     map["logo"] = logo;
     map["previewImage"] = shopTypePreviewImage;
     map["cover"] = cover;
+    map["coverImageList"] = coverImageList;
     map["openStatus"] = openStatus;
     map["longitude"] = longitude;
     map["latitude"] = latitude;

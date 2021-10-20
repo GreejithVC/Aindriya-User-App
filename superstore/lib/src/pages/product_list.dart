@@ -16,12 +16,16 @@ import '../../generated/l10n.dart';
 // ignore: must_be_immutable
 class ProductList extends StatefulWidget {
   // ignore: non_constant_identifier_names
-  ProductList({Key key, this.pageType, this.offer, this.subcategory_Id, this.pageTitle}) : super(key: key);
+  ProductList(
+      {Key key, this.pageType, this.offer, this.subcategory_Id, this.pageTitle})
+      : super(key: key);
   String pageType;
   String offer;
+
   // ignore: non_constant_identifier_names
   String subcategory_Id;
   String pageTitle;
+
   @override
   _ProductListState createState() => _ProductListState();
 }
@@ -34,16 +38,17 @@ class _ProductListState extends StateMVC<ProductList> {
   _ProductListState() : super(ProductController()) {
     _con = controller;
   }
+
   @override
   void initState() {
     super.initState();
     selectedRadio = 0;
     if (widget.pageType == 'category_wise_offer') {
       setState(() => _con.pageTitle = widget.pageTitle);
-     // _con.listenForProduct_type(widget.offer, widget.subcategory_Id);
+      // _con.listenForProduct_type(widget.offer, widget.subcategory_Id);
     } else if (widget.pageType == 'most_popular') {
       setState(() => _con.pageTitle = widget.pageTitle);
-   //   _con.listenForProduct_type('no', widget.subcategory_Id);
+      //   _con.listenForProduct_type('no', widget.subcategory_Id);
     } else {
       _con.listenForProductList('popularity');
     }
@@ -89,45 +94,45 @@ class _ProductListState extends StateMVC<ProductList> {
     return Scaffold(
       /** floatingActionButton: Container(
           decoration: BoxDecoration(
-            color: Colors.transparent,
+          color: Colors.transparent,
           ),
 
           child: Container(
-              height: MediaQuery.of(context).size.width * 0.15,
-              color: Colors.transparent,
-              child: Center(
-                child: Card(
-                  elevation: 5,
-                  shape: StadiumBorder(),
-                  color: Colors.blueAccent,
-                  child: FlatButton(
-                      onPressed: () {
-                        showModal();
-                      },
-                      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 28),
-                      color: Colors.blueAccent,
-                      shape: StadiumBorder(),
-                      child: Wrap(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 4),
-                            child: Icon(
-                              Icons.local_dining,
-                              color: Colors.white,
-                              size: 17,
-                            ),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.02,
-                          ),
-                          Text(
-                            'BROWSE MENU',
-                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-                          ),
-                        ],
-                      )),
-                ),
-              ))), */
+          height: MediaQuery.of(context).size.width * 0.15,
+          color: Colors.transparent,
+          child: Center(
+          child: Card(
+          elevation: 5,
+          shape: StadiumBorder(),
+          color: Colors.blueAccent,
+          child: FlatButton(
+          onPressed: () {
+          showModal();
+          },
+          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 28),
+          color: Colors.blueAccent,
+          shape: StadiumBorder(),
+          child: Wrap(
+          children: [
+          Padding(
+          padding: EdgeInsets.only(top: 4),
+          child: Icon(
+          Icons.local_dining,
+          color: Colors.white,
+          size: 17,
+          ),
+          ),
+          SizedBox(
+          width: MediaQuery.of(context).size.width * 0.02,
+          ),
+          Text(
+          'BROWSE MENU',
+          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+          ),
+          ],
+          )),
+          ),
+          ))), */
       floatingActionButton: BottomBarWidget(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Container(
@@ -170,7 +175,9 @@ class _ProductListState extends StateMVC<ProductList> {
                         height: 60,
                         child: RefreshProgressIndicator(),
                       )
-                    : ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
+                    : ShoppingCartButtonWidget(
+                        iconColor: Theme.of(context).hintColor,
+                        labelColor: Theme.of(context).accentColor),
               ]),
               onTap: () {},
             ),
@@ -187,24 +194,26 @@ class _ProductListState extends StateMVC<ProductList> {
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-
-
-                             Padding(
-                                    padding: EdgeInsets.only(
-                                      left: 20,
-                                      top: 5,
-                                      right: 20,
-                                    ),
-                                    child: Wrap(
-                                      children: [
-                                        Text(S.of(context).search_instead_for),
-                                        SizedBox(width: 3),
-                                        Text('currentSearch.value.searchTxt',
-                                            style: Theme.of(context).textTheme.bodyText2.merge(TextStyle(color: Theme.of(context).accentColor))),
-                                      ],
-                                    ),
-                                  ),
-
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 20,
+                                top: 5,
+                                right: 20,
+                              ),
+                              child: Wrap(
+                                children: [
+                                  Text(S.of(context).search_instead_for),
+                                  SizedBox(width: 3),
+                                  Text('currentSearch.value.searchTxt',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2
+                                          .merge(TextStyle(
+                                              color: Theme.of(context)
+                                                  .accentColor))),
+                                ],
+                              ),
+                            ),
                             ListView.separated(
                               scrollDirection: Axis.vertical,
                               itemCount: _con.productList.length,
@@ -213,21 +222,34 @@ class _ProductListState extends StateMVC<ProductList> {
                               padding: EdgeInsets.only(top: 10),
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (context, int index) {
+                                print(currentSearch.value.shopName,);
+                                print("currentSearch.value.shopName");
                                 if (_con.productList[index].id != 'No_data') {
-
-                                  return ProductBox2Widget(choice: _con.productList[index], con: _con,shopId: currentSearch.value.shopId,shopName: currentSearch.value.shopName, subtitle: currentSearch.value.subtitle,km: currentSearch.value.km,shopTypeID: currentSearch.value.shopTypeID,latitude:  currentSearch.value.latitude ,longitude: currentSearch.value.longitude, );
+                                  return ProductBox2Widget(
+                                    choice: _con.productList[index],
+                                    con: _con,
+                                    shopId: currentSearch.value.shopId,
+                                    shopName: currentSearch.value.shopName,
+                                    subtitle: currentSearch.value.subtitle,
+                                    km: currentSearch.value.km,
+                                    shopTypeID: currentSearch.value.shopTypeID,
+                                    latitude: currentSearch.value.latitude,
+                                    longitude: currentSearch.value.longitude,
+                                  );
                                   /**
-                                   * ProductBox2Widget(
-                                      choice: _con.productList[index],
-                                      con: _con,
-                                      );
-                                   */
+                             * ProductBox2Widget(
+                                choice: _con.productList[index],
+                                con: _con,
+                                );
+                             */
                                 } else {
                                   return NoDataFoundWidget();
                                 }
                               },
                               separatorBuilder: (context, index) {
-                                return CustomDividerView(dividerHeight: 1.0, color: Theme.of(context).dividerColor);
+                                return CustomDividerView(
+                                    dividerHeight: 1.0,
+                                    color: Theme.of(context).dividerColor);
                               },
                             ),
                           ],

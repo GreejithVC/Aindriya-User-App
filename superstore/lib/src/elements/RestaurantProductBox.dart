@@ -142,7 +142,7 @@ class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
                                                 widget.choice.product_name,
                                             price: _variantData.sale_price,
                                             image: _variantData.image,
-                                        shopId:widget?.shopId),
+                                        shopId:widget?.shopId,shopName: widget?.shopName),
 
                                       ),
                                     ]),

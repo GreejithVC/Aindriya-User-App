@@ -279,6 +279,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
         assert(extent == null || extent >= 200),
         assert(title != null);
   int selectedRadio;
+  final PageController _pageController = PageController(initialPage: 0);
 
   @override
   Widget build(
@@ -289,257 +290,282 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
     final avatarMargin = _avatarMarginTween.lerp(progress);
     final avatarAlign = _avatarAlignTween.lerp(progress);
 
-    return Stack(
-      children: <Widget>[
-        Image(
-            image: shopDetails.cover == 'no_image' && shopTypeID == 3
-                ? AssetImage(
-                    'assets/img/pharmacydefaultbg.jpg',
-                  )
-                : shopDetails.cover == 'no_image' && shopTypeID == 1
+    return Column(
+      children: [
+        Container(
+          height: 200,
+          child: PageView.builder(
+            itemCount: shopDetails?.coverImageList?.length ?? 0 ,
+            scrollDirection: Axis.horizontal,
+            controller: _pageController,
+            // onPageChanged: _onPageChanged,
+            itemBuilder: (context, index) => Image(
+                image: shopDetails.coverImageList.elementAt(index) == 'no_image' && shopTypeID == 2
                     ? AssetImage(
-                        'assets/img/grocerydefaultbg.jpg',
+                        'assets/img/resturentdefaultbg.jpg',
                       )
-                    : NetworkImage(shopDetails.cover),
-            height: 190,
-            width: double.infinity,
-            fit: BoxFit.cover),
-        Padding(
-          padding: EdgeInsets.only(top: 40, right: 20),
-          child: Align(
-              alignment: Alignment.topRight,
-              child: Wrap(children: [
-                Container(
-                    height: 40,
-                    width: 40,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Theme.of(context).accentColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 5.0,
-                          ),
-                        ]),
-                    child: IconButton(
-                      icon: new Icon(Icons.chat,
-                          color: Theme.of(context).primaryColorLight, size: 18),
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ChatDetailPage(
-                                shopId: shopDetails.shopId,
-                                shopName: shopDetails.shopName,
-                                shopMobile: '12')));
-                      },
-                    )),
-                SizedBox(width: 20),
-                Container(
-                    height: 30,
-                    width: 30,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 5.0,
-                          ),
-                        ]),
-                    child: IconButton(
-                      icon: new Icon(Icons.close, size: 18),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    )),
-              ])),
+                    : NetworkImage(shopDetails.coverImageList.elementAt(index)),
+                height: 190,
+                width: double.infinity,
+                fit: BoxFit.cover),
+          ),
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: AnimatedContainer(
-              color: Colors.transparent,
-              duration: Duration(seconds: 0),
-              height: height,
-              width: double.infinity,
-              child: Card(
-                color: Theme.of(context).primaryColor,
-                elevation: 10.0,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: 10, left: shopTitle, right: 10),
-                        child: Row(children: [
-                          Text(shopDetails.shopName,
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.headline6),
-                          Expanded(
-                            child: Text(
-                                "  (${shopDetails?.openTime ?? ""} - ${shopDetails?.closeTime ?? ""})",
-                                style: Theme.of(context).textTheme.subtitle2),
-                          ),
-                          Wrap(
-                            children: [
-                              FavButton(vendorData: shopDetails),
-                              SizedBox(width: 2),
-                              // Text(shopDetails.rate, style: Theme.of(context).textTheme.subtitle2),
-                            ],
-                          )
-                        ]),
-                      ),
-                      Padding(
-                          padding:
-                              EdgeInsets.only(top: 10, left: 10, right: 10),
-                          child: subOpacity == 1.0
-                              ? Text(
-                                  shopDetails.subtitle,
-                                  overflow: TextOverflow.fade,
-                                  maxLines: 1,
-                                )
-                              : Text('')),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: 8, left: 10, right: 10, bottom: 10),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Row(children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                        Helper.priceDistance(
-                                            shopDetails.distance),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2),
-                                    Text('Distance'),
-                                  ],
-                                ),
-                                SizedBox(width: 10),
-                                Column(
-                                  children: [
-                                    Text(
-                                        '${Helper.calculateTime(double.parse(shopDetails.distance.replaceAll(',', '')))}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2),
-                                    Text('Delivery Time'),
-                                  ],
-                                ),
-                                SizedBox(width: 10),
-                                Column(
-                                  children: [
-                                    Text(
-                                        getStatus(
-                                            expiryDateString:
-                                                subscribedPackage?.expiryDate,
-                                            availableCOD: deliveryOptionsModel
-                                                ?.availableCOD,
-                                            availableTakeaway:
-                                                deliveryOptionsModel
-                                                    ?.availableTakeAway),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2),
-                                    Text('Status'),
-                                  ],
+        Expanded(
+          child: Stack(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 40, right: 20),
+                child: Align(
+                    alignment: Alignment.topRight,
+                    child: Wrap(children: [
+                      Container(
+                          height: 40,
+                          width: 40,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Theme.of(context).accentColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 5.0,
                                 ),
                               ]),
+                          child: IconButton(
+                            icon: new Icon(Icons.chat,
+                                color: Theme.of(context).primaryColorLight,
+                                size: 18),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ChatDetailPage(
+                                      shopId: shopDetails.shopId,
+                                      shopName: shopDetails.shopName,
+                                      shopMobile: '12')));
+                            },
+                          )),
+                      SizedBox(width: 20),
+                      Container(
+                          height: 30,
+                          width: 30,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 5.0,
+                                ),
+                              ]),
+                          child: IconButton(
+                            icon: new Icon(Icons.close, size: 18),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )),
+                    ])),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: AnimatedContainer(
+                    color: Colors.transparent,
+                    duration: Duration(seconds: 0),
+                    height: height,
+                    width: double.infinity,
+                    child: Card(
+                      color: Theme.of(context).primaryColor,
+                      elevation: 10.0,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 10, left: shopTitle, right: 10),
+                              child: Row(children: [
+                                Text(shopDetails.shopName,
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        Theme.of(context).textTheme.headline6),
+                                Expanded(
+                                  child: Text(
+                                      "  (${shopDetails?.openTime ?? ""} - ${shopDetails?.closeTime ?? ""})",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2),
+                                ),
+                                Wrap(
+                                  children: [
+                                    FavButton(vendorData: shopDetails),
+                                    SizedBox(width: 2),
+                                    // Text(shopDetails.rate, style: Theme.of(context).textTheme.subtitle2),
+                                  ],
+                                )
+                              ]),
                             ),
-                            IconButton(
-                              onPressed: () {
-                                currentSearch.value.shopName =
-                                    shopDetails.shopName;
-                                currentSearch.value.shopTypeID = shopTypeID;
-                                currentSearch.value.shopId = shopDetails.shopId;
-                                currentSearch.value.latitude =
-                                    shopDetails.latitude;
-                                currentSearch.value.longitude =
-                                    shopDetails.longitude;
-                                currentSearch.value.km = shopDetails.distance;
-                                currentSearch.value.subtitle =
-                                    shopDetails.subtitle;
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    top: 10, left: 10, right: 10),
+                                child: subOpacity == 1.0
+                                    ? Text(
+                                        shopDetails.subtitle,
+                                        overflow: TextOverflow.fade,
+                                        maxLines: 1,
+                                      )
+                                    : Text('')),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 8, left: 10, right: 10, bottom: 10),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Row(children: [
+                                      Column(
+                                        children: [
+                                          Text(
+                                              Helper.priceDistance(
+                                                  shopDetails.distance),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle2),
+                                          Text('Distance'),
+                                        ],
+                                      ),
+                                      SizedBox(width: 10),
+                                      Column(
+                                        children: [
+                                          Text(
+                                              '${Helper.calculateTime(double.parse(shopDetails.distance.replaceAll(',', '')))}',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle2),
+                                          Text('Delivery Time'),
+                                        ],
+                                      ),
+                                      SizedBox(width: 10),
+                                      Column(
+                                        children: [
+                                          Text(
+                                              getStatus(
+                                                  expiryDateString:
+                                                      subscribedPackage
+                                                          ?.expiryDate,
+                                                  availableCOD:
+                                                      deliveryOptionsModel
+                                                          ?.availableCOD,
+                                                  availableTakeaway:
+                                                      deliveryOptionsModel
+                                                          ?.availableTakeAway),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle2),
+                                          Text('Status'),
+                                        ],
+                                      ),
+                                    ]),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      currentSearch.value.shopName =
+                                          shopDetails.shopName;
+                                      currentSearch.value.shopTypeID =
+                                          shopTypeID;
+                                      currentSearch.value.shopId =
+                                          shopDetails.shopId;
+                                      currentSearch.value.latitude =
+                                          shopDetails.latitude;
+                                      currentSearch.value.longitude =
+                                          shopDetails.longitude;
+                                      currentSearch.value.km =
+                                          shopDetails.distance;
+                                      currentSearch.value.subtitle =
+                                          shopDetails.subtitle;
 
-                                Navigator.of(context).push(SearchModal());
-                              },
-                              icon: Icon(Icons.search),
-                            )
+                                      Navigator.of(context).push(SearchModal());
+                                    },
+                                    icon: Icon(Icons.search),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 20, right: 8),
+                                  child: deliveryOptionsModel?.availableCOD ==
+                                          true
+                                      ? Image.asset(
+                                          'assets/img/cod.png',
+                                          scale: 20,
+                                        )
+                                      : Image.asset(
+                                          'assets/img/cod.png',
+                                          scale: 20,
+                                          color: Colors.grey.withOpacity(0.2),
+                                        ),
+                                ),
+                                Text(
+                                  'COD',
+                                  style: TextStyle(
+                                    color: deliveryOptionsModel?.availableCOD ==
+                                            true
+                                        ? Colors.black
+                                        : Colors.grey.withOpacity(0.4),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 30),
+                                  child: deliveryOptionsModel
+                                              ?.availableTakeAway ==
+                                          true
+                                      ? Image.asset(
+                                          'assets/img/takeaway.png',
+                                          scale: 22,
+                                        )
+                                      : Image.asset('assets/img/takeaway.png',
+                                          scale: 22,
+                                          color: Colors.grey.withOpacity(0.2)),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, right: 20),
+                                  child: Text(
+                                    'TakeAway',
+                                    style: TextStyle(
+                                        color: deliveryOptionsModel
+                                                    ?.availableTakeAway ==
+                                                true
+                                            ? Colors.black
+                                            : Colors.grey.withOpacity(0.4)),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 8),
-                            child: deliveryOptionsModel?.availableCOD == true
-                                ? Image.asset(
-                                    'assets/img/cod.png',
-                                    scale: 20,
-                                  )
-                                : Image.asset(
-                                    'assets/img/cod.png',
-                                    scale: 20,
-                                    color: Colors.grey.withOpacity(0.2),
-                                  ),
-                          ),
-                          Text(
-                            'COD',
-                            style: TextStyle(
-                              color: deliveryOptionsModel?.availableCOD == true
-                                  ? Colors.black
-                                  : Colors.grey.withOpacity(0.4),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 30),
-                            child:
-                                deliveryOptionsModel?.availableTakeAway == true
-                                    ? Image.asset(
-                                        'assets/img/takeaway.png',
-                                        scale: 22,
-                                      )
-                                    : Image.asset('assets/img/takeaway.png',
-                                        scale: 22,
-                                        color: Colors.grey.withOpacity(0.2)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 20),
-                            child: Text(
-                              'TakeAway',
-                              style: TextStyle(
-                                  color:
-                                      deliveryOptionsModel?.availableTakeAway ==
-                                              true
-                                          ? Colors.black
-                                          : Colors.grey.withOpacity(0.4)),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: avatarMargin,
-          child: Align(
-              alignment: avatarAlign,
-              child: Hero(tag: shopDetails.shopId, child: avatar)),
-        ),
-        Padding(
-          padding: EdgeInsets.only(bottom: 10),
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: title,
+              Padding(
+                padding: avatarMargin,
+                child: Align(
+                    alignment: avatarAlign,
+                    child: Hero(tag: shopDetails.shopId, child: avatar)),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 10),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: title,
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -553,12 +579,11 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
     print(availableCOD);
     print(availableTakeaway);
     print(expiryDateString);
-    print(DateFormat("dd/MM/yyyy")
-        ?.parse(expiryDateString));
+    print(DateFormat("dd/MM/yyyy")?.parse(expiryDateString));
     print((expiryDateString?.isNotEmpty == true
         ? DateFormat("dd/MM/yyyy")
-        ?.parse(expiryDateString)
-        ?.isBefore(DateTime.now())
+            ?.parse(expiryDateString)
+            ?.isBefore(DateTime.now())
         : true));
     print((availableCOD != true && availableTakeaway != true));
     print(DateTime.now());

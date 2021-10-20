@@ -144,6 +144,8 @@ class _WishListState extends StateMVC<WishList> {
                     itemBuilder: (BuildContext context, int index) {
                       FavouriteProduct _shopTypeData =
                           _con.favProductList.elementAt(index);
+                      print(_shopTypeData?.shopName);
+                      print("_shopTypeData?.shopName");
 
                       return GestureDetector(
                         onLongPress: () {
@@ -215,7 +217,7 @@ class _WishListState extends StateMVC<WishList> {
                                                       padding: EdgeInsets.only(
                                                           left: 10,
                                                           right: 10,
-                                                          top: 15),
+                                                          top: 10),
                                                       child: Text(
                                                           _shopTypeData.productName,
                                                           overflow:
@@ -228,7 +230,7 @@ class _WishListState extends StateMVC<WishList> {
                                                   ),
                                                   Padding(
                                                     padding: const EdgeInsets.only(
-                                                        left: 8, right: 8),
+                                                        left: 4, right: 4),
                                                     child: Container(
                                                       padding: const EdgeInsets.only(
                                                           left: 5,
@@ -278,27 +280,34 @@ class _WishListState extends StateMVC<WishList> {
                                               padding: EdgeInsets.only(
                                                   right: 10, left: 10),
                                               child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    Text("Rs ",
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                        maxLines: 1,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .caption),
+
                                                     Expanded(
-                                                      child: Text(_shopTypeData.price,
+                                                      child: Text(_shopTypeData?.shopName ?? "",
                                                           overflow:
-                                                              TextOverflow.ellipsis,
+                                                          TextOverflow.ellipsis,
                                                           maxLines: 1,
                                                           style: Theme.of(context)
                                                               .textTheme
                                                               .caption),
                                                     ),
+                                                    Text("Rs ",
+                                                        overflow:
+                                                        TextOverflow.ellipsis,
+                                                        maxLines: 1,
+                                                        style:Theme.of(context)
+                                                            .textTheme
+                                                            .subtitle2),
+                                                    Text(_shopTypeData.price,
+                                                        overflow:
+                                                        TextOverflow.ellipsis,
+                                                        maxLines: 1,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .subtitle2),
                                                   ]),
-                                            )
+                                            ),
+
                                           ])
                                     ]),
                                 Visibility(

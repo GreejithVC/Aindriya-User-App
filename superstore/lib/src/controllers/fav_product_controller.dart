@@ -29,10 +29,11 @@ class FavProductController extends ControllerMVC {
       // Helper.hideLoader(loader);
     });
   }
-  deleteSelectedFavProduct(context){
+
+  deleteSelectedFavProduct(context) {
     print("deleteSelectedFavProduct");
     List<FavouriteProduct> selectedProductList =
-    favProductList.where((element) => element.isSelected == true).toList();
+        favProductList.where((element) => element.isSelected == true).toList();
     selectedProductList?.forEach((element) {
       print("selectedProductList?.forEach((element)");
       FirebaseFirestore.instance
@@ -77,9 +78,11 @@ class FavProductController extends ControllerMVC {
         print(result.id);
         print(result.reference);
         print(result.data());
-        setState(
-            () => favProductList.add(FavouriteProduct.fromJSON(result.data())));
+        favProductList.add(FavouriteProduct.fromJSON(result.data()));
       });
+      setState(() => favProductList.sort((a, b) {
+            return a.shopName.compareTo(b.shopName);
+          }));
     }).catchError((e) {
       print(e);
     }).whenComplete(() {
