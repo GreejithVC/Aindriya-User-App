@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:superstore/src/elements/image_zoom.dart';
 import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/packagetype.dart';
 import 'package:superstore/src/pages/store_detail.dart';
@@ -295,19 +296,30 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
         Container(
           height: 200,
           child: PageView.builder(
-            itemCount: shopDetails?.coverImageList?.length ?? 0 ,
+            itemCount: shopDetails?.coverImageList?.length ?? 0,
             scrollDirection: Axis.horizontal,
             controller: _pageController,
             // onPageChanged: _onPageChanged,
-            itemBuilder: (context, index) => Image(
-                image: shopDetails.coverImageList.elementAt(index) == 'no_image' && shopTypeID == 2
-                    ? AssetImage(
-                        'assets/img/resturentdefaultbg.jpg',
-                      )
-                    : NetworkImage(shopDetails.coverImageList.elementAt(index)),
-                height: 190,
-                width: double.infinity,
-                fit: BoxFit.cover),
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ImageZoomScreen(
+                        imageUrl:
+                            shopDetails.coverImageList.elementAt(index))));
+              },
+              child: Image(
+                  image: shopDetails.coverImageList.elementAt(index) ==
+                              'no_image' &&
+                          shopTypeID == 2
+                      ? AssetImage(
+                          'assets/img/resturentdefaultbg.jpg',
+                        )
+                      : NetworkImage(
+                          shopDetails.coverImageList.elementAt(index)),
+                  height: 190,
+                  width: double.infinity,
+                  fit: BoxFit.cover),
+            ),
           ),
         ),
         Expanded(
