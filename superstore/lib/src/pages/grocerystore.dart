@@ -174,7 +174,236 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      SizedBox(height: 10),
+
+                      Container(
+                        padding: EdgeInsets.all(4),
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(widget?.shopDetails?.shopName,
+                                      style:
+                                          Theme.of(context).textTheme.headline6),
+                                ),
+                                FavButton(vendorData: widget?.shopDetails),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                widget?.shopDetails?.subtitle,
+                                overflow: TextOverflow.fade,
+                                maxLines: 1,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: Colors.black12)),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: Text(
+                                "Shop Status",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w900,
+                                    color: Color(0xFF49aecb)),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    Icon(
+                                      Icons.access_time,
+                                      size: 24,
+                                      color: Color(0xFF333D37),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4),
+                                      child: Text(
+                                        "${widget?.shopDetails?.openTime ?? ""} - ${widget?.shopDetails?.closeTime ?? ""}",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Icon(
+                                      Icons.store_mall_directory,
+                                      size: 24,
+                                      color: Color(0xFF333D37),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4),
+                                      child: Text(
+                                        getStatus(
+                                            expiryDateString: _con
+                                                .subScribedPackage
+                                                ?.expiryDate,
+                                            availableCOD: _con
+                                                .deliveryOptionsModel
+                                                ?.availableCOD,
+                                            availableTakeaway: _con
+                                                .deliveryOptionsModel
+                                                ?.availableTakeAway),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Image.asset(
+                                      'assets/img/homedelivery.png',
+                                      height: 24,
+                                      color: Color(0xFF333D37),
+                                      fit: BoxFit.contain,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4),
+                                      child: Text(
+                                        getStatus(
+                                            expiryDateString: _con
+                                                .subScribedPackage
+                                                ?.expiryDate,
+                                            availableCOD: _con
+                                                .deliveryOptionsModel
+                                                ?.availableCOD,
+                                            availableTakeaway: _con
+                                                .deliveryOptionsModel
+                                                ?.availableTakeAway),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Image.asset(
+                                      'assets/img/takeawayicon.png',
+                                      height: 24,
+                                      color: Color(0xFF333D37),
+                                      fit: BoxFit.contain,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4),
+                                      child: Text(
+                                        getStatus(
+                                            expiryDateString: _con
+                                                .subScribedPackage
+                                                ?.expiryDate,
+                                            availableCOD: _con
+                                                .deliveryOptionsModel
+                                                ?.availableCOD,
+                                            availableTakeaway: _con
+                                                .deliveryOptionsModel
+                                                ?.availableTakeAway),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: Colors.black12)),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: Text(
+                                "Payment Options",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w900,
+                                    color: Color(0xFF49aecb)),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Image.asset(
+                                        'assets/img/ic_cod.png',
+                                        height: 24,
+                                        color: Color(0xFF333D37),
+                                        fit: BoxFit.contain,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 4),
+                                        child: Text(
+                                          "COD",
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Image.asset(
+                                        'assets/img/ic_upi.png',
+                                        height: 24,
+                                        color: Color(0xFF333D37),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      Text(
+                                        "UPI",
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Image.asset(
+                                        'assets/img/ic_card.png',
+                                        height: 24,
+                                        color: Color(0xFF333D37),
+                                        fit: BoxFit.contain,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 4),
+                                        child: Text(
+                                          "Card",
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                       TopCategoriesWidget(
                         focusId: widget.focusId,
                         categoryData: _con.categories,
@@ -192,6 +421,32 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
         ),
       ),
     );
+  }
+
+  String getStatus(
+      {String expiryDateString, bool availableCOD, bool availableTakeaway}) {
+    print("isexpire in grocery /////////////////////getStatus");
+    print(expiryDateString);
+    print(availableCOD);
+    print(availableTakeaway);
+    print(expiryDateString);
+    print(DateFormat("dd/MM/yyyy")?.parse(expiryDateString));
+    print((expiryDateString?.isNotEmpty == true
+        ? DateFormat("dd/MM/yyyy")
+            ?.parse(expiryDateString)
+            ?.isBefore(DateTime.now())
+        : true));
+    print((availableCOD != true && availableTakeaway != true));
+    print(DateTime.now());
+    print("expiry ,,,,,,,,,,,,,,,,,");
+    return (expiryDateString?.isNotEmpty == true
+                ? DateFormat("dd/MM/yyyy")
+                    ?.parse(expiryDateString)
+                    ?.isBefore(DateTime.now())
+                : true) ||
+            (availableCOD != true && availableTakeaway != true)
+        ? "Closed"
+        : "Open";
   }
 }
 
@@ -325,58 +580,58 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
         Expanded(
           child: Stack(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 40, right: 20),
-                child: Align(
-                    alignment: Alignment.topRight,
-                    child: Wrap(children: [
-                      Container(
-                          height: 40,
-                          width: 40,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Theme.of(context).accentColor,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 5.0,
-                                ),
-                              ]),
-                          child: IconButton(
-                            icon: new Icon(Icons.chat,
-                                color: Theme.of(context).primaryColorLight,
-                                size: 18),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ChatDetailPage(
-                                      shopId: shopDetails.shopId,
-                                      shopName: shopDetails.shopName,
-                                      shopMobile: '12')));
-                            },
-                          )),
-                      SizedBox(width: 20),
-                      Container(
-                          height: 30,
-                          width: 30,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 5.0,
-                                ),
-                              ]),
-                          child: IconButton(
-                            icon: new Icon(Icons.close, size: 18),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          )),
-                    ])),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.only(top: 40, right: 20),
+              //   child: Align(
+              //       alignment: Alignment.topRight,
+              //       child: Wrap(children: [
+              //         Container(
+              //             height: 40,
+              //             width: 40,
+              //             alignment: Alignment.center,
+              //             decoration: BoxDecoration(
+              //                 shape: BoxShape.circle,
+              //                 color: Theme.of(context).accentColor,
+              //                 boxShadow: [
+              //                   BoxShadow(
+              //                     color: Colors.grey,
+              //                     blurRadius: 5.0,
+              //                   ),
+              //                 ]),
+              //             child: IconButton(
+              //               icon: new Icon(Icons.chat,
+              //                   color: Theme.of(context).primaryColorLight,
+              //                   size: 18),
+              //               onPressed: () {
+              //                 Navigator.of(context).push(MaterialPageRoute(
+              //                     builder: (context) => ChatDetailPage(
+              //                         shopId: shopDetails.shopId,
+              //                         shopName: shopDetails.shopName,
+              //                         shopMobile: '12')));
+              //               },
+              //             )),
+              //         SizedBox(width: 20),
+              //         Container(
+              //             height: 30,
+              //             width: 30,
+              //             alignment: Alignment.center,
+              //             decoration: BoxDecoration(
+              //                 shape: BoxShape.circle,
+              //                 color: Colors.white,
+              //                 boxShadow: [
+              //                   BoxShadow(
+              //                     color: Colors.grey,
+              //                     blurRadius: 5.0,
+              //                   ),
+              //                 ]),
+              //             child: IconButton(
+              //               icon: new Icon(Icons.close, size: 18),
+              //               onPressed: () {
+              //                 Navigator.pop(context);
+              //               },
+              //             )),
+              //       ])),
+              // ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
