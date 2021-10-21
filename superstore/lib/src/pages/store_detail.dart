@@ -387,6 +387,11 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                           style:
                           Theme.of(context).textTheme.headline6),
                     ),
+                    Image.asset(
+                      'assets/img/location.png',
+                      height: 26,
+                      fit: BoxFit.contain,
+                    ),
                     FavButton(vendorData: shopDetails),
                   ],
                 ),

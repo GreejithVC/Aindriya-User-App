@@ -217,6 +217,14 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                       style:
                                           Theme.of(context).textTheme.headline6),
                                 ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8,left: 4),
+                                  child: Image.asset(
+                                    'assets/img/location.png',
+                                    height: 26,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
                                 FavButton(vendorData: widget?.shopDetails),
                               ],
                             ),
