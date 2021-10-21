@@ -96,7 +96,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
       //loginWidth = 250.0;
     });
   }
-
+  final PageController _pageController = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
     print("expiry ////subScribedPackage?.expiryDate");
@@ -122,43 +122,42 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                           )));
                 })
             : Container(),
-        body: NestedScrollView(
-          controller: controller1,
-          headerSliverBuilder: (BuildContext context, bool isScrolled) {
-            return [
-              TransitionAppBar(
-                extent: 250,
-                shopTitle: shopTitle,
-                shopDetails: widget.shopDetails,
-                subOpacity: subOpacity,
-                shopTypeID: widget.shopTypeID,
-                subscribedPackage: _con.subScribedPackage,
-                deliveryOptionsModel: _con.deliveryOptionsModel,
-                avatar: Container(
-                  height: 50,
-                  width: 50,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(widget.shopDetails.logo),
-                        fit: BoxFit.fill),
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 5.0,
-                      ),
-                    ],
-                  ),
-                ),
-                title: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
-                ),
-                height: AdBlockHeight,
-              ),
-            ];
-          },
+        // body: NestedScrollView(
+        //   controller: controller1,
+        //   headerSliverBuilder: (BuildContext context, bool isScrolled) {
+        //     return [
+        //       TransitionAppBar(
+        //         extent: 250,
+        //         shopTitle: shopTitle,
+        //         shopDetails: widget.shopDetails,
+        //         subOpacity: subOpacity,
+        //         shopTypeID: widget.shopTypeID,
+        //         subscribedPackage: _con.subScribedPackage,
+        //         deliveryOptionsModel: _con.deliveryOptionsModel,
+        //         avatar: Container(
+        //           height: 50,
+        //           width: 50,
+        //           alignment: Alignment.center,
+        //           decoration: BoxDecoration(
+        //             image: DecorationImage(
+        //                 image: NetworkImage(widget.shopDetails.logo),
+        //                 fit: BoxFit.fill),
+        //             shape: BoxShape.circle,
+        //             color: Colors.white,
+        //             boxShadow: [
+        //               BoxShadow(
+        //                 color: Colors.grey,
+        //                 blurRadius: 5.0,
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //         title: Container(
+        //           margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
+        //         ),
+        //       ),
+        //     ];
+        //   },
           body: (_con.subScribedPackage?.expiryDate?.isNotEmpty == true
                       ? DateFormat("dd/MM/yyyy")
                           ?.parse(_con.subScribedPackage?.expiryDate)
@@ -168,15 +167,44 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                       _con.deliveryOptionsModel?.availableTakeAway != true)
               ? Center(child: Text("Sorry this shop is currently closed"))
               : SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
+                      Container(
+                        height: 200,
+                        child: PageView.builder(
+                          itemCount: widget?.shopDetails?.coverImageList?.length ?? 0,
+                          scrollDirection: Axis.horizontal,
+                          controller: _pageController,
+                          // onPageChanged: _onPageChanged,
+                          itemBuilder: (context, index) => GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ImageZoomScreen(
+                                      imageUrl:
+                                      widget?.shopDetails?.coverImageList?.elementAt(index))));
+                            },
+                            child: Image(
+                                image: widget?.shopDetails?.coverImageList?.elementAt(index) ==
+                                    'no_image' &&
+                                    widget?.shopTypeID == 2
+                                    ? AssetImage(
+                                  'assets/img/resturentdefaultbg.jpg',
+                                )
+                                    : NetworkImage(
+                                    widget?.shopDetails?.coverImageList?.elementAt(index)),
+                                height: 190,
+                                width: double.infinity,
+                                fit: BoxFit.cover),
+                          ),
+                        ),
+                      ),
 
                       Container(
-                        padding: EdgeInsets.all(4),
+                        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 10),
                         margin: EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -280,16 +308,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                     Padding(
                                       padding: const EdgeInsets.only(top: 4),
                                       child: Text(
-                                        getStatus(
-                                            expiryDateString: _con
-                                                .subScribedPackage
-                                                ?.expiryDate,
-                                            availableCOD: _con
-                                                .deliveryOptionsModel
-                                                ?.availableCOD,
-                                            availableTakeaway: _con
-                                                .deliveryOptionsModel
-                                                ?.availableTakeAway),
+                                       "HomeDelivery"
                                       ),
                                     ),
                                   ],
@@ -305,18 +324,8 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                     Padding(
                                       padding: const EdgeInsets.only(top: 4),
                                       child: Text(
-                                        getStatus(
-                                            expiryDateString: _con
-                                                .subScribedPackage
-                                                ?.expiryDate,
-                                            availableCOD: _con
-                                                .deliveryOptionsModel
-                                                ?.availableCOD,
-                                            availableTakeaway: _con
-                                                .deliveryOptionsModel
-                                                ?.availableTakeAway),
-                                      ),
-                                    ),
+                                          "TakeAway"
+                                    ),)
                                   ],
                                 ),
                               ],
@@ -419,8 +428,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                   ),
                 ),
         ),
-      ),
-    );
+      );
   }
 
   String getStatus(
@@ -454,7 +462,6 @@ class TransitionAppBar extends StatelessWidget {
   final Widget avatar;
   final Widget title;
   final double extent;
-  final double height;
   final double shopTitle;
   final Vendor shopDetails;
   final PackageTypeModel subscribedPackage;
@@ -466,7 +473,6 @@ class TransitionAppBar extends StatelessWidget {
       {this.avatar,
       this.title,
       this.extent = 250,
-      this.height,
       this.shopTitle,
       this.shopDetails,
       this.shopTypeID,
@@ -484,7 +490,6 @@ class TransitionAppBar extends StatelessWidget {
           avatar: avatar,
           title: title,
           extent: extent > 200 ? extent : 91,
-          height: height,
           shopTitle: shopTitle,
           shopDetails: shopDetails,
           subscribedPackage: subscribedPackage,
@@ -497,20 +502,9 @@ class TransitionAppBar extends StatelessWidget {
 }
 
 class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
-  final _avatarMarginTween = EdgeInsetsTween(
-      begin: EdgeInsets.only(top: 40, bottom: 70, left: 30),
-      end: EdgeInsets.only(
-        left: 30,
-        top: 30.0,
-        bottom: 10,
-      ));
-  final _avatarAlignTween =
-      AlignmentTween(begin: Alignment.topLeft, end: Alignment.bottomLeft);
-  final double heights;
   final Widget avatar;
   final Widget title;
   final double extent;
-  final double height;
   final double shopTitle;
   final Vendor shopDetails;
   final PackageTypeModel subscribedPackage;
@@ -520,10 +514,8 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   _TransitionAppBarDelegate({
     this.avatar,
-    this.heights,
     this.title,
     this.extent = 250,
-    this.height,
     this.shopTitle,
     this.shopDetails,
     this.subOpacity,
@@ -540,301 +532,295 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    double tempVal = 34 * maxExtent / 100;
-    final progress = shrinkOffset > tempVal ? 1.0 : shrinkOffset / tempVal;
-
-    final avatarMargin = _avatarMarginTween.lerp(progress);
-    final avatarAlign = _avatarAlignTween.lerp(progress);
 
     return Column(
       children: [
-        Container(
-          height: 200,
-          child: PageView.builder(
-            itemCount: shopDetails?.coverImageList?.length ?? 0,
-            scrollDirection: Axis.horizontal,
-            controller: _pageController,
-            // onPageChanged: _onPageChanged,
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ImageZoomScreen(
-                        imageUrl:
-                            shopDetails.coverImageList.elementAt(index))));
-              },
-              child: Image(
-                  image: shopDetails.coverImageList.elementAt(index) ==
-                              'no_image' &&
-                          shopTypeID == 2
-                      ? AssetImage(
-                          'assets/img/resturentdefaultbg.jpg',
-                        )
-                      : NetworkImage(
-                          shopDetails.coverImageList.elementAt(index)),
-                  height: 190,
-                  width: double.infinity,
-                  fit: BoxFit.cover),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Stack(
-            children: <Widget>[
-              // Padding(
-              //   padding: EdgeInsets.only(top: 40, right: 20),
-              //   child: Align(
-              //       alignment: Alignment.topRight,
-              //       child: Wrap(children: [
-              //         Container(
-              //             height: 40,
-              //             width: 40,
-              //             alignment: Alignment.center,
-              //             decoration: BoxDecoration(
-              //                 shape: BoxShape.circle,
-              //                 color: Theme.of(context).accentColor,
-              //                 boxShadow: [
-              //                   BoxShadow(
-              //                     color: Colors.grey,
-              //                     blurRadius: 5.0,
-              //                   ),
-              //                 ]),
-              //             child: IconButton(
-              //               icon: new Icon(Icons.chat,
-              //                   color: Theme.of(context).primaryColorLight,
-              //                   size: 18),
-              //               onPressed: () {
-              //                 Navigator.of(context).push(MaterialPageRoute(
-              //                     builder: (context) => ChatDetailPage(
-              //                         shopId: shopDetails.shopId,
-              //                         shopName: shopDetails.shopName,
-              //                         shopMobile: '12')));
-              //               },
-              //             )),
-              //         SizedBox(width: 20),
-              //         Container(
-              //             height: 30,
-              //             width: 30,
-              //             alignment: Alignment.center,
-              //             decoration: BoxDecoration(
-              //                 shape: BoxShape.circle,
-              //                 color: Colors.white,
-              //                 boxShadow: [
-              //                   BoxShadow(
-              //                     color: Colors.grey,
-              //                     blurRadius: 5.0,
-              //                   ),
-              //                 ]),
-              //             child: IconButton(
-              //               icon: new Icon(Icons.close, size: 18),
-              //               onPressed: () {
-              //                 Navigator.pop(context);
-              //               },
-              //             )),
-              //       ])),
-              // ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: AnimatedContainer(
-                    color: Colors.transparent,
-                    duration: Duration(seconds: 0),
-                    height: height,
-                    width: double.infinity,
-                    child: Card(
-                      color: Theme.of(context).primaryColor,
-                      elevation: 10.0,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  top: 10, left: shopTitle, right: 10),
-                              child: Row(children: [
-                                Text(shopDetails.shopName,
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        Theme.of(context).textTheme.headline6),
-                                Expanded(
-                                  child: Text(
-                                      "  (${shopDetails?.openTime ?? ""} - ${shopDetails?.closeTime ?? ""})",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle2),
-                                ),
-                                Wrap(
-                                  children: [
-                                    FavButton(vendorData: shopDetails),
-                                    SizedBox(width: 2),
-                                    // Text(shopDetails.rate, style: Theme.of(context).textTheme.subtitle2),
-                                  ],
-                                )
-                              ]),
-                            ),
-                            Padding(
-                                padding: EdgeInsets.only(
-                                    top: 10, left: 10, right: 10),
-                                child: subOpacity == 1.0
-                                    ? Text(
-                                        shopDetails.subtitle,
-                                        overflow: TextOverflow.fade,
-                                        maxLines: 1,
-                                      )
-                                    : Text('')),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  top: 8, left: 10, right: 10, bottom: 10),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Row(children: [
-                                      Column(
-                                        children: [
-                                          Text(
-                                              Helper.priceDistance(
-                                                  shopDetails.distance),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2),
-                                          Text('Distance'),
-                                        ],
-                                      ),
-                                      SizedBox(width: 10),
-                                      Column(
-                                        children: [
-                                          Text(
-                                              '${Helper.calculateTime(double.parse(shopDetails.distance.replaceAll(',', '')))}',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2),
-                                          Text('Delivery Time'),
-                                        ],
-                                      ),
-                                      SizedBox(width: 10),
-                                      Column(
-                                        children: [
-                                          Text(
-                                              getStatus(
-                                                  expiryDateString:
-                                                      subscribedPackage
-                                                          ?.expiryDate,
-                                                  availableCOD:
-                                                      deliveryOptionsModel
-                                                          ?.availableCOD,
-                                                  availableTakeaway:
-                                                      deliveryOptionsModel
-                                                          ?.availableTakeAway),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2),
-                                          Text('Status'),
-                                        ],
-                                      ),
-                                    ]),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      currentSearch.value.shopName =
-                                          shopDetails.shopName;
-                                      currentSearch.value.shopTypeID =
-                                          shopTypeID;
-                                      currentSearch.value.shopId =
-                                          shopDetails.shopId;
-                                      currentSearch.value.latitude =
-                                          shopDetails.latitude;
-                                      currentSearch.value.longitude =
-                                          shopDetails.longitude;
-                                      currentSearch.value.km =
-                                          shopDetails.distance;
-                                      currentSearch.value.subtitle =
-                                          shopDetails.subtitle;
-
-                                      Navigator.of(context).push(SearchModal());
-                                    },
-                                    icon: Icon(Icons.search),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 20, right: 8),
-                                  child: deliveryOptionsModel?.availableCOD ==
-                                          true
-                                      ? Image.asset(
-                                          'assets/img/cod.png',
-                                          scale: 20,
-                                        )
-                                      : Image.asset(
-                                          'assets/img/cod.png',
-                                          scale: 20,
-                                          color: Colors.grey.withOpacity(0.2),
-                                        ),
-                                ),
-                                Text(
-                                  'COD',
-                                  style: TextStyle(
-                                    color: deliveryOptionsModel?.availableCOD ==
-                                            true
-                                        ? Colors.black
-                                        : Colors.grey.withOpacity(0.4),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 30),
-                                  child: deliveryOptionsModel
-                                              ?.availableTakeAway ==
-                                          true
-                                      ? Image.asset(
-                                          'assets/img/takeaway.png',
-                                          scale: 22,
-                                        )
-                                      : Image.asset('assets/img/takeaway.png',
-                                          scale: 22,
-                                          color: Colors.grey.withOpacity(0.2)),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, right: 20),
-                                  child: Text(
-                                    'TakeAway',
-                                    style: TextStyle(
-                                        color: deliveryOptionsModel
-                                                    ?.availableTakeAway ==
-                                                true
-                                            ? Colors.black
-                                            : Colors.grey.withOpacity(0.4)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: avatarMargin,
-                child: Align(
-                    alignment: avatarAlign,
-                    child: Hero(tag: shopDetails.shopId, child: avatar)),
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: title,
-                ),
-              ),
-            ],
-          ),
-        ),
+        // Container(
+        //   height: 200,
+        //   child: PageView.builder(
+        //     itemCount: shopDetails?.coverImageList?.length ?? 0,
+        //     scrollDirection: Axis.horizontal,
+        //     controller: _pageController,
+        //     // onPageChanged: _onPageChanged,
+        //     itemBuilder: (context, index) => GestureDetector(
+        //       onTap: () {
+        //         Navigator.of(context).push(MaterialPageRoute(
+        //             builder: (context) => ImageZoomScreen(
+        //                 imageUrl:
+        //                     shopDetails.coverImageList.elementAt(index))));
+        //       },
+        //       child: Image(
+        //           image: shopDetails.coverImageList.elementAt(index) ==
+        //                       'no_image' &&
+        //                   shopTypeID == 2
+        //               ? AssetImage(
+        //                   'assets/img/resturentdefaultbg.jpg',
+        //                 )
+        //               : NetworkImage(
+        //                   shopDetails.coverImageList.elementAt(index)),
+        //           height: 190,
+        //           width: double.infinity,
+        //           fit: BoxFit.cover),
+        //     ),
+        //   ),
+        // ),
+        // // Expanded(
+        // //   child: Stack(
+        // //     children: <Widget>[
+        // //       // Padding(
+        // //       //   padding: EdgeInsets.only(top: 40, right: 20),
+        // //       //   child: Align(
+        // //       //       alignment: Alignment.topRight,
+        // //       //       child: Wrap(children: [
+        // //       //         Container(
+        // //       //             height: 40,
+        // //       //             width: 40,
+        // //       //             alignment: Alignment.center,
+        // //       //             decoration: BoxDecoration(
+        // //       //                 shape: BoxShape.circle,
+        // //       //                 color: Theme.of(context).accentColor,
+        // //       //                 boxShadow: [
+        // //       //                   BoxShadow(
+        // //       //                     color: Colors.grey,
+        // //       //                     blurRadius: 5.0,
+        // //       //                   ),
+        // //       //                 ]),
+        // //       //             child: IconButton(
+        // //       //               icon: new Icon(Icons.chat,
+        // //       //                   color: Theme.of(context).primaryColorLight,
+        // //       //                   size: 18),
+        // //       //               onPressed: () {
+        // //       //                 Navigator.of(context).push(MaterialPageRoute(
+        // //       //                     builder: (context) => ChatDetailPage(
+        // //       //                         shopId: shopDetails.shopId,
+        // //       //                         shopName: shopDetails.shopName,
+        // //       //                         shopMobile: '12')));
+        // //       //               },
+        // //       //             )),
+        // //       //         SizedBox(width: 20),
+        // //       //         Container(
+        // //       //             height: 30,
+        // //       //             width: 30,
+        // //       //             alignment: Alignment.center,
+        // //       //             decoration: BoxDecoration(
+        // //       //                 shape: BoxShape.circle,
+        // //       //                 color: Colors.white,
+        // //       //                 boxShadow: [
+        // //       //                   BoxShadow(
+        // //       //                     color: Colors.grey,
+        // //       //                     blurRadius: 5.0,
+        // //       //                   ),
+        // //       //                 ]),
+        // //       //             child: IconButton(
+        // //       //               icon: new Icon(Icons.close, size: 18),
+        // //       //               onPressed: () {
+        // //       //                 Navigator.pop(context);
+        // //       //               },
+        // //       //             )),
+        // //       //       ])),
+        // //       // ),
+        // //       Align(
+        // //         alignment: Alignment.bottomCenter,
+        // //         child: Padding(
+        // //           padding: EdgeInsets.symmetric(horizontal: 20),
+        // //           child: AnimatedContainer(
+        // //             color: Colors.transparent,
+        // //             duration: Duration(seconds: 0),
+        // //             width: double.infinity,
+        // //             child: Card(
+        // //               color: Theme.of(context).primaryColor,
+        // //               elevation: 10.0,
+        // //               child: SingleChildScrollView(
+        // //                 child: Column(
+        // //                   mainAxisAlignment: MainAxisAlignment.start,
+        // //                   crossAxisAlignment: CrossAxisAlignment.start,
+        // //                   children: [
+        // //                     Padding(
+        // //                       padding: EdgeInsets.only(
+        // //                           top: 10, left: shopTitle, right: 10),
+        // //                       child: Row(children: [
+        // //                         Text(shopDetails.shopName,
+        // //                             textAlign: TextAlign.center,
+        // //                             style:
+        // //                                 Theme.of(context).textTheme.headline6),
+        // //                         Expanded(
+        // //                           child: Text(
+        // //                               "  (${shopDetails?.openTime ?? ""} - ${shopDetails?.closeTime ?? ""})",
+        // //                               style: Theme.of(context)
+        // //                                   .textTheme
+        // //                                   .subtitle2),
+        // //                         ),
+        // //                         Wrap(
+        // //                           children: [
+        // //                             FavButton(vendorData: shopDetails),
+        // //                             SizedBox(width: 2),
+        // //                             // Text(shopDetails.rate, style: Theme.of(context).textTheme.subtitle2),
+        // //                           ],
+        // //                         )
+        // //                       ]),
+        // //                     ),
+        // //                     Padding(
+        // //                         padding: EdgeInsets.only(
+        // //                             top: 10, left: 10, right: 10),
+        // //                         child: subOpacity == 1.0
+        // //                             ? Text(
+        // //                                 shopDetails.subtitle,
+        // //                                 overflow: TextOverflow.fade,
+        // //                                 maxLines: 1,
+        // //                               )
+        // //                             : Text('')),
+        // //                     Padding(
+        // //                       padding: EdgeInsets.only(
+        // //                           top: 8, left: 10, right: 10, bottom: 10),
+        // //                       child: Row(
+        // //                         children: [
+        // //                           Expanded(
+        // //                             child: Row(children: [
+        // //                               Column(
+        // //                                 children: [
+        // //                                   Text(
+        // //                                       Helper.priceDistance(
+        // //                                           shopDetails.distance),
+        // //                                       style: Theme.of(context)
+        // //                                           .textTheme
+        // //                                           .subtitle2),
+        // //                                   Text('Distance'),
+        // //                                 ],
+        // //                               ),
+        // //                               SizedBox(width: 10),
+        // //                               Column(
+        // //                                 children: [
+        // //                                   Text(
+        // //                                       '${Helper.calculateTime(double.parse(shopDetails.distance.replaceAll(',', '')))}',
+        // //                                       style: Theme.of(context)
+        // //                                           .textTheme
+        // //                                           .subtitle2),
+        // //                                   Text('Delivery Time'),
+        // //                                 ],
+        // //                               ),
+        // //                               SizedBox(width: 10),
+        // //                               Column(
+        // //                                 children: [
+        // //                                   Text(
+        // //                                       getStatus(
+        // //                                           expiryDateString:
+        // //                                               subscribedPackage
+        // //                                                   ?.expiryDate,
+        // //                                           availableCOD:
+        // //                                               deliveryOptionsModel
+        // //                                                   ?.availableCOD,
+        // //                                           availableTakeaway:
+        // //                                               deliveryOptionsModel
+        // //                                                   ?.availableTakeAway),
+        // //                                       style: Theme.of(context)
+        // //                                           .textTheme
+        // //                                           .subtitle2),
+        // //                                   Text('Status'),
+        // //                                 ],
+        // //                               ),
+        // //                             ]),
+        // //                           ),
+        // //                           IconButton(
+        // //                             onPressed: () {
+        // //                               currentSearch.value.shopName =
+        // //                                   shopDetails.shopName;
+        // //                               currentSearch.value.shopTypeID =
+        // //                                   shopTypeID;
+        // //                               currentSearch.value.shopId =
+        // //                                   shopDetails.shopId;
+        // //                               currentSearch.value.latitude =
+        // //                                   shopDetails.latitude;
+        // //                               currentSearch.value.longitude =
+        // //                                   shopDetails.longitude;
+        // //                               currentSearch.value.km =
+        // //                                   shopDetails.distance;
+        // //                               currentSearch.value.subtitle =
+        // //                                   shopDetails.subtitle;
+        // //
+        // //                               Navigator.of(context).push(SearchModal());
+        // //                             },
+        // //                             icon: Icon(Icons.search),
+        // //                           )
+        // //                         ],
+        // //                       ),
+        // //                     ),
+        // //                     Row(
+        // //                       children: [
+        // //                         Padding(
+        // //                           padding:
+        // //                               const EdgeInsets.only(left: 20, right: 8),
+        // //                           child: deliveryOptionsModel?.availableCOD ==
+        // //                                   true
+        // //                               ? Image.asset(
+        // //                                   'assets/img/cod.png',
+        // //                                   scale: 20,
+        // //                                 )
+        // //                               : Image.asset(
+        // //                                   'assets/img/cod.png',
+        // //                                   scale: 20,
+        // //                                   color: Colors.grey.withOpacity(0.2),
+        // //                                 ),
+        // //                         ),
+        // //                         Text(
+        // //                           'COD',
+        // //                           style: TextStyle(
+        // //                             color: deliveryOptionsModel?.availableCOD ==
+        // //                                     true
+        // //                                 ? Colors.black
+        // //                                 : Colors.grey.withOpacity(0.4),
+        // //                           ),
+        // //                         ),
+        // //                         Padding(
+        // //                           padding: const EdgeInsets.only(left: 30),
+        // //                           child: deliveryOptionsModel
+        // //                                       ?.availableTakeAway ==
+        // //                                   true
+        // //                               ? Image.asset(
+        // //                                   'assets/img/takeaway.png',
+        // //                                   scale: 22,
+        // //                                 )
+        // //                               : Image.asset('assets/img/takeaway.png',
+        // //                                   scale: 22,
+        // //                                   color: Colors.grey.withOpacity(0.2)),
+        // //                         ),
+        // //                         Padding(
+        // //                           padding:
+        // //                               const EdgeInsets.only(left: 8, right: 20),
+        // //                           child: Text(
+        // //                             'TakeAway',
+        // //                             style: TextStyle(
+        // //                                 color: deliveryOptionsModel
+        // //                                             ?.availableTakeAway ==
+        // //                                         true
+        // //                                     ? Colors.black
+        // //                                     : Colors.grey.withOpacity(0.4)),
+        // //                           ),
+        // //                         ),
+        // //                       ],
+        // //                     ),
+        // //                   ],
+        // //                 ),
+        // //               ),
+        // //             ),
+        // //           ),
+        // //         ),
+        // //       ),
+        // //       Padding(
+        // //         padding: avatarMargin,
+        // //         child: Align(
+        // //             alignment: avatarAlign,
+        // //             child: Hero(tag: shopDetails.shopId, child: avatar)),
+        // //       ),
+        // //       Padding(
+        // //         padding: EdgeInsets.only(bottom: 10),
+        // //         child: Align(
+        // //           alignment: Alignment.bottomCenter,
+        // //           child: title,
+        // //         ),
+        // //       ),
+        // //     ],
+        // //   ),
+        // // ),
       ],
     );
   }
