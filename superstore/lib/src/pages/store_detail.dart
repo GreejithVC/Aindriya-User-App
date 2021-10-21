@@ -134,7 +134,6 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
 
             return [
               TransitionAppBar(
-                extent: 250,
                 shopTitle: shopTitle,
                 shopDetails: widget.shopDetails,
                 shopTypeID: widget.shopTypeID,
@@ -165,7 +164,6 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
                 title: Container(
                   margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
                 ),
-                height: AdBlockHeight,
               ),
               SliverPersistentHeader(
                 floating: false,
@@ -248,8 +246,6 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
 class TransitionAppBar extends StatelessWidget {
   final Widget avatar;
   final Widget title;
-  final double extent;
-  final double height;
   final double shopTitle;
   final Vendor shopDetails;
   final double subOpacity;
@@ -263,8 +259,6 @@ class TransitionAppBar extends StatelessWidget {
   TransitionAppBar(
       {this.avatar,
       this.title,
-      this.extent = 250,
-      this.height,
       this.shopTitle,
       this.shopDetails,
       this.subOpacity,
@@ -285,8 +279,6 @@ class TransitionAppBar extends StatelessWidget {
           shopTypeID: shopTypeID,
           avatar: avatar,
           title: title,
-          extent: extent > 200 ? extent : 91,
-          height: height,
           shopTitle: shopTitle,
           shopDetails: shopDetails,
           subscribedPackage: subscribedPackage,
@@ -303,8 +295,6 @@ class TransitionAppBar extends StatelessWidget {
 class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
   final Widget avatar;
   final Widget title;
-  final double extent;
-  final double height;
   final double shopTitle;
   final Vendor shopDetails;
   final double subOpacity;
@@ -318,8 +308,6 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
   _TransitionAppBarDelegate({
     this.avatar,
     this.title,
-    this.extent = 250,
-    this.height,
     this.shopTitle,
     this.shopDetails,
     this.subOpacity,
@@ -331,148 +319,214 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
     this.deliveryOptionsModel,
     @required ScrollController scrollController,
   })  : assert(avatar != null),
-        assert(extent == null || extent >= 200),
         assert(title != null);
   final PageController _pageController = PageController(initialPage: 0);
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
 
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        children: [
+    return ListView(
+      padding: EdgeInsets.all(0),
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: [
 
-      Container(
-            height: 200,
-      child: PageView.builder(
-        itemCount: shopDetails?.coverImageList?.length ?? 0 ,
-        scrollDirection: Axis.horizontal,
-        controller: _pageController,
-        // onPageChanged: _onPageChanged,
-        itemBuilder: (context, index) => GestureDetector(
-          onTap: (){
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ImageZoomScreen(
-                    imageUrl:
-                    shopDetails.coverImageList.elementAt(index))));
-          },
-          child: Image(
-              image: shopDetails.coverImageList.elementAt(index) == 'no_image' && shopTypeID == 2
-                  ? AssetImage(
-                'assets/img/resturentdefaultbg.jpg',
-              )
-                  : NetworkImage(shopDetails.coverImageList.elementAt(index)),
-              height: 190,
-              width: double.infinity,
-              fit: BoxFit.cover),
-        ),
+    Container(
+          height: 200,
+    child: PageView.builder(
+      itemCount: shopDetails?.coverImageList?.length ?? 0 ,
+      scrollDirection: Axis.horizontal,
+      controller: _pageController,
+      // onPageChanged: _onPageChanged,
+      itemBuilder: (context, index) => GestureDetector(
+        onTap: (){
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ImageZoomScreen(
+                  imageUrl:
+                  shopDetails.coverImageList.elementAt(index))));
+        },
+        child: Image(
+            image: shopDetails.coverImageList.elementAt(index) == 'no_image' && shopTypeID == 2
+                ? AssetImage(
+              'assets/img/resturentdefaultbg.jpg',
+            )
+                : NetworkImage(shopDetails.coverImageList.elementAt(index)),
+            height: 190,
+            width: double.infinity,
+            fit: BoxFit.cover),
       ),
     ),
+    ),
 
-          Container(
-            padding: EdgeInsets.all(4),
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(shopDetails?.shopName,
-                          style:
-                          Theme.of(context).textTheme.headline6),
-                    ),
-                    Image.asset(
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 4,horizontal: 10),
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(shopDetails?.shopName,
+                        style:
+                        Theme.of(context).textTheme.headline6),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8,left: 4),
+                    child: Image.asset(
                       'assets/img/location.png',
                       height: 26,
                       fit: BoxFit.contain,
                     ),
-                    FavButton(vendorData: shopDetails),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: Text(
-                    shopDetails?.subtitle,
-                    overflow: TextOverflow.fade,
-                    maxLines: 1,
                   ),
-                )
-              ],
-            ),
+                  FavButton(vendorData: shopDetails),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  shopDetails?.subtitle,
+                  overflow: TextOverflow.fade,
+                  maxLines: 1,
+                ),
+              )
+            ],
           ),
-          Container(
-            padding:
-            EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            margin:
-            EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: Colors.black12)),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: Text(
-                    "Shop Status",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900,
-                        color: Color(0xFF49aecb)),
-                    textAlign: TextAlign.center,
-                  ),
+        ),
+        Container(
+          padding:
+          EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          margin:
+          EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(color: Colors.black12)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Text(
+                  "Shop Status",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w900,
+                      color: Color(0xFF49aecb)),
+                  textAlign: TextAlign.center,
                 ),
-                Row(
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Icon(
+                        Icons.access_time,
+                        size: 24,
+                        color: Color(0xFF333D37),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          "${shopDetails?.openTime ?? ""} - ${shopDetails?.closeTime ?? ""}",
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Icon(
+                        Icons.store_mall_directory,
+                        size: 24,
+                        color: Color(0xFF333D37),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          getStatus(
+                              expiryDateString:subscribedPackage
+                                  ?.expiryDate,
+                              availableCOD:deliveryOptionsModel
+                                  ?.availableCOD,
+                              availableTakeaway:deliveryOptionsModel
+                                  ?.availableTakeAway),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Image.asset(
+                        'assets/img/homedelivery.png',
+                        height: 24,
+                        color: Color(0xFF333D37),
+                        fit: BoxFit.contain,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                            "HomeDelivery"
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Image.asset(
+                        'assets/img/takeawayicon.png',
+                        height: 24,
+                        color: Color(0xFF333D37),
+                        fit: BoxFit.contain,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                            "TakeAway"
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+        Container(
+          padding:
+          EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          margin:
+          EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(color: Colors.black12)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Text(
+                  "Payment Options",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w900,
+                      color: Color(0xFF49aecb)),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       children: [
-                        Icon(
-                          Icons.access_time,
-                          size: 24,
-                          color: Color(0xFF333D37),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text(
-                            "${shopDetails?.openTime ?? ""} - ${shopDetails?.closeTime ?? ""}",
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Icon(
-                          Icons.store_mall_directory,
-                          size: 24,
-                          color: Color(0xFF333D37),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text(
-                            getStatus(
-                                expiryDateString:subscribedPackage
-                                    ?.expiryDate,
-                                availableCOD:deliveryOptionsModel
-                                    ?.availableCOD,
-                                availableTakeaway:deliveryOptionsModel
-                                    ?.availableTakeAway),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
                         Image.asset(
-                          'assets/img/homedelivery.png',
+                          'assets/img/ic_cod.png',
                           height: 24,
                           color: Color(0xFF333D37),
                           fit: BoxFit.contain,
@@ -480,7 +534,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: Text(
-                              "HomeDelivery"
+                            "COD",
                           ),
                         ),
                       ],
@@ -488,7 +542,20 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                     Column(
                       children: [
                         Image.asset(
-                          'assets/img/takeawayicon.png',
+                          'assets/img/ic_upi.png',
+                          height: 24,
+                          color: Color(0xFF333D37),
+                          fit: BoxFit.cover,
+                        ),
+                        Text(
+                          "UPI",
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Image.asset(
+                          'assets/img/ic_card.png',
                           height: 24,
                           color: Color(0xFF333D37),
                           fit: BoxFit.contain,
@@ -496,410 +563,21 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: Text(
-                              "TakeAway"
+                            "Card",
                           ),
                         ),
                       ],
                     ),
                   ],
-                )
-              ],
-            ),
-          ),
-          Container(
-            padding:
-            EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            margin:
-            EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: Colors.black12)),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: Text(
-                    "Payment Options",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900,
-                        color: Color(0xFF49aecb)),
-                    textAlign: TextAlign.center,
-                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Image.asset(
-                            'assets/img/ic_cod.png',
-                            height: 24,
-                            color: Color(0xFF333D37),
-                            fit: BoxFit.contain,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Text(
-                              "COD",
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Image.asset(
-                            'assets/img/ic_upi.png',
-                            height: 24,
-                            color: Color(0xFF333D37),
-                            fit: BoxFit.cover,
-                          ),
-                          Text(
-                            "UPI",
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Image.asset(
-                            'assets/img/ic_card.png',
-                            height: 24,
-                            color: Color(0xFF333D37),
-                            fit: BoxFit.contain,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Text(
-                              "Card",
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
+        ),
 
-        ],
-      ),
+      ],
     );
 
-    //   Column(
-    //   children: [
-    //     Container(
-    //       height: 200,
-    //       child: PageView.builder(
-    //         itemCount: shopDetails?.coverImageList?.length ?? 0 ,
-    //         scrollDirection: Axis.horizontal,
-    //         controller: _pageController,
-    //         // onPageChanged: _onPageChanged,
-    //         itemBuilder: (context, index) => GestureDetector(
-    //           onTap: (){
-    //             Navigator.of(context).push(MaterialPageRoute(
-    //                 builder: (context) => ImageZoomScreen(
-    //                     imageUrl:
-    //                     shopDetails.coverImageList.elementAt(index))));
-    //           },
-    //           child: Image(
-    //               image: shopDetails.coverImageList.elementAt(index) == 'no_image' && shopTypeID == 2
-    //                   ? AssetImage(
-    //                 'assets/img/resturentdefaultbg.jpg',
-    //               )
-    //                   : NetworkImage(shopDetails.coverImageList.elementAt(index)),
-    //               height: 190,
-    //               width: double.infinity,
-    //               fit: BoxFit.cover),
-    //         ),
-    //       ),
-    //     ),
-    //
-    //     // Image(
-    //     //     image: shopDetails.cover == 'no_image' && shopTypeID == 2
-    //     //         ? AssetImage(
-    //     //       'assets/img/resturentdefaultbg.jpg',
-    //     //     )
-    //     //         : NetworkImage(shopDetails.cover),
-    //     //     height: 190,
-    //     //     width: double.infinity,
-    //     //     fit: BoxFit.cover),
-    //     Expanded(
-    //       child: Stack(
-    //         children: <Widget>[
-    //
-    //           Padding(
-    //             padding: EdgeInsets.only(top: 140, right: 20),
-    //             child: Align(
-    //                 alignment: Alignment.topRight,
-    //                 child: Wrap(children: [
-    //                   Container(
-    //                       height: 40,
-    //                       width: 40,
-    //                       alignment: Alignment.center,
-    //                       decoration: BoxDecoration(
-    //                           shape: BoxShape.circle,
-    //                           color: Theme.of(context).accentColor,
-    //                           boxShadow: [
-    //                             BoxShadow(
-    //                               color: Colors.grey,
-    //                               blurRadius: 5.0,
-    //                             ),
-    //                           ]),
-    //                       child: IconButton(
-    //                         icon: new Icon(Icons.chat,
-    //                             color: Theme.of(context).primaryColorLight, size: 18),
-    //                         onPressed: () {
-    //                           Navigator.of(context).push(MaterialPageRoute(
-    //                               builder: (context) => ChatDetailPage(
-    //                                   shopId: shopDetails.shopId,
-    //                                   shopName: shopDetails.shopName,
-    //                                   shopMobile: '12')));
-    //                         },
-    //                       )),
-    //                   SizedBox(width: 20),
-    //                   Container(
-    //                       height: 30,
-    //                       width: 30,
-    //                       alignment: Alignment.center,
-    //                       decoration: BoxDecoration(
-    //                           shape: BoxShape.circle,
-    //                           color: Colors.white,
-    //                           boxShadow: [
-    //                             BoxShadow(
-    //                               color: Colors.grey,
-    //                               blurRadius: 5.0,
-    //                             ),
-    //                           ]),
-    //                       child: IconButton(
-    //                         icon: new Icon(Icons.close, size: 18),
-    //                         onPressed: () {
-    //                           Navigator.pop(context);
-    //                         },
-    //                       )),
-    //                 ])),
-    //           ),
-    //           Align(
-    //             alignment: Alignment.bottomCenter,
-    //             child: Padding(
-    //               padding: EdgeInsets.symmetric(horizontal: 20),
-    //               child: AnimatedContainer(
-    //                 color: Colors.transparent,
-    //                 duration: Duration(seconds: 0),
-    //                 height: height,
-    //                 width: double.infinity,
-    //                 child: Card(
-    //                   color: Theme.of(context).primaryColor,
-    //                   elevation: 10.0,
-    //                   child: SingleChildScrollView(
-    //                     child: Column(
-    //                       mainAxisAlignment: MainAxisAlignment.start,
-    //                       crossAxisAlignment: CrossAxisAlignment.start,
-    //                       children: [
-    //                         Padding(
-    //                           padding: EdgeInsets.only(
-    //                               top: 10, left: shopTitle, right: 10),
-    //                           child: Row(children: [
-    //                             Text(shopDetails.shopName,
-    //                                 textAlign: TextAlign.center,
-    //                                 style: Theme.of(context).textTheme.headline6),
-    //                             Expanded(
-    //                               child: Text(
-    //                                   "  (${shopDetails?.openTime ?? ""} - ${shopDetails?.closeTime ?? ""})",
-    //                                   style: Theme.of(context).textTheme.subtitle2),
-    //                             ),
-    //                             Wrap(
-    //                               children: [
-    //                                 FavButton(vendorData: shopDetails),
-    //                                 SizedBox(width: 2),
-    //                               ],
-    //                             )
-    //                           ]),
-    //                         ),
-    //                         Padding(
-    //                             padding:
-    //                                 EdgeInsets.only(top: 10, left: 10, right: 10),
-    //                             child: subOpacity == 1.0
-    //                                 ? Text(
-    //                                     shopDetails.subtitle,
-    //                                     overflow: TextOverflow.fade,
-    //                                     maxLines: 1,
-    //                                   )
-    //                                 : Text('')),
-    //                         Padding(
-    //                           padding: EdgeInsets.only(
-    //                               top: 8, left: 10, right: 10, bottom: 10),
-    //                           child: Row(
-    //                             children: [
-    //                               Expanded(
-    //                                 child: Row(children: [
-    //                                   Column(
-    //                                     children: [
-    //                                       Text(
-    //                                           Helper.priceDistance(
-    //                                               shopDetails.distance),
-    //                                           style: Theme.of(context)
-    //                                               .textTheme
-    //                                               .subtitle2),
-    //                                       Text('Distance'),
-    //                                     ],
-    //                                   ),
-    //                                   SizedBox(width: 10),
-    //                                   Column(
-    //                                     children: [
-    //                                       Text(
-    //                                           '${Helper.calculateTime(double.parse(shopDetails.distance.replaceAll(',', '')))}',
-    //                                           style: Theme.of(context)
-    //                                               .textTheme
-    //                                               .subtitle2),
-    //                                       Text('Delivery Time'),
-    //                                     ],
-    //                                   ),
-    //                                   SizedBox(width: 10),
-    //                                   Column(
-    //                                     children: [
-    //                                       Text(
-    //                                           getStatus(
-    //                                               expiryDateString:
-    //                                                   subscribedPackage?.expiryDate,
-    //                                               availableCOD: deliveryOptionsModel
-    //                                                   ?.availableCOD,
-    //                                               availableTakeaway:
-    //                                                   deliveryOptionsModel
-    //                                                       ?.availableTakeAway),
-    //                                           style: Theme.of(context)
-    //                                               .textTheme
-    //                                               .subtitle2),
-    //                                       Text('Status'),
-    //                                     ],
-    //                                   ),
-    //                                 ]),
-    //                               ),
-    //                               IconButton(
-    //                                 onPressed: () {
-    //                                   Navigator.of(context).push(MaterialPageRoute(
-    //                                       builder: (context) => SearchResultWidgetRe(
-    //                                             itemDetails: itemDetails,
-    //                                             shopId: shopDetails.shopId,
-    //                                             shopName: shopDetails.shopName,
-    //                                             subtitle: shopDetails.subtitle,
-    //                                             km: shopDetails.distance,
-    //                                             shopTypeID: shopTypeID,
-    //                                             latitude: shopDetails.latitude,
-    //                                             longitude: shopDetails.longitude,
-    //                                             callback: this.callback,
-    //                                             focusId: focusId,
-    //                                           )));
-    //                                 },
-    //                                 icon: Icon(Icons.search),
-    //                               )
-    //                             ],
-    //                           ),
-    //                         ),
-    //                         Row(
-    //                           children: [
-    //                             // Container(
-    //                             //   // foregroundDecoration: BoxDecoration(
-    //                             //   // color:deliveryOptionsModel?.availableCOD == true ? Colors.transparent :Colors.grey,
-    //                             //   // backgroundBlendMode: BlendMode.saturation,
-    //                             // ),
-    //                             //   // color: deliveryOptionsModel?.availableCOD == true ? Colors.transparent :Colors.grey.withOpacity(0.1),
-    //                             //   child: Row(
-    //                             //     children: [
-    //                             //       Image.asset('assets/img/cod.png',scale: 20,),
-    //                             //       Text('COD',style: Theme.of(context).textTheme.bodyText1,),
-    //                             //     ],
-    //                             //   ),
-    //                             // ),
-    //                             // SizedBox(width: 20,),
-    //                             // Container(color: deliveryOptionsModel?.availableTakeAway == true ? Colors.transparent :Colors.grey.withOpacity(0.5),
-    //                             //   child: Row(
-    //                             //     children: [
-    //                             //       Image.asset('assets/img/takeaway.png',scale: 22,),
-    //                             //       Text('TakeAway',style: Theme.of(context).textTheme.bodyText1,),
-    //                             //
-    //                             //     ],
-    //                             //   ),
-    //                             // )
-    //                             Padding(
-    //                               padding: const EdgeInsets.only(left: 20, right: 8),
-    //                               // child: deliveryOptionsModel?.availableCOD == true ? Icon(Icons.radio_button_checked,color: Colors.blue,):Icon(Icons.radio_button_off,color: Colors.black,),
-    //                               child: deliveryOptionsModel?.availableCOD == true
-    //                                   ? Image.asset(
-    //                                       'assets/img/cod.png',
-    //                                       scale: 20,
-    //                                     )
-    //                                   : Image.asset(
-    //                                       'assets/img/cod.png',
-    //                                       scale: 20,
-    //                                       color: Colors.grey.withOpacity(0.2),
-    //                                     ),
-    //                             ),
-    //                             Text(
-    //                               'COD',
-    //                               style: TextStyle(
-    //                                 color: deliveryOptionsModel?.availableCOD == true
-    //                                     ? Colors.black
-    //                                     : Colors.grey.withOpacity(0.4),
-    //                               ),
-    //                             ),
-    //                             SizedBox(
-    //                               width: 45,
-    //                             ),
-    //
-    //                             // deliveryOptionsModel?.availableTakeAway == true ? Icon(Icons.radio_button_checked,color: Colors.blue,):Icon(Icons.radio_button_off,color: Colors.black,),
-    //                             deliveryOptionsModel?.availableTakeAway == true
-    //                                 ? Image.asset(
-    //                                     'assets/img/takeaway.png',
-    //                                     scale: 22,
-    //                                   )
-    //                                 : Image.asset('assets/img/takeaway.png',
-    //                                     scale: 22,
-    //                                     color: Colors.grey.withOpacity(0.2)),
-    //                             Padding(
-    //                               padding: const EdgeInsets.only(left: 8, right: 20),
-    //                               child: Text(
-    //                                 'TakeAway',
-    //                                 style: TextStyle(
-    //                                     color:
-    //                                         deliveryOptionsModel?.availableTakeAway ==
-    //                                                 true
-    //                                             ? Colors.black
-    //                                             : Colors.grey.withOpacity(0.4)),
-    //                               ),
-    //                             ),
-    //                           ],
-    //                         ),
-    //                       ],
-    //                     ),
-    //                   ),
-    //                 ),
-    //               ),
-    //             ),
-    //           ),
-    //           Padding(
-    //             padding: avatarMargin,
-    //             child: Align(
-    //                 alignment: avatarAlign,
-    //                 child: Hero(tag: shopDetails.shopId, child: avatar)),
-    //           ),
-    //           Padding(
-    //             padding: EdgeInsets.only(bottom: 10),
-    //             child: Align(
-    //               alignment: Alignment.bottomCenter,
-    //               child: title,
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ],
-    // );
   }
 
   String getStatus(
@@ -929,10 +607,10 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => extent;
+  double get maxExtent => 460;
 
   @override
-  double get minExtent => (maxExtent * 68) / 100;
+  double get minExtent => 200;
 
   @override
   bool shouldRebuild(_TransitionAppBarDelegate oldDelegate) {
