@@ -12,7 +12,6 @@ import 'package:superstore/src/repository/user_repository.dart';
 import 'package:toast/toast.dart';
 import '../repository/user_repository.dart' as userRepo;
 
-
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -28,82 +27,79 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        clipBehavior: Clip.none, alignment: Alignment.center,
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
         children: [
-
           Container(
             width: double.infinity,
-
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-
-                     Center(
-                          child:Stack(
-                            clipBehavior: Clip.none, alignment: Alignment.center,
+                Center(
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.center,
+                    children: [
+                      Image(
+                        image: AssetImage('assets/img/resturentdefaultbg.jpg'),
+                        height: 190,
+                        width: double.infinity,
+                        fit: BoxFit.fill,
+                      ),
+                      // Container(
+                      //   margin: EdgeInsets.only(top:180),
+                      //   width: MediaQuery.of(context).size.width,
+                      //   height:10,
+                      //   decoration: BoxDecoration(
+                      //       color:Theme.of(context).primaryColor,
+                      //       borderRadius: BorderRadius.only(
+                      //           topLeft: Radius.circular(0),
+                      //           topRight: Radius.circular(0))),
+                      //   child:Column(
+                      //     children: [
+                      //       Text('hh',style:TextStyle(color:Colors.transparent))
+                      //     ],
+                      //   ),
+                      //
+                      // ),
+                      Positioned(
+                          top: 50,
+                          child: Column(
                             children: [
-                              Image(image:AssetImage('assets/img/resturentdefaultbg.jpg'),
-                                height: 250,
-                                width: double.infinity,
-                                fit: BoxFit.fill,
-                              ),
                               Container(
-                                margin: EdgeInsets.only(top:180),
-                                width: MediaQuery.of(context).size.width,
-                                height:80,
+                                margin: EdgeInsets.only(top: 10),
+                                height: 90.0,
+                                width: 90.0,
                                 decoration: BoxDecoration(
-                                    color:Theme.of(context).primaryColor,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(50),
-                                        topRight: Radius.circular(50))),
-                                child:Column(
-                                  children: [
-                                    Text('hh',style:TextStyle(color:Colors.transparent))
-                                  ],
-                                ),
-
-                              ),
-                              Positioned(
-                                  top:130,
-                                  child:Column(
-                                    children: [
-                                      Container(
-                                          margin: EdgeInsets.only(top:10),
-                                          height: 90.0,
-                                          width: 90.0,
-                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Imagepickerbottomsheet();
-                                          },
-
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.white,
-                                            backgroundImage: currentUser.value.image != 'no_image' &&  currentUser.value.image != null
-                                                ? NetworkImage(currentUser.value.image)
-                                                : AssetImage(
-                                              'assets/img/userImage.png',
-                                            ),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Imagepickerbottomsheet();
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    backgroundImage: currentUser.value.image !=
+                                                'no_image' &&
+                                            currentUser.value.image != null
+                                        ? NetworkImage(currentUser.value.image)
+                                        : AssetImage(
+                                            'assets/img/userImage.png',
                                           ),
-                                      ),
-                                      ),
-                                    ],
-                                  )
+                                  ),
+                                ),
                               ),
-
-
                             ],
-                          ),
-                        ),
-
-
-                  Container(
-                      color: Theme.of(context).primaryColor,
-                    child:Column(
+                          )),
+                    ],
+                  ),
+                ),
+                Container(
+                    color: Theme.of(context).primaryColor,
+                    child: Column(
                       children: [
                         Container(
-                          padding: EdgeInsets.only(left:10,right:10),
+                          padding: EdgeInsets.only(left: 10, right: 10,top: 5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -112,92 +108,194 @@ class _ProfilePageState extends State<ProfilePage> {
                                   children: <Widget>[
                                     Text(
                                       currentUser.value.name,
-                                      style: Theme.of(context).textTheme.headline4,
+                                      style:
+                                          Theme.of(context).textTheme.headline4,
                                     ),
                                     SizedBox(
                                       height: 5.0,
                                     ),
                                     Text(currentUser.value.email,
-                                        style:Theme.of(context).textTheme.subtitle1.merge(TextStyle(color:Colors.grey))
-                                    ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1
+                                            .merge(
+                                                TextStyle(color: Colors.grey))),
                                   ],
                                 ),
                               ),
-
                             ],
                           ),
                         ),
                         /**
-                        Container(
-                          margin: EdgeInsets.only(top:20,left:20,right:10),
-                          child:Row(
+                            Container(
+                            margin: EdgeInsets.only(top:20,left:20,right:10),
+                            child:Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Container(
-                                child:Column(
-                                  children: [
-                                    Text('123343', textAlign: TextAlign.center,
-                                      style: Theme.of(context).textTheme.headline1,),
-                                    SizedBox(height:5),
-                                    Text('Like',style:Theme.of(context).textTheme.subtitle1.merge(TextStyle(color:Colors.grey)))
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width:40),
-                              Container(
-                                child:Column(
-                                  children: [
-                                    Text('123343', textAlign: TextAlign.center,
-                                      style: Theme.of(context).textTheme.headline1,),
-                                    SizedBox(height:5),
-                                    Text('Comment',style:Theme.of(context).textTheme.subtitle1.merge(TextStyle(color:Colors.grey)))
-                                  ],
-                                ),
-                              ),
+                            Container(
+                            child:Column(
+                            children: [
+                            Text('123343', textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headline1,),
+                            SizedBox(height:5),
+                            Text('Like',style:Theme.of(context).textTheme.subtitle1.merge(TextStyle(color:Colors.grey)))
+                            ],
+                            ),
+                            ),
+                            SizedBox(width:40),
+                            Container(
+                            child:Column(
+                            children: [
+                            Text('123343', textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headline1,),
+                            SizedBox(height:5),
+                            Text('Comment',style:Theme.of(context).textTheme.subtitle1.merge(TextStyle(color:Colors.grey)))
+                            ],
+                            ),
+                            ),
 
                             ],
-                          ),
-                        ), */
+                            ),
+                            ), */
                       ],
-                    )
-                  ),
-
-
-
-
-
+                    )),
                 Expanded(
                   child: Container(
-                    width:double.infinity,
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
-                        ),
+                    ),
                     child: SingleChildScrollView(
-
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-
-
-
                           ListView(
                             physics: NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.only(top:0),
+                            padding: EdgeInsets.only(top: 0),
                             shrinkWrap: true,
                             children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Item(
+                                        Icon(
+                                          Icons.password_rounded,
+                                          color: Colors.white,
+                                          size: 24,
+                                        ),
+                                        "Change Password"),
+                                    SizedBox(width: 10),
+                                    Item(
+                                        Icon(
+                                          Icons.password_rounded,
+                                          color: Colors.white,
+                                          size: 24,
+                                        ),
+                                        "Address"),
+                                    SizedBox(width: 10),
+                                    Item(
+                                        Image.asset(
+                                          'assets/img/mapPin.png',
+                                          height: 24,
+                                          color: Colors.white,
+                                          fit: BoxFit.contain,
+                                        ),
+                                        "Home Location"),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Item(
+                                        Icon(
+                                          Icons.favorite,
+                                          color: Colors.white,
+                                          size: 24,
+                                        ),
+                                        "WishList"),
+                                    SizedBox(width: 10),
+                                    Item(
+                                        Image(
+                                          image: AssetImage(
+                                              'assets/img/housewithheart.png'),
+                                          width: 24,
+                                          height: 24,
+                                          color: Colors.white,
+                                        ),
+                                        "FavShop"),
+                                    SizedBox(width: 10),
+                                    Item(
+                                        Icon(
+                                          Icons.shopping_cart,
+                                          color: Colors.white,
+                                          size: 24,
+                                        ),
+                                        "Cart"),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Item(
+                                        Icon(
+                                          Icons.chat,
+                                          color: Colors.white,
+                                          size: 24,
+                                        ),
+                                        "Chat"),
+                                    SizedBox(width: 10),
+                                    Item(
+                                        Icon(
+                                          Icons.shopping_bag_outlined,
+                                          color: Colors.white,
+                                          size: 24,
+                                        ),
+                                        "My Orders"),
+                                    SizedBox(width: 10),
+                                    Item(
+                                        Icon(
+                                          Icons.exit_to_app,
+                                          color: Colors.white,
+                                          size: 24,
+                                        ),
+                                        "Logout"),
+                                  ],
+                                ),
+                              ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed('/Pages', arguments: 2);
+                                  Navigator.of(context)
+                                      .pushNamed('/Pages', arguments: 2);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(horizontal: 25),
                                   height: 60,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
                                         S.of(context).home,
-                                        style: Theme.of(context).textTheme.headline1.merge(TextStyle(fontWeight: FontWeight.w500)),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            .merge(TextStyle(
+                                                fontWeight: FontWeight.w500)),
                                       ),
                                       Icon(
                                         Icons.home_outlined,
@@ -205,7 +303,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                       )
                                     ],
                                   ),
-
                                 ),
                               ),
                               InkWell(
@@ -217,49 +314,62 @@ class _ProfilePageState extends State<ProfilePage> {
                                   height: 60,
                                   width: MediaQuery.of(context).size.width,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
                                         S.of(context).settings,
-                                        style: Theme.of(context).textTheme.headline1.merge(TextStyle(fontWeight: FontWeight.w500)),
-
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            .merge(TextStyle(
+                                                fontWeight: FontWeight.w500)),
                                       ),
-                                      Icon(Icons.settings_applications_rounded, color:Theme.of(context).accentColor)
+                                      Icon(Icons.settings_applications_rounded,
+                                          color: Theme.of(context).accentColor)
                                     ],
                                   ),
-
                                 ),
                               ),
                               InkWell(
                                 onTap: () {
                                   Navigator.of(context).pushNamed('/Orders');
-                                 // Navigator.of(context).pushNamed('/Pages', arguments: 4);
+                                  // Navigator.of(context).pushNamed('/Pages', arguments: 4);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(horizontal: 25),
                                   height: 60,
                                   width: MediaQuery.of(context).size.width,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
                                         S.of(context).my_orders,
-                                        style: Theme.of(context).textTheme.headline1.merge(TextStyle(fontWeight: FontWeight.w500)),
-
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            .merge(TextStyle(
+                                                fontWeight: FontWeight.w500)),
                                       ),
-                                      Icon(Icons.shopping_bag_outlined, color: Theme.of(context).accentColor,)
+                                      Icon(
+                                        Icons.shopping_bag_outlined,
+                                        color: Theme.of(context).accentColor,
+                                      )
                                     ],
                                   ),
-
                                 ),
                               ),
                               InkWell(
                                 onTap: () {
-                                  if (Theme.of(context).brightness == Brightness.dark) {
+                                  if (Theme.of(context).brightness ==
+                                      Brightness.dark) {
                                     // setBrightness(Brightness.light);
-                                    setting.value.brightness.value = Brightness.light;
+                                    setting.value.brightness.value =
+                                        Brightness.light;
                                   } else {
-                                    setting.value.brightness.value = Brightness.dark;
+                                    setting.value.brightness.value =
+                                        Brightness.dark;
                                     //  setBrightness(Brightness.dark);
                                   }
                                   // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
@@ -270,24 +380,39 @@ class _ProfilePageState extends State<ProfilePage> {
                                   height: 60,
                                   width: MediaQuery.of(context).size.width,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
-                                        Theme.of(context).brightness == Brightness.dark ? S.of(context).light_mode : S.of(context).dark_mode,
-                                        style: Theme.of(context).textTheme.headline1.merge(TextStyle(fontWeight: FontWeight.w500)),
+                                        Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? S.of(context).light_mode
+                                            : S.of(context).dark_mode,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            .merge(TextStyle(
+                                                fontWeight: FontWeight.w500)),
                                       ),
-                                      Icon(  Icons.brightness_6, color: Theme.of(context).accentColor,)
+                                      Icon(
+                                        Icons.brightness_6,
+                                        color: Theme.of(context).accentColor,
+                                      )
                                     ],
                                   ),
-
                                 ),
                               ),
                               InkWell(
                                 onTap: () {
                                   logout().then((value) {
-
-                                    showToast("${S.of(context).logout} ${S.of(context).successfully}", gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
-                                    Navigator.of(context).pushNamedAndRemoveUntil('/Login', (Route<dynamic> route) => false, arguments: 2);
+                                    showToast(
+                                        "${S.of(context).logout} ${S.of(context).successfully}",
+                                        gravity: Toast.BOTTOM,
+                                        duration: Toast.LENGTH_SHORT);
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil('/Login',
+                                            (Route<dynamic> route) => false,
+                                            arguments: 2);
                                   });
                                 },
                                 child: Container(
@@ -295,26 +420,25 @@ class _ProfilePageState extends State<ProfilePage> {
                                   height: 60,
                                   width: MediaQuery.of(context).size.width,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
                                         S.of(context).logout,
-                                        style: Theme.of(context).textTheme.headline1.merge(TextStyle(fontWeight: FontWeight.w500)),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            .merge(TextStyle(
+                                                fontWeight: FontWeight.w500)),
                                       ),
-                                      Icon(Icons.exit_to_app, color: Theme.of(context).accentColor)
+                                      Icon(Icons.exit_to_app,
+                                          color: Theme.of(context).accentColor)
                                     ],
                                   ),
-
                                 ),
                               ),
-
-
-
-
                             ],
                           )
-
-
                         ],
                       ),
                     ),
@@ -325,11 +449,36 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-
-
     );
   }
 
+  Widget Item(Widget iconData, String title) {
+    return Expanded(
+      flex: 1,
+      child: Column(
+        children: [
+          Container(
+              height: 50,
+              width: 50,
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                // color: Theme.of(context).secondaryHeaderColor,
+                color: Color(0xFF49aecb),
+                shape: BoxShape.circle,
+              ),
+              child: iconData),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.headline1.merge(
+                  TextStyle(fontWeight: FontWeight.w500,height: 1),
+                ),
+            textAlign: TextAlign.center,
+          )
+        ],
+      ),
+    );
+  }
 
   // ignore: non_constant_identifier_names
   Imagepickerbottomsheet() {
@@ -361,7 +510,8 @@ class _ProfilePageState extends State<ProfilePage> {
   final picker = ImagePicker();
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera, maxHeight: 480, maxWidth: 640);
+    final pickedFile = await picker.getImage(
+        source: ImageSource.camera, maxHeight: 480, maxWidth: 640);
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
@@ -392,7 +542,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
     final String _apiToken = 'api_token=${_user.apiToken}';
     // ignore: deprecated_member_use
-    final uri = Uri.parse("${GlobalConfiguration().getString('base_url')}Api/profileimage/${currentUser.value.id}?$_apiToken");
+    final uri = Uri.parse(
+        "${GlobalConfiguration().getString('base_url')}Api/profileimage/${currentUser.value.id}?$_apiToken");
     var request = http.MultipartRequest('POST', uri);
     var pic = await http.MultipartFile.fromPath('image', image.path);
     request.files.add(pic);
@@ -403,15 +554,19 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         currentUser.value.image = 'no_image';
         // ignore: deprecated_member_use
-        currentUser.value.image = '${GlobalConfiguration().getString('api_base_url')}uploads/user_image/user_${currentUser.value.id}.jpg';
+        currentUser.value.image =
+            '${GlobalConfiguration().getString('api_base_url')}uploads/user_image/user_${currentUser.value.id}.jpg';
       });
       setCurrentUserUpdate(currentUser.value);
-
     } else {}
   }
+
   void showToast(String msg, {int duration, int gravity}) {
-    Toast.show(msg, context, duration: duration, gravity: gravity ,);
+    Toast.show(
+      msg,
+      context,
+      duration: duration,
+      gravity: gravity,
+    );
   }
 }
-
-
