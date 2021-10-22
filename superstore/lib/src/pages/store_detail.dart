@@ -373,6 +373,26 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                         Theme.of(context).textTheme.headline6),
                   ),
                   Padding(
+                    padding:
+                    const EdgeInsets.only(right: 0, left: 4),
+                    child: IconButton(
+                      icon: new Icon(Icons.chat,
+                          color:
+                          Color(0xFF49aecb),
+                          // Color(0xFF333D37),
+                          size: 24),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ChatDetailPage(
+                                        shopId:shopDetails?.shopId,
+                                        shopName:shopDetails?.shopName,
+                                        shopMobile: '12')));
+                      },
+                    ),
+                  ),
+                  Padding(
                     padding: const EdgeInsets.only(right: 8,left: 4),
                     child: Image.asset(
                       'assets/img/location.png',

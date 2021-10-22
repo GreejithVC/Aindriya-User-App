@@ -96,7 +96,9 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
       //loginWidth = 250.0;
     });
   }
+
   final PageController _pageController = PageController(initialPage: 0);
+
   @override
   Widget build(BuildContext context) {
     print("expiry ////subScribedPackage?.expiryDate");
@@ -158,157 +160,243 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
         //       ),
         //     ];
         //   },
-          body: (_con.subScribedPackage?.expiryDate?.isNotEmpty == true
-                      ? DateFormat("dd/MM/yyyy")
-                          ?.parse(_con.subScribedPackage?.expiryDate)
-                          ?.isBefore(DateTime.now())
-                      : true) ||
-                  (_con.deliveryOptionsModel?.availableCOD != true &&
-                      _con.deliveryOptionsModel?.availableTakeAway != true)
-              ? Center(child: Text("Sorry this shop is currently closed"))
-              : SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        height: 200,
-                        child: PageView.builder(
-                          itemCount: widget?.shopDetails?.coverImageList?.length ?? 0,
-                          scrollDirection: Axis.horizontal,
-                          controller: _pageController,
-                          // onPageChanged: _onPageChanged,
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ImageZoomScreen(
-                                      imageUrl:
-                                      widget?.shopDetails?.coverImageList?.elementAt(index))));
-                            },
-                            child: Image(
-                                image: widget?.shopDetails?.coverImageList?.elementAt(index) ==
-                                    'no_image' &&
-                                    widget?.shopTypeID == 2
-                                    ? AssetImage(
-                                  'assets/img/resturentdefaultbg.jpg',
-                                )
-                                    : NetworkImage(
-                                    widget?.shopDetails?.coverImageList?.elementAt(index)),
-                                height: 190,
-                                width: double.infinity,
-                                fit: BoxFit.cover),
-                          ),
+        body: (_con.subScribedPackage?.expiryDate?.isNotEmpty == true
+                    ? DateFormat("dd/MM/yyyy")
+                        ?.parse(_con.subScribedPackage?.expiryDate)
+                        ?.isBefore(DateTime.now())
+                    : true) ||
+                (_con.deliveryOptionsModel?.availableCOD != true &&
+                    _con.deliveryOptionsModel?.availableTakeAway != true)
+            ? Center(child: Text("Sorry this shop is currently closed"))
+            : SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: 200,
+                      child: PageView.builder(
+                        itemCount:
+                            widget?.shopDetails?.coverImageList?.length ?? 0,
+                        scrollDirection: Axis.horizontal,
+                        controller: _pageController,
+                        // onPageChanged: _onPageChanged,
+                        itemBuilder: (context, index) => GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ImageZoomScreen(
+                                    imageUrl: widget
+                                        ?.shopDetails?.coverImageList
+                                        ?.elementAt(index))));
+                          },
+                          child: Image(
+                              image: widget?.shopDetails?.coverImageList
+                                              ?.elementAt(index) ==
+                                          'no_image' &&
+                                      widget?.shopTypeID == 2
+                                  ? AssetImage(
+                                      'assets/img/resturentdefaultbg.jpg',
+                                    )
+                                  : NetworkImage(widget
+                                      ?.shopDetails?.coverImageList
+                                      ?.elementAt(index)),
+                              height: 190,
+                              width: double.infinity,
+                              fit: BoxFit.cover),
                         ),
                       ),
-
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 10),
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(widget?.shopDetails?.shopName,
-                                      style:
-                                          Theme.of(context).textTheme.headline6),
+                    ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(widget?.shopDetails?.shopName,
+                                    style:
+                                        Theme.of(context).textTheme.headline6),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 0, left: 4),
+                                child: IconButton(
+                                  icon: new Icon(Icons.chat,
+                                      color:
+                                      Color(0xFF49aecb),
+                                      // Color(0xFF333D37),
+                                      size: 24),
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ChatDetailPage(
+                                                    shopId: widget
+                                                        ?.shopDetails?.shopId,
+                                                    shopName: widget
+                                                        ?.shopDetails?.shopName,
+                                                    shopMobile: '12')));
+                                  },
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8,left: 4),
-                                  child: Image.asset(
-                                    'assets/img/location.png',
-                                    height: 26,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 8, left: 2),
+                                child: Image.asset(
+                                  'assets/img/location.png',
+                                  height: 26,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              FavButton(vendorData: widget?.shopDetails),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Text(
+                              widget?.shopDetails?.subtitle,
+                              overflow: TextOverflow.fade,
+                              maxLines: 1,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: Colors.black12)),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Text(
+                              "Shop Status",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900,
+                                  color: Color(0xFF49aecb)),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Icon(
+                                    Icons.access_time,
+                                    size: 24,
+                                    color: Color(0xFF333D37),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: Text(
+                                      "${widget?.shopDetails?.openTime ?? ""} - ${widget?.shopDetails?.closeTime ?? ""}",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Icon(
+                                    Icons.store_mall_directory,
+                                    size: 24,
+                                    color: Color(0xFF333D37),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: Text(
+                                      getStatus(
+                                          expiryDateString: _con
+                                              .subScribedPackage?.expiryDate,
+                                          availableCOD: _con
+                                              .deliveryOptionsModel
+                                              ?.availableCOD,
+                                          availableTakeaway: _con
+                                              .deliveryOptionsModel
+                                              ?.availableTakeAway),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/img/homedelivery.png',
+                                    height: 24,
+                                    color: Color(0xFF333D37),
                                     fit: BoxFit.contain,
                                   ),
-                                ),
-                                FavButton(vendorData: widget?.shopDetails),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: Text(
-                                widget?.shopDetails?.subtitle,
-                                overflow: TextOverflow.fade,
-                                maxLines: 1,
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: Text("HomeDelivery"),
+                                  ),
+                                ],
                               ),
-                            )
-                          ],
-                        ),
+                              Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/img/takeawayicon.png',
+                                    height: 24,
+                                    color: Color(0xFF333D37),
+                                    fit: BoxFit.contain,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: Text("TakeAway"),
+                                  )
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(color: Colors.black12)),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: Text(
-                                "Shop Status",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w900,
-                                    color: Color(0xFF49aecb)),
-                                textAlign: TextAlign.center,
-                              ),
+                    ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: Colors.black12)),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Text(
+                              "Payment Options",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900,
+                                  color: Color(0xFF49aecb)),
+                              textAlign: TextAlign.center,
                             ),
-                            Row(
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
                                   children: [
-                                    Icon(
-                                      Icons.access_time,
-                                      size: 24,
-                                      color: Color(0xFF333D37),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      child: Text(
-                                        "${widget?.shopDetails?.openTime ?? ""} - ${widget?.shopDetails?.closeTime ?? ""}",
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Icon(
-                                      Icons.store_mall_directory,
-                                      size: 24,
-                                      color: Color(0xFF333D37),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      child: Text(
-                                        getStatus(
-                                            expiryDateString: _con
-                                                .subScribedPackage
-                                                ?.expiryDate,
-                                            availableCOD: _con
-                                                .deliveryOptionsModel
-                                                ?.availableCOD,
-                                            availableTakeaway: _con
-                                                .deliveryOptionsModel
-                                                ?.availableTakeAway),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
                                     Image.asset(
-                                      'assets/img/homedelivery.png',
+                                      'assets/img/ic_cod.png',
                                       height: 24,
                                       color: Color(0xFF333D37),
                                       fit: BoxFit.contain,
@@ -316,7 +404,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                     Padding(
                                       padding: const EdgeInsets.only(top: 4),
                                       child: Text(
-                                       "HomeDelivery"
+                                        "COD",
                                       ),
                                     ),
                                   ],
@@ -324,7 +412,20 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                 Column(
                                   children: [
                                     Image.asset(
-                                      'assets/img/takeawayicon.png',
+                                      'assets/img/ic_upi.png',
+                                      height: 24,
+                                      color: Color(0xFF333D37),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Text(
+                                      "UPI",
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Image.asset(
+                                      'assets/img/ic_card.png',
                                       height: 24,
                                       color: Color(0xFF333D37),
                                       fit: BoxFit.contain,
@@ -332,111 +433,33 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                     Padding(
                                       padding: const EdgeInsets.only(top: 4),
                                       child: Text(
-                                          "TakeAway"
-                                    ),)
+                                        "Card",
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ],
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(color: Colors.black12)),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: Text(
-                                "Payment Options",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w900,
-                                    color: Color(0xFF49aecb)),
-                                textAlign: TextAlign.center,
-                              ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Image.asset(
-                                        'assets/img/ic_cod.png',
-                                        height: 24,
-                                        color: Color(0xFF333D37),
-                                        fit: BoxFit.contain,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: Text(
-                                          "COD",
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Image.asset(
-                                        'assets/img/ic_upi.png',
-                                        height: 24,
-                                        color: Color(0xFF333D37),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      Text(
-                                        "UPI",
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Image.asset(
-                                        'assets/img/ic_card.png',
-                                        height: 24,
-                                        color: Color(0xFF333D37),
-                                        fit: BoxFit.contain,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: Text(
-                                          "Card",
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
-                      TopCategoriesWidget(
-                        focusId: widget.focusId,
-                        categoryData: _con.categories,
-                        shopId: widget.shopDetails.shopId,
-                        shopName: widget.shopDetails.shopName,
-                        subtitle: widget.shopDetails.subtitle,
-                        km: widget.shopDetails.distance,
-                        shopTypeID: widget.shopTypeID,
-                        latitude: widget.shopDetails.latitude,
-                        longitude: widget.shopDetails.longitude,
-                      ),
-                    ],
-                  ),
+                    ),
+                    TopCategoriesWidget(
+                      focusId: widget.focusId,
+                      categoryData: _con.categories,
+                      shopId: widget.shopDetails.shopId,
+                      shopName: widget.shopDetails.shopName,
+                      subtitle: widget.shopDetails.subtitle,
+                      km: widget.shopDetails.distance,
+                      shopTypeID: widget.shopTypeID,
+                      latitude: widget.shopDetails.latitude,
+                      longitude: widget.shopDetails.longitude,
+                    ),
+                  ],
                 ),
-        ),
-      );
+              ),
+      ),
+    );
   }
 
   String getStatus(
@@ -540,7 +563,6 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-
     return Column(
       children: [
         // Container(
