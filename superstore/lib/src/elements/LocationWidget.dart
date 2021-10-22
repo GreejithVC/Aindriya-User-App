@@ -71,22 +71,22 @@ class _LocationModalPartState extends StateMVC<LocationModalPart> {
                         /*Navigator.of(context).pushNamed('/Login');*/
                         LocationResult result = await showLocationPicker(
                           context,
-                          setting.value.googleMapsKey,
-                          initialCenter: LatLng(currentUser.value.latitude, currentUser.value.longitude),
+                          setting?.value?.googleMapsKey,
+                          initialCenter: LatLng(currentUser?.value?.latitude, currentUser?.value?.longitude),
                           automaticallyAnimateToCurrentLocation: true,
                           myLocationButtonEnabled: true,
                           layersButtonEnabled: true,
                           resultCardAlignment: Alignment.bottomCenter,
                         );
 
-                        _con.addressData.latitude = result.latLng.latitude;
-                        _con.addressData.longitude = result.latLng.longitude;
-                        _con.addressData.addressSelect = result.address;
-                        _con.addressData.isDefault = 'false';
-                        currentUser.value.latitude = result.latLng.latitude;
-                        currentUser.value.longitude = result.latLng.longitude;
+                        _con?.addressData?.latitude = result?.latLng?.latitude;
+                        _con?.addressData?.longitude = result?.latLng?.longitude;
+                        _con?.addressData?.addressSelect = result?.address;
+                        _con?.addressData?.isDefault = 'false';
+                        currentUser?.value?.latitude = result?.latLng?.latitude;
+                        currentUser?.value?.longitude = result?.latLng?.longitude;
 
-                        AddressBottomsheet(_con.addressData);
+                        AddressBottomsheet(_con?.addressData);
 
 
                       },
@@ -122,32 +122,32 @@ class _LocationModalPartState extends StateMVC<LocationModalPart> {
                 )),
               ),
               child: Text(S.of(context).select_delivery_address, style: Theme.of(context).textTheme.headline1)),
-          currentUser.value.address.isNotEmpty
+          currentUser?.value?.address?.isNotEmpty
               ? ListView.builder(
                   scrollDirection: Axis.vertical,
-                  itemCount: currentUser.value.address.length,
+                  itemCount: currentUser?.value?.address?.length,
                   shrinkWrap: true,
                   primary: false,
                   padding: EdgeInsets.only(top: 10),
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, int index) {
-                    Address _addressData = currentUser.value.address.elementAt(index);
+                    Address _addressData = currentUser?.value?.address?.elementAt(index);
 
 
                     return Column(children: <Widget>[
                       SizedBox(height: 20),
                       GestureDetector(
                         onTap: () => {
-                          currentUser.value.address.forEach((_l) {
+                          currentUser?.value?.address?.forEach((_l) {
                             setState(() {
                               _l.isDefault = 'false';
                             });
                           }),
-                          _addressData.isDefault = 'true',
-                          currentUser.value.selected_address = _addressData.addressSelect,
-                          currentUser.value.latitude = _addressData.latitude,
-                          currentUser.value.longitude = _addressData.longitude,
-                          setCurrentUserUpdate(currentUser.value),
+                          _addressData?.isDefault = 'true',
+                          currentUser?.value?.selected_address = _addressData?.addressSelect,
+                          currentUser?.value?.latitude = _addressData?.latitude,
+                          currentUser?.value?.longitude = _addressData?.longitude,
+                          setCurrentUserUpdate(currentUser?.value),
                         },
                         child: Container(
                           width: double.infinity,
@@ -174,7 +174,7 @@ class _LocationModalPartState extends StateMVC<LocationModalPart> {
                               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                 Text(_addressData.id, style: Theme.of(context).textTheme.bodyText1),
                                 Text(
-                                  _addressData.addressSelect,
+                                  _addressData?.addressSelect,
                                   style: Theme.of(context).textTheme.bodyText2,
                                   textAlign: TextAlign.left,
                                   overflow: TextOverflow.ellipsis,
@@ -286,7 +286,7 @@ class _AddressModalPartState extends StateMVC<AddressModalPart> {
   void initState() {
     super.initState();
     selectedRadio = 'Home';
-    widget.con.addressData.id = 'Home';
+    widget?.con?.addressData?.id = 'Home';
   }
 
   setSelectedRadio(val) {
@@ -300,7 +300,7 @@ class _AddressModalPartState extends StateMVC<AddressModalPart> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Form(
-            key: widget.con.loginFormKey,
+            key: widget?.con?.loginFormKey,
           child:Container(
             padding: const EdgeInsets.only(left: 15, right: 15,),
             width: double.infinity,
@@ -369,9 +369,9 @@ class _AddressModalPartState extends StateMVC<AddressModalPart> {
                               textAlign: TextAlign.left,
                               autocorrect: true,
                               keyboardType: TextInputType.text,
-                              onSaved: (input) =>  widget.con.addressData.addressSelect = input,
+                              onSaved: (input) =>  widget?.con?.addressData?.addressSelect = input,
                               validator: (input) => input.length < 3 ? S.of(context).should_be_more_than_3_characters : null,
-                              initialValue:  widget.address.addressSelect,
+                              initialValue:  widget?.address?.addressSelect,
                               decoration: InputDecoration(
                                 labelText: 'Shop / office / home location address with Door/Flat No',
                                 labelStyle: Theme.of(context)
@@ -398,9 +398,9 @@ class _AddressModalPartState extends StateMVC<AddressModalPart> {
                               textAlign: TextAlign.left,
                               autocorrect: true,
                               keyboardType: TextInputType.text,
-                              onSaved: (input) =>  widget.con.addressData.phone = input,
+                              onSaved: (input) =>  widget?.con?.addressData.phone = input,
                               validator: (input) => input.length <= 0 ? S.of(context).invalid_mobile_number : null,
-                              initialValue: currentUser.value.phone,
+                              initialValue: currentUser?.value?.phone,
                               decoration: InputDecoration(
                                 labelText: 'Receivers phone number',
                                 labelStyle: Theme.of(context)
@@ -429,7 +429,7 @@ class _AddressModalPartState extends StateMVC<AddressModalPart> {
                             activeColor: Colors.blue,
                             onChanged: (val) {
                               print("Radio $val");
-                              widget.con.addressData.id = val;
+                              widget?.con?.addressData?.id = val;
                               setSelectedRadio(val);
                             }),
                         Text('Home',style: Theme.of(context).textTheme.bodyText1,),
@@ -439,7 +439,7 @@ class _AddressModalPartState extends StateMVC<AddressModalPart> {
                             groupValue: selectedRadio,
                             activeColor: Colors.blue,
                             onChanged: (val) {
-                              widget.con.addressData.id = val;
+                              widget?.con?.addressData?.id = val;
                               setSelectedRadio(val);
                             }),
                         Text('Office',style: Theme.of(context).textTheme.bodyText1,),
@@ -448,7 +448,7 @@ class _AddressModalPartState extends StateMVC<AddressModalPart> {
                             groupValue: selectedRadio,
                             activeColor: Colors.blue,
                             onChanged: (val) {
-                              widget.con.addressData.id = val;
+                              widget?.con?.addressData?.id = val;
                               setSelectedRadio(val);
                             }),
                         Text('Others',style: Theme.of(context).textTheme.bodyText1,)
