@@ -277,7 +277,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           color: Colors.white,
                                           fit: BoxFit.contain,
                                         ),
-                                        "Home Location", tapFucntion: () async {
+                                        (currentUser?.value?.selected_address ?? currentUser?.value?.address) ?? "Home Location", tapFucntion: () async {
                                       LocationResult result =
                                           await showLocationPicker(
                                         context,
@@ -767,7 +767,7 @@ class _ProfilePageState extends State<ProfilePage> {
               style: Theme.of(context).textTheme.headline1.merge(
                     TextStyle(fontWeight: FontWeight.w500, height: 1),
                   ),
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.center,maxLines: 2,overflow: TextOverflow.ellipsis,
             )
           ],
         ),
