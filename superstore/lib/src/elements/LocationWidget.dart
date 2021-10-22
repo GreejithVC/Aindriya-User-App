@@ -79,12 +79,16 @@ class _LocationModalPartState extends StateMVC<LocationModalPart> {
                           resultCardAlignment: Alignment.bottomCenter,
                         );
 
-                        _con?.addressData?.latitude = result?.latLng?.latitude;
-                        _con?.addressData?.longitude = result?.latLng?.longitude;
-                        _con?.addressData?.addressSelect = result?.address;
-                        _con?.addressData?.isDefault = 'false';
-                        currentUser?.value?.latitude = result?.latLng?.latitude;
-                        currentUser?.value?.longitude = result?.latLng?.longitude;
+                        if(result != null){
+                          _con?.addressData?.latitude = result?.latLng?.latitude;
+                          _con?.addressData?.longitude = result?.latLng?.longitude;
+                          _con?.addressData?.addressSelect = result?.address;
+                          _con?.addressData?.isDefault = 'false';
+                          currentUser?.value?.latitude = result?.latLng?.latitude;
+                          currentUser?.value?.longitude = result?.latLng?.longitude;
+                        }
+
+
 
                         AddressBottomsheet(_con?.addressData);
 

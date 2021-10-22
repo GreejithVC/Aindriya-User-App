@@ -276,18 +276,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                             Alignment.bottomCenter,
                                       );
 
-                                      _userController?.addressData?.latitude =
-                                          result?.latLng?.latitude;
-                                      _userController?.addressData?.longitude =
-                                          result?.latLng?.longitude;
-                                      _userController?.addressData
-                                          ?.addressSelect = result?.address;
-                                      _userController?.addressData?.isDefault =
-                                          'false';
-                                      currentUser?.value?.latitude =
-                                          result?.latLng?.latitude;
-                                      currentUser?.value?.longitude =
-                                          result?.latLng?.longitude;
+                                      if (result != null) {
+                                        _userController?.addressData?.latitude =
+                                            result?.latLng?.latitude;
+                                        _userController
+                                                ?.addressData?.longitude =
+                                            result?.latLng?.longitude;
+                                        _userController?.addressData
+                                            ?.addressSelect = result?.address;
+                                        _userController
+                                            ?.addressData?.isDefault = 'false';
+                                        currentUser?.value?.latitude =
+                                            result?.latLng?.latitude;
+                                        currentUser?.value?.longitude =
+                                            result?.latLng?.longitude;
+                                      }
 
                                       AddressBottomsheet(
                                           _userController?.addressData);
@@ -323,7 +326,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           height: 24,
                                           color: Colors.white,
                                         ),
-                                        "FavShop",tapFucntion: (){
+                                        "FavShop", tapFucntion: () {
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (context) =>
@@ -336,15 +339,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                           color: Colors.white,
                                           size: 24,
                                         ),
-                                        "Cart",tapFucntion: (){
+                                        "Cart", tapFucntion: () {
                                       if (currentUser.value.apiToken != null) {
-                                        if (cartRepo.currentCart.value.length != 0) {
-                                          Navigator.of(context).pushNamed('/Checkout');
+                                        if (cartRepo.currentCart.value.length !=
+                                            0) {
+                                          Navigator.of(context)
+                                              .pushNamed('/Checkout');
                                         } else {
-                                          Navigator.of(context).pushNamed('/EmptyList');
+                                          Navigator.of(context)
+                                              .pushNamed('/EmptyList');
                                         }
                                       } else {
-                                        Navigator.of(context).pushNamed('/Login');
+                                        Navigator.of(context)
+                                            .pushNamed('/Login');
                                       }
                                     }),
                                   ],
