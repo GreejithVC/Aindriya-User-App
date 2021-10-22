@@ -10,6 +10,7 @@ import 'package:superstore/generated/l10n.dart';
 import 'package:superstore/src/controllers/home_controller.dart';
 import 'package:superstore/src/controllers/user_controller.dart';
 import 'package:superstore/src/elements/LocationWidget.dart';
+import 'package:superstore/src/elements/image_zoom.dart';
 import 'package:superstore/src/models/user.dart';
 import 'package:superstore/src/pages/fav_shops.dart';
 import 'package:superstore/src/pages/wishList.dart';
@@ -46,99 +47,115 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  height: 190,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                          'assets/img/resturentdefaultbg.jpg',
-                        )),
-                  ),
-                  child: Stack(
-                    children: [
-                      currentUser.value.image != 'no_image' &&
-                              currentUser.value.image != null
-                          ? Image(
-                              image: NetworkImage(currentUser.value.image),
-                              height: 190,
-                              width: double.infinity,
-                              fit: BoxFit.fill,
-                            )
-                          : Stack(
-                              clipBehavior: Clip.none,
-                              alignment: Alignment.center,
-                              children: [
-                                Image(
-                                  image: AssetImage(
-                                      'assets/img/resturentdefaultbg.jpg'),
-                                  height: 190,
-                                  width: double.infinity,
-                                  fit: BoxFit.fill,
-                                ),
-                                // Container(
-                                //   margin: EdgeInsets.only(top:180),
-                                //   width: MediaQuery.of(context).size.width,
-                                //   height:10,
-                                //   decoration: BoxDecoration(
-                                //       color:Theme.of(context).primaryColor,
-                                //       borderRadius: BorderRadius.only(
-                                //           topLeft: Radius.circular(0),
-                                //           topRight: Radius.circular(0))),
-                                //   child:Column(
-                                //     children: [
-                                //       Text('hh',style:TextStyle(color:Colors.transparent))
-                                //     ],
-                                //   ),
-                                //
-                                // ),
-                                Positioned(
-                                    top: 50,
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(top: 10),
-                                          height: 90.0,
-                                          width: 90.0,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              Imagepickerbottomsheet();
-                                            },
-                                            child: CircleAvatar(
-                                              backgroundColor: Colors.white,
-                                              backgroundImage: currentUser
-                                                              .value.image !=
-                                                          'no_image' &&
-                                                      currentUser.value.image !=
-                                                          null
-                                                  ? NetworkImage(
-                                                      currentUser.value.image)
-                                                  : AssetImage(
-                                                      'assets/img/userImage.png',
-                                                    ),
+                GestureDetector(
+                  onTap: () {
+                    print("zoom");
+                    print(currentUser.value.image);
+                    print(currentUser.value.image != 'no_image' &&
+                        currentUser.value.image != null);
+                    if (currentUser.value.image != 'no_image' &&
+                        currentUser.value.image != null) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ImageZoomScreen(
+                                imageUrl: currentUser.value.image,
+                              )));
+                    }
+                  },
+                  child: Container(
+                    height: 190,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage(
+                            'assets/img/resturentdefaultbg.jpg',
+                          )),
+                    ),
+                    child: Stack(
+                      children: [
+                        currentUser.value.image != 'no_image' &&
+                                currentUser.value.image != null
+                            ? Image(
+                                image: NetworkImage(currentUser.value.image),
+                                height: 190,
+                                width: double.infinity,
+                                fit: BoxFit.fill,
+                              )
+                            : Stack(
+                                clipBehavior: Clip.none,
+                                alignment: Alignment.center,
+                                children: [
+                                  Image(
+                                    image: AssetImage(
+                                        'assets/img/resturentdefaultbg.jpg'),
+                                    height: 190,
+                                    width: double.infinity,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  // Container(
+                                  //   margin: EdgeInsets.only(top:180),
+                                  //   width: MediaQuery.of(context).size.width,
+                                  //   height:10,
+                                  //   decoration: BoxDecoration(
+                                  //       color:Theme.of(context).primaryColor,
+                                  //       borderRadius: BorderRadius.only(
+                                  //           topLeft: Radius.circular(0),
+                                  //           topRight: Radius.circular(0))),
+                                  //   child:Column(
+                                  //     children: [
+                                  //       Text('hh',style:TextStyle(color:Colors.transparent))
+                                  //     ],
+                                  //   ),
+                                  //
+                                  // ),
+                                  Positioned(
+                                      top: 50,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(top: 10),
+                                            height: 90.0,
+                                            width: 90.0,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Imagepickerbottomsheet();
+                                              },
+                                              child: CircleAvatar(
+                                                backgroundColor: Colors.white,
+                                                backgroundImage: currentUser
+                                                                .value.image !=
+                                                            'no_image' &&
+                                                        currentUser
+                                                                .value.image !=
+                                                            null
+                                                    ? NetworkImage(
+                                                        currentUser.value.image)
+                                                    : AssetImage(
+                                                        'assets/img/userImage.png',
+                                                      ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    )),
-                              ],
-                            ),
-                      Positioned(
-                          top: 40,
-                          right: 20,
-                          child: GestureDetector(
-                              onTap: () {
-                                Imagepickerbottomsheet();
-                              },
-                              child: Icon(
-                                Icons.edit_outlined,
-                                size: 25,
-                                color: Colors.white,
-                              )))
-                    ],
+                                        ],
+                                      )),
+                                ],
+                              ),
+                        Positioned(
+                            bottom: 10,
+                            right: 10,
+                            child: GestureDetector(
+                                onTap: () {
+                                  Imagepickerbottomsheet();
+                                },
+                                child: Icon(
+                                  Icons.edit_outlined,
+                                  size: 25,
+                                  color: Colors.white,
+                                )))
+                      ],
+                    ),
                   ),
                 ),
                 Container(
