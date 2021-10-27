@@ -40,8 +40,29 @@ class ShopPicker extends StatelessWidget {
                           .contains(pattern.toLowerCase()) ??
                       false,
                 ),
-                itemBuilder: (_, Vendor item) => ListTile(
-                  title: Text(item.shopName ?? ""),
+                itemBuilder: (_, Vendor item) => Padding(
+                  padding: const EdgeInsets.only(left: 8,top: 4,bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(item.shopName ?? "",style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,),
+                      Text(
+                        item.locationMark,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
                 onSuggestionSelected: (Vendor val) {
                   this._textEditingController.text = val.shopName ?? "";
@@ -73,18 +94,12 @@ class ShopPicker extends StatelessWidget {
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide(
-                        color: Colors.grey.shade300
-                      ),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide(
-                          color:Colors.grey.shade300
-                      ),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
                     ),
-
-
                   ),
                   controller: this._textEditingController,
                 ),
