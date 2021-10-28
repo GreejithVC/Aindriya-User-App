@@ -162,7 +162,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               widget?.subtitle ?? "",
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
-            
           ],
         ),
         Container(
@@ -183,24 +182,43 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   selectedVariantData = _variantData;
                   setState(() {});
                 },
-                child: Container(
-                  width: 100,
-                  margin: EdgeInsets.all(4),
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                          color: _variantData.selected
-                              ? Theme.of(context).accentColor.withOpacity(0.8)
-                              : Colors.grey,
-                          width: _variantData.selected ? 3 : 1)),
-                  child: CachedNetworkImage(
-                    imageUrl: _variantData?.image,
-                    placeholder: (context, url) =>
-                        new CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => new Icon(Icons.error),
-                    fit: BoxFit.cover,
-                  ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        width: 100,
+                        margin: EdgeInsets.all(4),
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(
+                                color: _variantData.selected
+                                    ? Theme.of(context)
+                                        .accentColor
+                                        .withOpacity(0.8)
+                                    : Colors.grey,
+                                width: _variantData.selected ? 3 : 1)),
+                        child: CachedNetworkImage(
+                          imageUrl: _variantData?.image,
+                          placeholder: (context, url) =>
+                              new CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              new Icon(Icons.error),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      child: Text(
+                        '${_variantData?.quantity}${_variantData?.unit}',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  ],
                 ),
               );
             },
@@ -208,49 +226,53 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
       ]),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.all(20),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            InkWell(
-              onTap: () {
-                AvailableQuantityHelper.exit(
-                        context,
-                        widget?.choice?.variant,
-                        widget?.choice?.product_name,
-                    selectedVariantData?.selected)
-                    .then((receivedLocation) {
-                  if (receivedLocation != null) {
-                    widget?.choice?.variant?.forEach((_l) {
-                      setState(() {
-                        if (_l.variant_id == receivedLocation) {
-                          _l.selected = true;
-                        } else {
-                          _l.selected = false;
-                        }
+            Visibility(
+              visible: false,
+              child: InkWell(
+                onTap: () {
+                  AvailableQuantityHelper.exit(
+                          context,
+                          widget?.choice?.variant,
+                          widget?.choice?.product_name,
+                          selectedVariantData?.selected)
+                      .then((receivedLocation) {
+                    if (receivedLocation != null) {
+                      widget?.choice?.variant?.forEach((_l) {
+                        setState(() {
+                          if (_l.variant_id == receivedLocation) {
+                            _l.selected = true;
+                          } else {
+                            _l.selected = false;
+                          }
+                        });
                       });
-                    });
-                  }
-                });
-              },
-              child: Container(
-                  height: 30,
-                  width: 100,
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                        width: 1,
-                        color: Colors.grey[300],
-                      )),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                          '${selectedVariantData?.quantity}${selectedVariantData?.unit}'),
-                      Icon(Icons.arrow_drop_down, size: 19, color: Colors.grey)
-                    ],
-                  )),
+                    }
+                  });
+                },
+                child: Container(
+                    height: 30,
+                    width: 100,
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(
+                          width: 1,
+                          color: Colors.grey[300],
+                        )),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                            '${selectedVariantData?.quantity}${selectedVariantData?.unit}'),
+                        Icon(Icons.arrow_drop_down,
+                            size: 19, color: Colors.grey)
+                      ],
+                    )),
+              ),
             ),
             1 ==
                     widget?.con?.checkProductIdCartVariant(
@@ -273,101 +295,60 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           widget?.focusId);
                       setState(() {});
                     },
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          left: 10, right: 10, top: 10, bottom: 7),
-                      child: Container(
-                          alignment: Alignment.centerRight,
-                          height: 30,
-                          /*width: MediaQuery.of(context).size.width * 0.25,*/
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.0),
-                            color: Theme.of(context).accentColor.withOpacity(1),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'add',
-                                style: TextStyle(color: Colors.transparent),
-                              ),
-                              Text('ADD',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle2
-                                      .merge(TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorLight,
-                                          fontWeight: FontWeight.w600))),
-                              SizedBox(width: 5),
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(5),
-                                      topRight: Radius.circular(5)),
-                                  color: Theme.of(context).accentColor,
-                                ),
-                                height: double.infinity,
-                                width: 30,
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.add),
-                                    iconSize: 18,
-                                    color: Theme.of(context).primaryColorLight),
-                              )
-                            ],
-                          )),
-                    ))
-                : InkWell(
-                    onTap: () {},
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: 10,
-                        right: 10,
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      width: 250,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: Theme.of(context).accentColor.withOpacity(1),
                       ),
-                      child: Wrap(
-                          alignment: WrapAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  widget?.con?.decrementQtyVariant(
-                                      widget?.choice?.id,
-                                      selectedVariantData?.variant_id);
-                                });
-                              },
-                              child: Icon(Icons.remove_circle,
-                                  color: Theme.of(context).accentColor,
-                                  size: 27),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.022,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 5),
-                              child: Text(
-                                  widget?.con?.showQtyVariant(
-                                      widget?.choice?.id,
-                                      selectedVariantData?.variant_id),
-                                  style: Theme.of(context).textTheme.bodyText1),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.022,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  widget?.con?.incrementQtyVariant(
-                                      widget?.choice?.id,
-                                      selectedVariantData?.variant_id);
-                                });
-                              },
-                              child: Icon(Icons.add_circle,
-                                  color: Theme.of(context).accentColor,
-                                  size: 27),
-                            ),
-                          ]),
+                      child: Text('Add To Cart',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline3
+                              .merge(TextStyle(color: Colors.white))),
+                    ))
+                : Container(
+                    alignment: Alignment.center,
+                    height: 50,
+                    width: 250,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.0),
+                      color: Theme.of(context).accentColor.withOpacity(1),
                     ),
+                    child: Row(mainAxisSize: MainAxisSize.min, children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            widget?.con?.decrementQtyVariant(widget?.choice?.id,
+                                selectedVariantData?.variant_id);
+                          });
+                        },
+                        child: Icon(Icons.remove_circle,
+                            color: Colors.white, size: 36),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                            widget?.con?.showQtyVariant(widget?.choice?.id,
+                                selectedVariantData?.variant_id),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline3
+                                .merge(TextStyle(color: Colors.white))),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            widget?.con?.incrementQtyVariant(widget?.choice?.id,
+                                selectedVariantData?.variant_id);
+                          });
+                        },
+                        child: Icon(Icons.add_circle,
+                            color: Colors.white, size: 36),
+                      ),
+                    ]),
                   )
           ],
         ),
