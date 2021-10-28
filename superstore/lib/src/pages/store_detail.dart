@@ -181,10 +181,10 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
             ];
           },
           body: (_con.subScribedPackage?.expiryDate?.isNotEmpty == true
-                              ? DateFormat("dd/MM/yyyy")
-                                  ?.parse(_con.subScribedPackage?.expiryDate)?.isBefore(DateTime.now())
-                              :true)
-                           ||
+                      ? DateFormat("dd/MM/yyyy")
+                          ?.parse(_con.subScribedPackage?.expiryDate)
+                          ?.isBefore(DateTime.now())
+                      : true) ||
                   (_con.deliveryOptionsModel?.availableCOD != true &&
                       _con.deliveryOptionsModel?.availableTakeAway != true)
               ? Center(child: Text("Sorry this shop is currently closed"))
@@ -215,6 +215,7 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
       ),
     );
   }
+
   String getStatus(
       {String expiryDateString, bool availableCOD, bool availableTakeaway}) {
     print("isexpire in store /////////////////////getStatus");
@@ -222,25 +223,24 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
     print(availableCOD);
     print(availableTakeaway);
     print(expiryDateString);
-    print(DateFormat("dd/MM/yyyy")
-        ?.parse(expiryDateString));
+    print(DateFormat("dd/MM/yyyy")?.parse(expiryDateString));
     print((expiryDateString?.isNotEmpty == true
         ? DateFormat("dd/MM/yyyy")
-        ?.parse(expiryDateString)
-        ?.isBefore(DateTime.now())
+            ?.parse(expiryDateString)
+            ?.isBefore(DateTime.now())
         : true));
     print((availableCOD != true && availableTakeaway != true));
     print(DateTime.now());
     print("expiry ,,,,,,,,,,,,,,,,,");
     return (expiryDateString?.isNotEmpty == true
-        ? DateFormat("dd/MM/yyyy")?.parse(expiryDateString)?.isBefore(DateTime.now())
-        : true)
-        ||
-        (availableCOD != true && availableTakeaway != true)
+                ? DateFormat("dd/MM/yyyy")
+                    ?.parse(expiryDateString)
+                    ?.isBefore(DateTime.now())
+                : true) ||
+            (availableCOD != true && availableTakeaway != true)
         ? "Closed"
         : "Open";
   }
-
 }
 
 class TransitionAppBar extends StatelessWidget {
@@ -321,45 +321,46 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
   })  : assert(avatar != null),
         assert(title != null);
   final PageController _pageController = PageController(initialPage: 0);
+
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-
     return ListView(
       padding: EdgeInsets.all(0),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       children: [
-
-    Container(
-          height: 200,
-    child: PageView.builder(
-      itemCount: shopDetails?.coverImageList?.length ?? 0 ,
-      scrollDirection: Axis.horizontal,
-      controller: _pageController,
-      // onPageChanged: _onPageChanged,
-      itemBuilder: (context, index) => GestureDetector(
-        onTap: (){
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ImageZoomScreen(
-                  imageUrl:
-                  shopDetails.coverImageList.elementAt(index))));
-        },
-        child: Image(
-            image: shopDetails.coverImageList.elementAt(index) == 'no_image' && shopTypeID == 2
-                ? AssetImage(
-              'assets/img/resturentdefaultbg.jpg',
-            )
-                : NetworkImage(shopDetails.coverImageList.elementAt(index)),
-            height: 190,
-            width: double.infinity,
-            fit: BoxFit.cover),
-      ),
-    ),
-    ),
-
         Container(
-          padding: EdgeInsets.symmetric(vertical: 4,horizontal: 10),
+          height: 200,
+          child: PageView.builder(
+            itemCount: shopDetails?.coverImageList?.length ?? 0,
+            scrollDirection: Axis.horizontal,
+            controller: _pageController,
+            // onPageChanged: _onPageChanged,
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ImageZoomScreen(
+                        imageUrl:
+                            shopDetails.coverImageList.elementAt(index))));
+              },
+              child: Image(
+                  image: shopDetails.coverImageList.elementAt(index) ==
+                              'no_image' &&
+                          shopTypeID == 2
+                      ? AssetImage(
+                          'assets/img/resturentdefaultbg.jpg',
+                        )
+                      : NetworkImage(
+                          shopDetails.coverImageList.elementAt(index)),
+                  height: 190,
+                  width: double.infinity,
+                  fit: BoxFit.cover),
+            ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
           margin: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -369,31 +370,26 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                 children: [
                   Expanded(
                     child: Text(shopDetails?.shopName,
-                        style:
-                        Theme.of(context).textTheme.headline6),
+                        style: Theme.of(context).textTheme.headline6),
                   ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only(right: 0, left: 4),
-                    child: IconButton(
-                      icon: new Icon(Icons.chat,
-                          color:
-                          Color(0xFF49aecb),
+                    padding: const EdgeInsets.only(right: 0, left: 4),
+                    child: GestureDetector(
+                      child: new Icon(Icons.chat,
+                          color: Color(0xFF49aecb),
                           // Color(0xFF333D37),
                           size: 24),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ChatDetailPage(
-                                        shopId:shopDetails?.shopId,
-                                        shopName:shopDetails?.shopName,
-                                        shopMobile: '12')));
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ChatDetailPage(
+                                shopId: shopDetails?.shopId,
+                                shopName: shopDetails?.shopName,
+                                shopMobile: '12')));
                       },
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 8,left: 4),
+                    padding: const EdgeInsets.only(right: 8, left: 4),
                     child: Image.asset(
                       'assets/img/location.png',
                       height: 26,
@@ -415,10 +411,8 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
           ),
         ),
         Container(
-          padding:
-          EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          margin:
-          EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(4),
@@ -467,58 +461,31 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                         padding: const EdgeInsets.only(top: 4),
                         child: Text(
                           getStatus(
-                              expiryDateString:subscribedPackage
-                                  ?.expiryDate,
-                              availableCOD:deliveryOptionsModel
-                                  ?.availableCOD,
-                              availableTakeaway:deliveryOptionsModel
-                                  ?.availableTakeAway),
+                              expiryDateString: subscribedPackage?.expiryDate,
+                              availableCOD: deliveryOptionsModel?.availableCOD,
+                              availableTakeaway:
+                                  deliveryOptionsModel?.availableTakeAway),
                         ),
                       ),
                     ],
                   ),
-                  Column(
-                    children: [
-                      Image.asset(
-                        'assets/img/homedelivery.png',
-                        height: 24,
-                        color: Color(0xFF333D37),
-                        fit: BoxFit.contain,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                            "HomeDelivery"
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Image.asset(
-                        'assets/img/takeawayicon.png',
-                        height: 24,
-                        color: Color(0xFF333D37),
-                        fit: BoxFit.contain,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                            "TakeAway"
-                        ),
-                      ),
-                    ],
-                  ),
+                  itemOption(
+                      image: "assets/img/homedelivery.png",
+                      title: "HomeDelivery",
+                      isEnable: deliveryOptionsModel?.availableCOD == true),
+                  itemOption(
+                      image: "assets/img/takeawayicon.png",
+                      title: "TakeAway",
+                      isEnable:
+                          deliveryOptionsModel?.availableTakeAway == true),
                 ],
               )
             ],
           ),
         ),
         Container(
-          padding:
-          EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          margin:
-          EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(4),
@@ -543,61 +510,49 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/img/ic_cod.png',
-                          height: 24,
-                          color: Color(0xFF333D37),
-                          fit: BoxFit.contain,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text(
-                            "COD",
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/img/ic_upi.png',
-                          height: 24,
-                          color: Color(0xFF333D37),
-                          fit: BoxFit.cover,
-                        ),
-                        Text(
-                          "UPI",
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Image.asset(
-                          'assets/img/ic_card.png',
-                          height: 24,
-                          color: Color(0xFF333D37),
-                          fit: BoxFit.contain,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text(
-                            "Card",
-                          ),
-                        ),
-                      ],
-                    ),
+                    itemOption(
+                        image: "assets/img/ic_cod.png",
+                        title: "COD",
+                        isEnable: true),
+                    itemOption(
+                        image: "assets/img/ic_upi.png",
+                        title: "UPI",
+                        isEnable: true),
+                    itemOption(
+                        image: "assets/img/ic_card.png",
+                        title: "Card",
+                        isEnable: true),
                   ],
                 ),
               )
             ],
           ),
         ),
-
       ],
     );
+  }
 
+  Widget itemOption({String image, String title, bool isEnable}) {
+    return Column(
+      children: [
+        Image.asset(
+          image,
+          height: 24,
+          color: isEnable ? Color(0xFF333D37) : Colors.grey.withOpacity(0.4),
+          fit: BoxFit.contain,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text(
+            title,
+            style: TextStyle(
+              color:
+                  isEnable ? Color(0xFF333D37) : Colors.grey.withOpacity(0.4),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   String getStatus(
@@ -607,20 +562,20 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
     print(availableCOD);
     print(availableTakeaway);
     print(expiryDateString);
-    print(DateFormat("dd/MM/yyyy")
-        ?.parse(expiryDateString));
+    print(DateFormat("dd/MM/yyyy")?.parse(expiryDateString));
     print((expiryDateString?.isNotEmpty == true
         ? DateFormat("dd/MM/yyyy")
-        ?.parse(expiryDateString)
-        ?.isBefore(DateTime.now())
+            ?.parse(expiryDateString)
+            ?.isBefore(DateTime.now())
         : true));
     print((availableCOD != true && availableTakeaway != true));
     print(DateTime.now());
     print("expiry ,,,,,,,,,,,,,,,,,");
     return (expiryDateString?.isNotEmpty == true
-                        ? DateFormat("dd/MM/yyyy")?.parse(expiryDateString)?.isBefore(DateTime.now())
-                        : true)
-                    ||
+                ? DateFormat("dd/MM/yyyy")
+                    ?.parse(expiryDateString)
+                    ?.isBefore(DateTime.now())
+                : true) ||
             (availableCOD != true && availableTakeaway != true)
         ? "Closed"
         : "Open";

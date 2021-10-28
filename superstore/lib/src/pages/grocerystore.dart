@@ -332,34 +332,17 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                   ),
                                 ],
                               ),
-                              Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/img/homedelivery.png',
-                                    height: 24,
-                                    color: Color(0xFF333D37),
-                                    fit: BoxFit.contain,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 4),
-                                    child: Text("HomeDelivery"),
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/img/takeawayicon.png',
-                                    height: 24,
-                                    color: Color(0xFF333D37),
-                                    fit: BoxFit.contain,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 4),
-                                    child: Text("TakeAway"),
-                                  )
-                                ],
-                              ),
+                              itemOption(
+                                  image: "assets/img/homedelivery.png",
+                                  title: "HomeDelivery",
+                                  isEnable: _con
+                                      .deliveryOptionsModel?.availableCOD == true),
+                              itemOption(
+                                  image: "assets/img/takeawayicon.png",
+                                  title: "TakeAway",
+                                  isEnable:
+                                  _con
+                                      .deliveryOptionsModel?.availableTakeAway == true),
                             ],
                           )
                         ],
@@ -393,51 +376,18 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Column(
-                                  children: [
-                                    Image.asset(
-                                      'assets/img/ic_cod.png',
-                                      height: 24,
-                                      color: Color(0xFF333D37),
-                                      fit: BoxFit.contain,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      child: Text(
-                                        "COD",
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Image.asset(
-                                      'assets/img/ic_upi.png',
-                                      height: 24,
-                                      color: Color(0xFF333D37),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Text(
-                                      "UPI",
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Image.asset(
-                                      'assets/img/ic_card.png',
-                                      height: 24,
-                                      color: Color(0xFF333D37),
-                                      fit: BoxFit.contain,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      child: Text(
-                                        "Card",
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                itemOption(
+                                    image: "assets/img/ic_cod.png",
+                                    title: "COD",
+                                    isEnable: true),
+                                itemOption(
+                                    image: "assets/img/ic_upi.png",
+                                    title: "UPI",
+                                    isEnable: true),
+                                itemOption(
+                                    image: "assets/img/ic_card.png",
+                                    title: "Card",
+                                    isEnable: true),
                               ],
                             ),
                           )
@@ -459,6 +409,29 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                 ),
               ),
       ),
+    );
+  }
+
+  Widget itemOption({String image, String title, bool isEnable}) {
+    return Column(
+      children: [
+        Image.asset(
+          image,
+          height: 24,
+          color: isEnable ? Color(0xFF333D37) : Colors.grey.withOpacity(0.4),
+          fit: BoxFit.contain,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text(
+            title,
+            style: TextStyle(
+              color:
+              isEnable ? Color(0xFF333D37) : Colors.grey.withOpacity(0.4),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
