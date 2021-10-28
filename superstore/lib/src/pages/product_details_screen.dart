@@ -10,6 +10,7 @@ import 'package:superstore/src/models/favouriteProduct.dart';
 import 'package:superstore/src/models/product_details2.dart';
 import 'package:superstore/src/models/variant.dart';
 import 'package:superstore/src/pages/Widget/fav_product_button.dart';
+import 'package:superstore/src/repository/user_repository.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final variantModel variantData;
@@ -60,6 +61,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget?.subtitle );
+    print("widget?.subtitle" );
     return Scaffold(
       body: ListView(padding: EdgeInsets.all(0), children: [
         Stack(
@@ -159,70 +162,87 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ]),
             ),
             Text(
+              "Product Details:",
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            ),
+            Text(
               widget?.subtitle ?? "",
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
           ],
         ),
-        Container(
-          height: 150,
-          child: ListView.builder(
-            padding: EdgeInsets.all(20),
-            scrollDirection: Axis.horizontal,
-            itemCount: widget.choice.variant.length,
-            itemBuilder: (context, index) {
-              variantModel _variantData =
-                  widget.choice.variant.elementAt(index);
-              return GestureDetector(
-                onTap: () {
-                  widget.choice.variant.forEach((_l) {
-                    _l.selected = false;
-                  });
-                  _variantData.selected = true;
-                  selectedVariantData = _variantData;
-                  setState(() {});
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        width: 100,
-                        margin: EdgeInsets.all(4),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(
-                                color: _variantData.selected
-                                    ? Theme.of(context)
-                                        .accentColor
-                                        .withOpacity(0.8)
-                                    : Colors.grey,
-                                width: _variantData.selected ? 3 : 1)),
-                        child: CachedNetworkImage(
-                          imageUrl: _variantData?.image,
-                          placeholder: (context, url) =>
-                              new CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              new Icon(Icons.error),
-                          fit: BoxFit.cover,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                "Options:",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+            ),
+            Container(
+              height: 140,
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.choice.variant.length,
+                itemBuilder: (context, index) {
+                  variantModel _variantData =
+                      widget.choice.variant.elementAt(index);
+                  return GestureDetector(
+                    onTap: () {
+                      widget.choice.variant.forEach((_l) {
+                        _l.selected = false;
+                      });
+                      _variantData.selected = true;
+                      selectedVariantData = _variantData;
+                      setState(() {});
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            width: 100,
+                            margin: EdgeInsets.all(4),
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(
+                                    color: _variantData.selected
+                                        ? Theme.of(context)
+                                            .accentColor
+                                            .withOpacity(0.8)
+                                        : Colors.grey,
+                                    width: _variantData.selected ? 3 : 1)),
+                            child: CachedNetworkImage(
+                              imageUrl: _variantData?.image,
+                              placeholder: (context, url) =>
+                                  new CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  new Icon(Icons.error),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ),
+                        Container(
+                          width: 100,
+                          child: Text(
+                            '${_variantData?.quantity}${_variantData?.unit}',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      ],
                     ),
-                    Container(
-                      width: 100,
-                      child: Text(
-                        '${_variantData?.quantity}${_variantData?.unit}',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  ],
-                ),
-              );
-            },
-          ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ]),
       bottomNavigationBar: Padding(
@@ -300,7 +320,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       height: 50,
                       width: 250,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular(50),
                         color: Theme.of(context).accentColor.withOpacity(1),
                       ),
                       child: Text('Add To Cart',
@@ -309,47 +329,70 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               .headline3
                               .merge(TextStyle(color: Colors.white))),
                     ))
-                : Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    width: 250,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: Theme.of(context).accentColor.withOpacity(1),
+                : Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(mainAxisSize: MainAxisSize.min, children: [
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                widget?.con?.decrementQtyVariant(
+                                    widget?.choice?.id,
+                                    selectedVariantData?.variant_id);
+                              });
+                            },
+                            child: Icon(Icons.remove_circle,
+                                color: Theme.of(context).accentColor, size: 36),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                                widget?.con?.showQtyVariant(widget?.choice?.id,
+                                    selectedVariantData?.variant_id),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline3
+                                    .merge(TextStyle(color: Colors.black54))),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                widget?.con?.incrementQtyVariant(
+                                    widget?.choice?.id,
+                                    selectedVariantData?.variant_id);
+                              });
+                            },
+                            child: Icon(Icons.add_circle,
+                                color: Theme.of(context).accentColor, size: 36),
+                          ),
+                        ]),
+                        FlatButton(
+                          onPressed: () {
+                            if (currentUser.value.apiToken != null) {
+                              Navigator.of(context).pushNamed('/Checkout');
+                            } else {
+                              Navigator.of(context).pushNamed('/Login');
+                            }
+                          },
+                          color: Theme.of(context).primaryColor,
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  color: Theme.of(context).accentColor,
+                                  width: 1,
+                                  style: BorderStyle.solid),
+                              borderRadius: BorderRadius.circular(50)),
+                          child: Text(
+                            "Go Cart",
+                            style: Theme.of(context).textTheme.headline1.merge(
+                                TextStyle(
+                                    color: Theme.of(context).accentColor)),
+                          ),
+                        ),
+                      ],
                     ),
-                    child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            widget?.con?.decrementQtyVariant(widget?.choice?.id,
-                                selectedVariantData?.variant_id);
-                          });
-                        },
-                        child: Icon(Icons.remove_circle,
-                            color: Colors.white, size: 36),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                            widget?.con?.showQtyVariant(widget?.choice?.id,
-                                selectedVariantData?.variant_id),
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline3
-                                .merge(TextStyle(color: Colors.white))),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            widget?.con?.incrementQtyVariant(widget?.choice?.id,
-                                selectedVariantData?.variant_id);
-                          });
-                        },
-                        child: Icon(Icons.add_circle,
-                            color: Colors.white, size: 36),
-                      ),
-                    ]),
-                  )
+                  ),
           ],
         ),
       ),
