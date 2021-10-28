@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:superstore/src/models/favouriteProduct.dart';
 import 'package:superstore/src/pages/Widget/fav_product_button.dart';
+import 'package:superstore/src/pages/product_details_screen.dart';
 import '../models/product_details2.dart';
 import '../models/variant.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -71,6 +72,24 @@ class _ProductBox2WidgetState extends StateMVC<ProductBox2Widget> {
                 ? Row(children: [
                     InkWell(
                       onTap: () {
+                        print("taped//////////////////////");
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProductDetailsScreen(
+                                  variantData:
+                                      widget?.choice?.variant?.elementAt(index),
+                                  choice: widget?.choice,
+                                  subtitle: widget?.subtitle,
+                                  shopId: widget?.shopId,
+                                  shopName: widget?.shopName,
+                                  focusId: widget?.focusId,
+                                  con: widget?.con,
+                                  callback: widget?.callback,
+                                  shopTypeID: widget?.shopTypeID,
+                                  km: widget?.km,
+                                  latitude: widget?.latitude,
+                                  longitude: widget?.longitude,
+                                )));
+
                         // widget.con.view_product(widget.choice);
                       },
                       child: Padding(
@@ -135,14 +154,13 @@ class _ProductBox2WidgetState extends StateMVC<ProductBox2Widget> {
                                       ),
                                       FavProductButton(
                                         productDetails2: FavouriteProduct(
-                                            id: widget.choice.id,
-                                            productName:
-                                                widget.choice.product_name,
-                                            price: _variantData.sale_price,
-                                            image: _variantData.image,
-                                            shopId: widget?.shopId,
-                                            shopName: widget?.shopName,
-
+                                          id: widget.choice.id,
+                                          productName:
+                                              widget.choice.product_name,
+                                          price: _variantData.sale_price,
+                                          image: _variantData.image,
+                                          shopId: widget?.shopId,
+                                          shopName: widget?.shopName,
                                         ),
                                       ),
                                     ]),
@@ -534,10 +552,10 @@ class AvailableQuantityHelper {
   static exit(context, variant, name, select) => showDialog(
       context: context,
       builder: (context) => AvailableQuantityPopup(
-            variantList: variant,
-            title: name,
-            selected: select,
-          ));
+        variantList: variant,
+        title: name,
+        selected: select,
+      ));
 }
 
 // ignore: must_be_immutable
@@ -570,140 +588,140 @@ class _AvailableQuantityPopupState extends State<AvailableQuantityPopup> {
   }
 
   _buildChild(BuildContext context) => SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(3))),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding:
-                    EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
-                child: Text('Available Quantity',
-                    style: TextStyle(
-                        color: Theme.of(context).disabledColor,
-                        fontWeight: FontWeight.w500)),
-              ),
-              Container(
+    child: Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(Radius.circular(3))),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding:
+            EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
+            child: Text('Available Quantity',
+                style: TextStyle(
+                    color: Theme.of(context).disabledColor,
+                    fontWeight: FontWeight.w500)),
+          ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: 1,
+                  )),
+            ),
+          ),
+          Padding(
+            padding:
+            EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
+            child: Text(
+              widget.title,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle2
+                  .merge(TextStyle(fontWeight: FontWeight.w600)),
+            ),
+          ),
+          ListView.separated(
+            itemCount: widget.variantList.length,
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            primary: false,
+            itemBuilder: (context, index) {
+              variantModel _variantData =
+              widget.variantList.elementAt(index);
+
+              return Container(
+                width: double.infinity,
+                // ignore: deprecated_member_use
+                child: FlatButton(
+                  onPressed: () {
+                    widget.variantList.forEach((_l) {
+                      setState(() {
+                        _l.selected = false;
+                      });
+                    });
+
+                    _variantData.selected = true;
+
+                    Navigator.pop(context, _variantData.variant_id);
+                  },
+                  padding: EdgeInsets.all(10),
+                  color: _variantData.selected
+                      ? Theme.of(context).backgroundColor.withOpacity(0.8)
+                      : null,
+                  child: RichText(
+                    text: new TextSpan(children: [
+                      TextSpan(
+                        text:
+                        '${_variantData.quantity}  ${_variantData.unit} ',
+                        style: _variantData.selected
+                            ? Theme.of(context)
+                            .textTheme
+                            .headline1
+                            .merge(TextStyle(
+                          color: Colors.white,
+                        ))
+                            : Theme.of(context).textTheme.headline1.merge(
+                            TextStyle(
+                                color: Theme.of(context).disabledColor,
+                                fontWeight: FontWeight.w500)),
+                      ),
+                      TextSpan(
+                          text:
+                          Helper.pricePrint(_variantData.strike_price),
+                          style: _variantData.selected
+                              ? Theme.of(context).textTheme.headline1.merge(
+                              TextStyle(
+                                  color: Colors.white,
+                                  decoration:
+                                  TextDecoration.lineThrough))
+                              : Theme.of(context).textTheme.headline1.merge(
+                              TextStyle(
+                                  color:
+                                  Theme.of(context).disabledColor,
+                                  fontWeight: FontWeight.w500,
+                                  decoration:
+                                  TextDecoration.lineThrough))),
+                      TextSpan(
+                        text: Helper.pricePrint(_variantData.sale_price),
+                        style: _variantData.selected
+                            ? Theme.of(context)
+                            .textTheme
+                            .headline1
+                            .merge(TextStyle(
+                          color: Colors.white,
+                        ))
+                            : Theme.of(context).textTheme.headline1.merge(
+                            TextStyle(
+                                color: Theme.of(context).disabledColor,
+                                fontWeight: FontWeight.w500)),
+                      )
+                    ]),
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
                   border: Border(
                       bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: 1,
-                  )),
-                ),
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
-                child: Text(
-                  widget.title,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle2
-                      .merge(TextStyle(fontWeight: FontWeight.w600)),
-                ),
-              ),
-              ListView.separated(
-                itemCount: widget.variantList.length,
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                primary: false,
-                itemBuilder: (context, index) {
-                  variantModel _variantData =
-                      widget.variantList.elementAt(index);
-
-                  return Container(
-                    width: double.infinity,
-                    // ignore: deprecated_member_use
-                    child: FlatButton(
-                      onPressed: () {
-                        widget.variantList.forEach((_l) {
-                          setState(() {
-                            _l.selected = false;
-                          });
-                        });
-
-                        _variantData.selected = true;
-
-                        Navigator.pop(context, _variantData.variant_id);
-                      },
-                      padding: EdgeInsets.all(10),
-                      color: _variantData.selected
-                          ? Theme.of(context).backgroundColor.withOpacity(0.8)
-                          : null,
-                      child: RichText(
-                        text: new TextSpan(children: [
-                          TextSpan(
-                            text:
-                                '${_variantData.quantity}  ${_variantData.unit} ',
-                            style: _variantData.selected
-                                ? Theme.of(context)
-                                    .textTheme
-                                    .headline1
-                                    .merge(TextStyle(
-                                      color: Colors.white,
-                                    ))
-                                : Theme.of(context).textTheme.headline1.merge(
-                                    TextStyle(
-                                        color: Theme.of(context).disabledColor,
-                                        fontWeight: FontWeight.w500)),
-                          ),
-                          TextSpan(
-                              text:
-                                  Helper.pricePrint(_variantData.strike_price),
-                              style: _variantData.selected
-                                  ? Theme.of(context).textTheme.headline1.merge(
-                                      TextStyle(
-                                          color: Colors.white,
-                                          decoration:
-                                              TextDecoration.lineThrough))
-                                  : Theme.of(context).textTheme.headline1.merge(
-                                      TextStyle(
-                                          color:
-                                              Theme.of(context).disabledColor,
-                                          fontWeight: FontWeight.w500,
-                                          decoration:
-                                              TextDecoration.lineThrough))),
-                          TextSpan(
-                            text: Helper.pricePrint(_variantData.sale_price),
-                            style: _variantData.selected
-                                ? Theme.of(context)
-                                    .textTheme
-                                    .headline1
-                                    .merge(TextStyle(
-                                      color: Colors.white,
-                                    ))
-                                : Theme.of(context).textTheme.headline1.merge(
-                                    TextStyle(
-                                        color: Theme.of(context).disabledColor,
-                                        fontWeight: FontWeight.w500)),
-                          )
-                        ]),
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
                         color: Theme.of(context).dividerColor,
                         width: 1,
                       )),
-                    ),
-                  );
-                },
-              ),
-            ],
+                ),
+              );
+            },
           ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 }
