@@ -7,6 +7,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:superstore/src/controllers/product_controller.dart';
 import 'package:superstore/src/elements/ClearCartWidget.dart';
 import 'package:superstore/src/helpers/helper.dart';
+import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/favouriteProduct.dart';
 import 'package:superstore/src/models/product_details2.dart';
 import 'package:superstore/src/models/variant.dart';
@@ -26,6 +27,7 @@ class ProductDetailsScreen extends StatefulWidget {
   final String longitude;
   final int focusId;
   final Function callback;
+  final DeliveryOptionsModel deliveryOptionsModel;
 
   const ProductDetailsScreen({
     Key key,
@@ -41,6 +43,7 @@ class ProductDetailsScreen extends StatefulWidget {
     this.longitude,
     this.focusId,
     this.callback,
+    this.deliveryOptionsModel,
   }) : super(key: key);
 
   @override
@@ -120,30 +123,43 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   style: Theme.of(context).textTheme.headline3.merge(
                       TextStyle(fontSize: 24, fontWeight: FontWeight.w500))),
               Padding(
-                padding: const EdgeInsets.only(top: 8, bottom: 16),
+                padding: const EdgeInsets.only( bottom: 16),
                 child: Row(children: [
-                  Container(
-                    margin: EdgeInsets.only(right: 10),
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.circular(3)),
-                    child: Row(
-                      children: [
-                        Text(
-                          "3",
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: Icon(
-                            Icons.star,
-                            color: Colors.white,
-                            size: 14,
+                  Row(
+                    children: [
+                      Text(
+                        "4.9  ",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      AbsorbPointer(
+                        child: RatingBar(
+                          itemSize: 16,
+                          initialRating: 3.5,
+                          direction: Axis.horizontal,
+                          itemCount: 5,
+                          allowHalfRating: true,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 0),
+                          ratingWidget: RatingWidget(
+                            full: Icon(
+                              Icons.star_purple500_sharp,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            half: Icon(
+                              Icons.star_half,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            empty: Icon(
+                              Icons.star_border,
+                              color: Colors.grey,
+                            ),
                           ),
+                          onRatingUpdate: (rating) {
+                            print(rating);
+                          },
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   Expanded(
                     child: Text(
@@ -258,6 +274,43 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
         ),
         Container(
+          margin: EdgeInsets.only(top: 16),
+          color: Colors.white,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12, left: 20, right: 20),
+                child: Text(
+                  "Shipping Options",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF49aecb)),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 36),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    itemOption(
+                        image: "assets/img/homedelivery.png",
+                        title: "HomeDelivery",
+                        isEnable: true),
+                    itemOption(
+                        image: "assets/img/takeawayicon.png",
+                        title: "TakeAway",
+                        isEnable: true),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+        Container(
           color: Colors.white,
           margin: EdgeInsets.only(top: 16),
           child: Column(
@@ -265,51 +318,69 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Text(
-                        "Customer reviews(4321)",
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Customer reviews(4321)",
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w600),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "4.9  ",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                AbsorbPointer(
+                                  child: RatingBar(
+                                    itemSize: 16,
+                                    initialRating: 3.5,
+                                    direction: Axis.horizontal,
+                                    itemCount: 5,
+                                    allowHalfRating: true,
+                                    itemPadding:
+                                        EdgeInsets.symmetric(horizontal: 0),
+                                    ratingWidget: RatingWidget(
+                                      full: Icon(
+                                        Icons.star_purple500_sharp,
+                                        color: Theme.of(context).accentColor,
+                                      ),
+                                      half: Icon(
+                                        Icons.star_half,
+                                        color: Theme.of(context).accentColor,
+                                      ),
+                                      empty: Icon(
+                                        Icons.star_border,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      print(rating);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     Text(
-                      "4.9/5",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                      "Write Review »",
+                      style: TextStyle(
+                          color: Colors.blueAccent,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600),
                     ),
-                    AbsorbPointer(
-                      child: RatingBar(
-                        itemSize: 16,
-                        initialRating: 3.5,
-                        direction: Axis.horizontal,
-                        itemCount: 5,
-                        allowHalfRating: true,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 0),
-                        ratingWidget: RatingWidget(
-                          full: Icon(
-                            Icons.star_purple500_sharp,
-                            color: Theme.of(context).accentColor,
-                          ),
-                          half: Icon(
-                            Icons.star_half,
-                            color: Theme.of(context).accentColor,
-                          ),
-                          empty: Icon(
-                            Icons.star_border,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
-                      ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.grey,
-                      size: 15,
-                    )
+
                   ],
                 ),
               ),
@@ -706,6 +777,28 @@ class AvailableQuantityHelper {
             title: name,
             selected: select,
           ));
+}
+
+Widget itemOption({String image, String title, bool isEnable}) {
+  return Column(
+    children: [
+      Image.asset(
+        image,
+        height: 24,
+        color: isEnable ? Color(0xFF333D37) : Colors.grey.withOpacity(0.4),
+        fit: BoxFit.contain,
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 4),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: isEnable ? Color(0xFF333D37) : Colors.grey.withOpacity(0.4),
+          ),
+        ),
+      ),
+    ],
+  );
 }
 
 // ignore: must_be_immutable
