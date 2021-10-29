@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:superstore/src/controllers/cart_controller.dart';
 import 'package:superstore/src/controllers/product_controller.dart';
 import 'package:superstore/src/elements/ClearCartWidget.dart';
 import 'package:superstore/src/helpers/helper.dart';
@@ -12,6 +13,7 @@ import 'package:superstore/src/models/favouriteProduct.dart';
 import 'package:superstore/src/models/product_details2.dart';
 import 'package:superstore/src/models/variant.dart';
 import 'package:superstore/src/pages/Widget/fav_product_button.dart';
+import 'package:superstore/src/pages/add_reviews_screen.dart';
 import 'package:superstore/src/repository/user_repository.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -52,6 +54,7 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   variantModel selectedVariantData;
+  CartController _cartController;
 
   @override
   void initState() {
@@ -374,12 +377,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ],
                       ),
                     ),
-                    Text(
-                      "Write Review »",
-                      style: TextStyle(
-                          color: Colors.blueAccent,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => WriteReviewScreen()));
+                      },
+                      child: Text(
+                        "Write Review »",
+                        style: TextStyle(
+                            color: Colors.blueAccent,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
 
                   ],
@@ -572,40 +581,43 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(mainAxisSize: MainAxisSize.min, children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                widget?.con?.decrementQtyVariant(
-                                    widget?.choice?.id,
-                                    selectedVariantData?.variant_id);
-                              });
-                            },
-                            child: Icon(Icons.remove_circle,
-                                color: Theme.of(context).accentColor, size: 36),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Text(
-                                widget?.con?.showQtyVariant(widget?.choice?.id,
-                                    selectedVariantData?.variant_id),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline3
-                                    .merge(TextStyle(color: Colors.black54))),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                widget?.con?.incrementQtyVariant(
-                                    widget?.choice?.id,
-                                    selectedVariantData?.variant_id);
-                              });
-                            },
-                            child: Icon(Icons.add_circle,
-                                color: Theme.of(context).accentColor, size: 36),
-                          ),
-                        ]),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 28, right: 8),
+                          child: Row(mainAxisSize: MainAxisSize.min, children: [
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  widget?.con?.decrementQtyVariant(
+                                      widget?.choice?.id,
+                                      selectedVariantData?.variant_id);
+                                });
+                              },
+                              child: Icon(Icons.remove_circle,
+                                  color: Theme.of(context).accentColor, size: 36),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 14),
+                              child: Text(
+                                  widget?.con?.showQtyVariant(widget?.choice?.id,
+                                      selectedVariantData?.variant_id),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline3
+                                      .merge(TextStyle(color: Colors.black54))),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  widget?.con?.incrementQtyVariant(
+                                      widget?.choice?.id,
+                                      selectedVariantData?.variant_id);
+                                });
+                              },
+                              child: Icon(Icons.add_circle,
+                                  color: Theme.of(context).accentColor, size: 36),
+                            ),
+                          ]),
+                        ),
                         FlatButton(
                           onPressed: () {
                             if (currentUser.value.apiToken != null) {
@@ -632,25 +644,58 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ],
                     ),
                   ),
-            Container(
-              alignment: Alignment.center,
-              height: 50,
-              margin: EdgeInsets.only(right: 6),
-              padding: EdgeInsets.only(left: 16, right: 26),
-              // width: 150,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(50),
-                  bottomRight: Radius.circular(50),
+            Visibility(
+              visible: 1 ==
+                  widget?.con?.checkProductIdCartVariant(
+                      widget?.choice?.id, selectedVariantData?.variant_id),
+
+              child: GestureDetector(
+                onTap: (){
+                  print("buy now");
+                  widget?.con?.checkShopAdded(
+                      widget?.choice,
+                      'cart',
+                      selectedVariantData,
+                      widget?.shopId,
+                      ClearCartShow,
+                      widget?.shopName,
+                      widget?.subtitle,
+                      widget?.km,
+                      widget?.shopTypeID,
+                      widget?.latitude,
+                      widget?.longitude,
+                      widget?.callback,
+                      widget?.focusId);
+                  if (currentUser.value.apiToken != null) {
+                    Navigator.of(context).pushNamed('/Checkout');
+                  } else {
+                    Navigator.of(context).pushNamed('/Login');
+                  }
+                  setState(() {
+                    
+                  });
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 50,
+                  margin: EdgeInsets.only(right: 6),
+                  padding: EdgeInsets.only(left: 16, right: 26),
+                  // width: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(50),
+                      bottomRight: Radius.circular(50),
+                    ),
+                    // color: Theme.of(context).secondaryHeaderColor.withOpacity(.8),
+                    color: Colors.deepOrange,
+                  ),
+                  child: Text('Buy Now',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3
+                          .merge(TextStyle(color: Colors.white))),
                 ),
-                // color: Theme.of(context).secondaryHeaderColor.withOpacity(.8),
-                color: Colors.deepOrange,
               ),
-              child: Text('Buy Now',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline3
-                      .merge(TextStyle(color: Colors.white))),
             )
           ],
         ),
