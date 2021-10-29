@@ -4,6 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:superstore/src/controllers/add_review_controller.dart';
 import 'package:superstore/src/controllers/cart_controller.dart';
 import 'package:superstore/src/controllers/product_controller.dart';
 import 'package:superstore/src/elements/ClearCartWidget.dart';
@@ -50,10 +53,16 @@ class ProductDetailsScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
+  _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
 }
 
-class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
+  ReviewController _con;
+
+  _ProductDetailsScreenState() : super(ReviewController()) {
+    _con = controller;
+  }
+
   variantModel selectedVariantData;
   CartController _cartController;
 
@@ -65,6 +74,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       _l.selected = false;
     });
     selectedVariantData.selected = true;
+    _con?.listenForReviewList(
+        isShop: false, id: selectedVariantData?.product_id);
+  }
+
+  String convertToDisplayDate(String date) {
+    if (date?.isNotEmpty == true) {
+      DateTime inputDate = DateTime.parse(date);
+      return toDisplayDate(inputDate);
+    }
+    return "";
+  }
+
+  String toDisplayDate(DateTime date) {
+    var formatter = new DateFormat("dd MMM, yyyy");
+    return formatter.format(date);
   }
 
   @override
@@ -127,7 +151,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   style: Theme.of(context).textTheme.headline3.merge(
                       TextStyle(fontSize: 24, fontWeight: FontWeight.w500))),
               Padding(
-                padding: const EdgeInsets.only( bottom: 16),
+                padding: const EdgeInsets.only(bottom: 16),
                 child: Row(children: [
                   Row(
                     children: [
@@ -188,7 +212,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               Text(
                 "Product Details:",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 6),
@@ -211,7 +235,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
                 child: Text(
                   "Options:",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                 ),
               ),
               Container(
@@ -290,7 +314,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 child: Text(
                   "Shipping Options",
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: FontWeight.w600,
                       color: Color(0xFF49aecb)),
                   textAlign: TextAlign.center,
@@ -332,7 +356,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           Text(
                             "Customer reviews(4321)",
                             style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w600),
+                                fontSize: 15, fontWeight: FontWeight.w600),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 5),
@@ -379,11 +403,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => WriteReviewScreen(
-                                id: selectedVariantData?.product_id,
-                            )));
+                                  id: selectedVariantData?.product_id,
+                                )));
                       },
                       child: Text(
                         "Write Review »",
@@ -393,7 +417,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             fontWeight: FontWeight.w600),
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -401,22 +424,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: 5,
+                  itemCount: _con?.reviewList?.length ?? 0,
                   itemBuilder: (context, index) {
+                    AddReview reviewDetails =
+                        _con?.reviewList?.elementAt(index);
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
                               Expanded(
                                   child: Text(
-                                "Name",
+                                reviewDetails?.userName ?? "",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w400, fontSize: 14),
+                                    fontWeight: FontWeight.w600, fontSize: 14, color: Colors.black87),
                               )),
                               Text(
-                                "17-10-2021",
+                                convertToDisplayDate(reviewDetails?.time),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400, fontSize: 14),
                               ),
@@ -429,7 +455,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             child: AbsorbPointer(
                               child: RatingBar(
                                 itemSize: 16,
-                                initialRating: 3.5,
+                                initialRating: double.tryParse(
+                                    reviewDetails?.rating ?? "0"),
                                 direction: Axis.horizontal,
                                 itemCount: 5,
                                 allowHalfRating: true,
@@ -456,7 +483,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                           ),
                           Text(
-                            "Also need to show the chat button, shop button and section for review, section to show available shipping options (home delivery and takeaway)",
+                            reviewDetails?.review ?? "",
                             style: TextStyle(fontWeight: FontWeight.w400),
                           ),
                         ],
@@ -596,12 +623,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 });
                               },
                               child: Icon(Icons.remove_circle,
-                                  color: Theme.of(context).accentColor, size: 36),
+                                  color: Theme.of(context).accentColor,
+                                  size: 36),
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 14),
                               child: Text(
-                                  widget?.con?.showQtyVariant(widget?.choice?.id,
+                                  widget?.con?.showQtyVariant(
+                                      widget?.choice?.id,
                                       selectedVariantData?.variant_id),
                                   style: Theme.of(context)
                                       .textTheme
@@ -617,7 +646,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 });
                               },
                               child: Icon(Icons.add_circle,
-                                  color: Theme.of(context).accentColor, size: 36),
+                                  color: Theme.of(context).accentColor,
+                                  size: 36),
                             ),
                           ]),
                         ),
@@ -651,9 +681,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               visible: 1 ==
                   widget?.con?.checkProductIdCartVariant(
                       widget?.choice?.id, selectedVariantData?.variant_id),
-
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
                   print("buy now");
                   widget?.con?.checkShopAdded(
                       widget?.choice,
@@ -674,9 +703,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   } else {
                     Navigator.of(context).pushNamed('/Login');
                   }
-                  setState(() {
-
-                  });
+                  setState(() {});
                 },
                 child: Container(
                   alignment: Alignment.center,

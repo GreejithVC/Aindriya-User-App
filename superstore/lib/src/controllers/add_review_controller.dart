@@ -20,19 +20,21 @@ class ReviewController extends ControllerMVC {
     }).whenComplete(() {
       print("addReview/// whenComplete");
       listenForReviewList();
+      Navigator.pop(context);
       // Helper.hideLoader(loader);
     });
   }
 
-  Future<void> listenForReviewList() async {
+  Future<void> listenForReviewList({@required String id, @required bool isShop}) async {
     reviewList.clear();
     print("listenForReviewList///");
     FirebaseFirestore.instance
         .collection('Reviews')
-        .doc(currentUser.value.id)
-        .collection("ProductsReview")
+        .doc(isShop == true ? "Shops" : "Products")
+        .collection(id)
         .get()
         .then((querySnapshot) {
+      print("listenForReviewList/// querySnapshot");
       querySnapshot.docs.forEach((result) {
         print(result);
         print(result.id);
