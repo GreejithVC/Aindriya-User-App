@@ -275,6 +275,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
         Container(
           margin: EdgeInsets.only(top: 16),
+          padding: EdgeInsets.symmetric(vertical: 8),
           color: Colors.white,
           child: Column(
             mainAxisSize: MainAxisSize.min,
