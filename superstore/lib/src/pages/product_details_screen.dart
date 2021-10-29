@@ -8,6 +8,7 @@ import 'package:superstore/src/controllers/cart_controller.dart';
 import 'package:superstore/src/controllers/product_controller.dart';
 import 'package:superstore/src/elements/ClearCartWidget.dart';
 import 'package:superstore/src/helpers/helper.dart';
+import 'package:superstore/src/models/add_review_modelclass.dart';
 import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/favouriteProduct.dart';
 import 'package:superstore/src/models/product_details2.dart';
@@ -380,7 +381,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     GestureDetector(
                       onTap: (){
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WriteReviewScreen()));
+                            builder: (context) => WriteReviewScreen(
+                                id: selectedVariantData?.product_id,
+                            )));
                       },
                       child: Text(
                         "Write Review »",
@@ -672,7 +675,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     Navigator.of(context).pushNamed('/Login');
                   }
                   setState(() {
-                    
+
                   });
                 },
                 child: Container(
