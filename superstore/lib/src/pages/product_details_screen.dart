@@ -250,6 +250,29 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Column(mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.chat_outlined,
+                    color:Color(0xFF333D37).withOpacity(0.8),
+                    // Color(0xFF333D37),
+                    size: 23),
+                Text("chat")
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.store_mall_directory,
+                    size: 24,
+                    color: Color(0xFF333D37).withOpacity(0.8),
+                  ),
+                  Text("store")
+                ],
+              ),
+            ),
             Visibility(
               visible: false,
               child: InkWell(
@@ -318,9 +341,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     child: Container(
                       alignment: Alignment.center,
                       height: 50,
-                      width: 250,
+                      margin: EdgeInsets.only(left: 16),
+                      padding: EdgeInsets.only(left: 16,right: 16),
+                      // width: 150,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(50),
+                          bottomLeft: Radius.circular(50),
+                        ),
                         color: Theme.of(context).accentColor.withOpacity(1),
                       ),
                       child: Text('Add To Cart',
@@ -393,6 +421,26 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ],
                     ),
                   ),
+            Container(
+              alignment: Alignment.center,
+              height: 50,
+              margin: EdgeInsets.only(right: 6),
+              padding: EdgeInsets.only(left: 16,right: 26),
+              // width: 150,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(50),
+                  bottomRight: Radius.circular(50),
+                ),
+                // color: Theme.of(context).secondaryHeaderColor.withOpacity(.8),
+                color: Colors.deepOrange,
+              ),
+              child: Text('Buy Now',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline3
+                      .merge(TextStyle(color: Colors.white))),
+            )
           ],
         ),
       ),

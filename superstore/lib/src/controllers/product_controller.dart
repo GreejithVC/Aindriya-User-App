@@ -260,7 +260,9 @@ class ProductController extends ControllerMVC {
     currentCheckout.value.focusId = focusId;
     currentCheckout.value.deliveryPossible = true;
     currentCheckout.value.uploadImage = 'no';
-    currentCheckout.value.km = double.parse(km.replaceAll(',', ''));
+    currentCheckout.value.km = km?.toString()?.isNotEmpty == true
+        ? double.parse(km?.replaceAll(',', ''))
+        : 0;
     currentCart.value.add(cartresponce);
     // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
     currentCart.notifyListeners();
