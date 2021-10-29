@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:superstore/src/controllers/product_controller.dart';
 import 'package:superstore/src/elements/ClearCartWidget.dart';
 import 'package:superstore/src/helpers/helper.dart';
@@ -61,8 +62,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget?.subtitle );
-    print("widget?.subtitle" );
+    print(widget?.subtitle);
+    print("widget?.subtitle");
     return Scaffold(
       body: ListView(padding: EdgeInsets.all(0), children: [
         Stack(
@@ -108,141 +109,278 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             )
           ],
         ),
-        ListView(
-          padding: EdgeInsets.all(20),
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          children: [
-            Text(widget?.choice?.product_name ?? "",
-                style: Theme.of(context).textTheme.headline3.merge(
-                    TextStyle(fontSize: 24, fontWeight: FontWeight.w500))),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Row(children: [
-                Container(
-                  margin: EdgeInsets.only(right: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      borderRadius: BorderRadius.circular(3)),
-                  child: Row(
-                    children: [
-                      Text(
-                        "3",
-                        style: TextStyle(color: Colors.white, fontSize: 14),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 4),
-                        child: Icon(
-                          Icons.star,
-                          color: Colors.white,
-                          size: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                      Helper.pricePrint(selectedVariantData?.sale_price ?? ""),
-                      textAlign: TextAlign.end,
-                      style: Theme.of(context).textTheme.headline3.merge(
-                          TextStyle(
-                              color: Theme.of(context).secondaryHeaderColor,
-                              fontSize: 24))),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8, top: 4),
-                  child: Text(
-                    Helper.pricePrint(selectedVariantData?.strike_price ?? ""),
-                    style: Theme.of(context).textTheme.subtitle2.merge(
-                        TextStyle(decoration: TextDecoration.lineThrough)),
-                  ),
-                ),
-              ]),
-            ),
-            Text(
-              "Product Details:",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-            ),
-            Text(
-              widget?.subtitle ?? "",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-            ),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                "Options:",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              ),
-            ),
-            Container(
-              height: 140,
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                scrollDirection: Axis.horizontal,
-                itemCount: widget.choice.variant.length,
-                itemBuilder: (context, index) {
-                  variantModel _variantData =
-                      widget.choice.variant.elementAt(index);
-                  return GestureDetector(
-                    onTap: () {
-                      widget.choice.variant.forEach((_l) {
-                        _l.selected = false;
-                      });
-                      _variantData.selected = true;
-                      selectedVariantData = _variantData;
-                      setState(() {});
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
+        Container(
+          color: Colors.white,
+          child: ListView(
+            padding: EdgeInsets.all(20),
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              Text(widget?.choice?.product_name ?? "",
+                  style: Theme.of(context).textTheme.headline3.merge(
+                      TextStyle(fontSize: 24, fontWeight: FontWeight.w500))),
+              Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 16),
+                child: Row(children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.circular(3)),
+                    child: Row(
                       children: [
-                        Expanded(
-                          child: Container(
-                            width: 100,
-                            margin: EdgeInsets.all(4),
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(
-                                    color: _variantData.selected
-                                        ? Theme.of(context)
-                                            .accentColor
-                                            .withOpacity(0.8)
-                                        : Colors.grey,
-                                    width: _variantData.selected ? 3 : 1)),
-                            child: CachedNetworkImage(
-                              imageUrl: _variantData?.image,
-                              placeholder: (context, url) =>
-                                  new CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  new Icon(Icons.error),
-                              fit: BoxFit.cover,
-                            ),
+                        Text(
+                          "3",
+                          style: TextStyle(color: Colors.white, fontSize: 14),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4),
+                          child: Icon(
+                            Icons.star,
+                            color: Colors.white,
+                            size: 14,
                           ),
                         ),
-                        Container(
-                          width: 100,
-                          child: Text(
-                            '${_variantData?.quantity}${_variantData?.unit}',
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            textAlign: TextAlign.center,
-                          ),
-                        )
                       ],
                     ),
-                  );
-                },
+                  ),
+                  Expanded(
+                    child: Text(
+                        Helper.pricePrint(
+                            selectedVariantData?.sale_price ?? ""),
+                        textAlign: TextAlign.end,
+                        style: Theme.of(context).textTheme.headline3.merge(
+                            TextStyle(
+                                color: Theme.of(context).secondaryHeaderColor,
+                                fontSize: 24))),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, top: 4),
+                    child: Text(
+                      Helper.pricePrint(
+                          selectedVariantData?.strike_price ?? ""),
+                      style: Theme.of(context).textTheme.subtitle2.merge(
+                          TextStyle(decoration: TextDecoration.lineThrough)),
+                    ),
+                  ),
+                ]),
               ),
-            ),
-          ],
+              Text(
+                "Product Details:",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Text(
+                  widget?.subtitle ?? "- - - - -",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          color: Colors.white,
+          margin: EdgeInsets.only(top: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
+                child: Text(
+                  "Options:",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+              ),
+              Container(
+                height: 140,
+                child: ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.choice.variant.length,
+                  itemBuilder: (context, index) {
+                    variantModel _variantData =
+                        widget.choice.variant.elementAt(index);
+                    return GestureDetector(
+                      onTap: () {
+                        widget.choice.variant.forEach((_l) {
+                          _l.selected = false;
+                        });
+                        _variantData.selected = true;
+                        selectedVariantData = _variantData;
+                        setState(() {});
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: 100,
+                              margin: EdgeInsets.all(4),
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                      color: _variantData.selected
+                                          ? Theme.of(context)
+                                              .accentColor
+                                              .withOpacity(0.8)
+                                          : Colors.grey,
+                                      width: _variantData.selected ? 3 : 1)),
+                              child: CachedNetworkImage(
+                                imageUrl: _variantData?.image,
+                                placeholder: (context, url) =>
+                                    new CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    new Icon(Icons.error),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 100,
+                            child: Text(
+                              '${_variantData?.quantity}${_variantData?.unit}',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          color: Colors.white,
+          margin: EdgeInsets.only(top: 16),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Customer reviews(4321)",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Text(
+                      "4.9/5",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                    AbsorbPointer(
+                      child: RatingBar(
+                        itemSize: 16,
+                        initialRating: 3.5,
+                        direction: Axis.horizontal,
+                        itemCount: 5,
+                        allowHalfRating: true,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 0),
+                        ratingWidget: RatingWidget(
+                          full: Icon(
+                            Icons.star_purple500_sharp,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          half: Icon(
+                            Icons.star_half,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          empty: Icon(
+                            Icons.star_border,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        onRatingUpdate: (rating) {
+                          print(rating);
+                        },
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.grey,
+                      size: 15,
+                    )
+                  ],
+                ),
+              ),
+              ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: Text(
+                                "Name",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 14),
+                              )),
+                              Text(
+                                "17-10-2021",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            child: AbsorbPointer(
+                              child: RatingBar(
+                                itemSize: 16,
+                                initialRating: 3.5,
+                                direction: Axis.horizontal,
+                                itemCount: 5,
+                                allowHalfRating: true,
+                                itemPadding:
+                                    EdgeInsets.symmetric(horizontal: 0),
+                                ratingWidget: RatingWidget(
+                                  full: Icon(
+                                    Icons.star_purple500_sharp,
+                                    color: Theme.of(context).accentColor,
+                                  ),
+                                  half: Icon(
+                                    Icons.star_half,
+                                    color: Theme.of(context).accentColor,
+                                  ),
+                                  empty: Icon(
+                                    Icons.star_border,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                onRatingUpdate: (rating) {
+                                  print(rating);
+                                },
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "Also need to show the chat button, shop button and section for review, section to show available shipping options (home delivery and takeaway)",
+                            style: TextStyle(fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+            ],
+          ),
         ),
       ]),
       bottomNavigationBar: Padding(
@@ -250,10 +388,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(mainAxisSize: MainAxisSize.min,
+            Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.chat_outlined,
-                    color:Color(0xFF333D37).withOpacity(0.8),
+                    color: Color(0xFF333D37).withOpacity(0.8),
                     // Color(0xFF333D37),
                     size: 23),
                 Text("chat")
@@ -342,7 +481,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       alignment: Alignment.center,
                       height: 50,
                       margin: EdgeInsets.only(left: 16),
-                      padding: EdgeInsets.only(left: 16,right: 16),
+                      padding: EdgeInsets.only(left: 16, right: 16),
                       // width: 150,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
@@ -425,7 +564,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               alignment: Alignment.center,
               height: 50,
               margin: EdgeInsets.only(right: 6),
-              padding: EdgeInsets.only(left: 16,right: 26),
+              padding: EdgeInsets.only(left: 16, right: 26),
               // width: 150,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
