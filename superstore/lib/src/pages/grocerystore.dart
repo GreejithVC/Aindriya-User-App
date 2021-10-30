@@ -277,7 +277,8 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                           Row(
                             children: [
                               Text(
-                                "${averageRating.toStringAsFixed(1) ?? 0} ",
+                                (averageRating > 0)?
+                                "${averageRating?.toStringAsFixed(1) ?? 0} ": "No Reviews ",
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.w600),
                               ),
@@ -285,7 +286,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                 child: AbsorbPointer(
                                   child: RatingBar(
                                     itemSize: 16,
-                                    initialRating: averageRating ?? 0,
+                                    initialRating: (averageRating > 0)? averageRating ?? 0:0,
                                     direction: Axis.horizontal,
                                     itemCount: 5,
                                     allowHalfRating: true,

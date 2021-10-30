@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:superstore/src/models/favouriteProduct.dart';
 import 'package:superstore/src/pages/Widget/fav_product_button.dart';
+import 'package:superstore/src/pages/product_details_screen.dart';
 import '../repository/order_repository.dart';
 import '../models/product_details2.dart';
 import '../models/variant.dart';
@@ -73,6 +74,24 @@ class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
                 ? Row(children: [
                     InkWell(
                       onTap: () {
+                        print("taped//////////////////////");
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProductDetailsScreen(
+                              variantData:
+                              widget?.choice?.variant?.elementAt(index),
+                              choice: widget?.choice,
+                              subtitle: widget?.subtitle,
+                              shopId: widget?.shopId,
+                              shopName: widget?.shopName,
+                              focusId: widget?.focusId,
+                              con: widget?.con,
+                              callback: widget?.callback,
+                              shopTypeID: widget?.shopTypeID,
+                              km: widget?.km,
+                              latitude: widget?.latitude,
+                              longitude: widget?.longitude,
+                            )));
+
                         // widget.con.view_product(widget.choice);
                       },
                       child: Padding(
