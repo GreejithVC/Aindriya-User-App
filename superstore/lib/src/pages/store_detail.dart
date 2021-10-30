@@ -6,6 +6,7 @@ import 'package:superstore/src/controllers/add_review_controller.dart';
 import 'package:superstore/src/controllers/fav_shop_controller.dart';
 import 'package:superstore/src/elements/SearchWidgetRe.dart';
 import 'package:superstore/src/elements/image_zoom.dart';
+import 'package:superstore/src/models/add_review_modelclass.dart';
 import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/packagetype.dart';
 import 'package:superstore/src/pages/shop_reviews.dart';
@@ -36,7 +37,6 @@ class StoreViewDetails extends StatefulWidget {
 class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
     with SingleTickerProviderStateMixin {
   VendorController _con;
-  ReviewController _reviewCon;
 
   _StoreViewDetailsState() : super(VendorController()) {
     _con = controller;
@@ -65,7 +65,7 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
     _con.listenForRestaurantProduct(int.parse(widget.shopDetails.shopId));
     _con.listenForPackageSubscribed(widget.shopDetails.shopId);
     _con.listenForDeliveryDetails(widget.shopDetails.shopId);
-    ReviewController().listenForReviewList(id: widget.shopDetails.shopId, isShop: true);
+    _con.listenForReviewList(id: widget.shopDetails.shopId, isShop: true);
     //   _tabController = TabController(vsync: this, length: );
   }
 
@@ -148,6 +148,7 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
                 itemDetails: _con.vendorResProductList,
                 subscribedPackage: _con.subScribedPackage,
                 deliveryOptionsModel: _con.deliveryOptionsModel,
+                reviewList: _con?.reviewList,
                 avatar: Container(
                   height: 50,
                   width: 50,
@@ -260,6 +261,7 @@ class TransitionAppBar extends StatelessWidget {
   final List<RestaurantProduct> itemDetails;
   final PackageTypeModel subscribedPackage;
   final DeliveryOptionsModel deliveryOptionsModel;
+  final List<AddReview> reviewList;
 
   TransitionAppBar(
       {this.avatar,
@@ -273,7 +275,7 @@ class TransitionAppBar extends StatelessWidget {
       this.callback,
       this.subscribedPackage,
       this.deliveryOptionsModel,
-      Key key})
+      Key key, this.reviewList})
       : super(key: key);
 
   @override
@@ -292,6 +294,7 @@ class TransitionAppBar extends StatelessWidget {
           callback: callback,
           focusId: focusId,
           subOpacity: subOpacity,
+          reviewList: reviewList,
           scrollController: null),
     );
   }
@@ -307,6 +310,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
   final Function callback;
   final int focusId;
   final List<RestaurantProduct> itemDetails;
+  final List<AddReview> reviewList;
   final PackageTypeModel subscribedPackage;
   final DeliveryOptionsModel deliveryOptionsModel;
 
@@ -322,14 +326,28 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
     this.callback,
     this.subscribedPackage,
     this.deliveryOptionsModel,
+    this.reviewList,
     @required ScrollController scrollController,
   })  : assert(avatar != null),
         assert(title != null);
   final PageController _pageController = PageController(initialPage: 0);
 
+
+  void initState() {
+    ReviewController()?.listenForReviewList(id: shopDetails.shopId, isShop: true);
+
+    //   _tabController = TabController(vsync: this, length: );
+  }
+
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    double averageRating = ((reviewList?.fold(
+        0.0,
+            (previousValue, element) =>
+        previousValue + double.tryParse(element?.rating ?? "0")) ??
+        0) /
+        (reviewList?.length ?? 0));
     return ListView(
       padding: EdgeInsets.all(0),
       shrinkWrap: true,
@@ -407,7 +425,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
               Row(
                 children: [
                   Text(
-                    "4.9  ",
+                    "${averageRating.toStringAsFixed(1) ?? 0} ",
                     style: TextStyle(
                         fontSize: 14, fontWeight: FontWeight.w600),
                   ),
@@ -415,7 +433,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                     child: AbsorbPointer(
                       child: RatingBar(
                         itemSize: 16,
-                        initialRating: 3.5,
+                        initialRating: averageRating ?? 0,
                         direction: Axis.horizontal,
                         itemCount: 5,
                         allowHalfRating: true,
@@ -448,12 +466,15 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                             shopTypeID: shopTypeID,
                           )));
                     },
-                    child: Text(
-                      "View All Review »",
-                      style: TextStyle(
-                          color: Colors.blueAccent,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        "View All Review »",
+                        style: TextStyle(
+                            color: Colors.blueAccent,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                 ],

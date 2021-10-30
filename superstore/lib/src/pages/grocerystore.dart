@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:superstore/src/controllers/add_review_controller.dart';
+import 'package:superstore/src/controllers/reviews_controller.dart';
 import 'package:superstore/src/elements/image_zoom.dart';
 import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/packagetype.dart';
+import 'package:superstore/src/pages/shop_reviews.dart';
 import 'package:superstore/src/pages/store_detail.dart';
 import 'package:superstore/src/pages/upload_prescription.dart';
 
@@ -46,6 +49,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
   }
 
   final controller1 = ScrollController();
+
   double itemsCount = 25;
 
   // ignore: non_constant_identifier_names
@@ -64,6 +68,11 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
     _con.listenForCategories(widget.shopDetails.shopId);
     _con.listenForPackageSubscribed(widget.shopDetails.shopId);
     _con.listenForDeliveryDetails(widget.shopDetails.shopId);
+    _con?.listenForReviewList(id: widget.shopDetails.shopId, isShop: true);
+    print(ReviewController()?.reviewList?.length);
+    print("ReviewController()?.reviewList?.length");
+
+
 
     //   _tabController = TabController(vsync: this, length: );
   }
@@ -100,8 +109,15 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
 
   final PageController _pageController = PageController(initialPage: 0);
 
+
   @override
   Widget build(BuildContext context) {
+    double averageRating = ((_con?.reviewList?.fold(
+        0.0,
+            (previousValue, element) =>
+        previousValue + double.tryParse(element?.rating ?? "0")) ??
+        0) /
+        (_con?.reviewList?.length ?? 0));
     print("expiry ////subScribedPackage?.expiryDate");
     print(_con?.subScribedPackage?.expiryDate);
     print("expiry ////.deliveryOptionsModel?.availableCOD");
@@ -261,7 +277,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                           Row(
                             children: [
                               Text(
-                                "4.9  ",
+                                "${averageRating.toStringAsFixed(1) ?? 0} ",
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.w600),
                               ),
@@ -269,7 +285,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                 child: AbsorbPointer(
                                   child: RatingBar(
                                     itemSize: 16,
-                                    initialRating: 3.5,
+                                    initialRating: averageRating ?? 0,
                                     direction: Axis.horizontal,
                                     itemCount: 5,
                                     allowHalfRating: true,
@@ -294,12 +310,23 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                   ),
                                 ),
                               ),
-                              Text(
-                                "View All Review »",
-                                style: TextStyle(
-                                    color: Colors.blueAccent,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
+                              GestureDetector(
+                                onTap: (){
+
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => ShopReviews(
+                                          shopDetails: widget?.shopDetails,
+                                          shopTypeID: widget?.shopTypeID,
+                                        )));
+                                  },
+
+                                child: Text(
+                                  "View All Review »",
+                                  style: TextStyle(
+                                      color: Colors.blueAccent,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
                             ],
                           ),

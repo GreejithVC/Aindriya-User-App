@@ -95,6 +95,12 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
   Widget build(BuildContext context) {
     print(widget?.subtitle);
     print("widget?.subtitle");
+    double averageRating = ((_con?.reviewList?.fold(
+        0.0,
+            (previousValue, element) =>
+        previousValue + double.tryParse(element?.rating ?? "0")) ??
+        0) /
+        (_con?.reviewList?.length ?? 0));
     return Scaffold(
       body: ListView(padding: EdgeInsets.all(0), children: [
         Stack(
@@ -153,41 +159,43 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
                 child: Row(children: [
-                  Row(
-                    children: [
-                      Text(
-                        "4.9  ",
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600),
-                      ),
-                      AbsorbPointer(
-                        child: RatingBar(
-                          itemSize: 16,
-                          initialRating: 3.5,
-                          direction: Axis.horizontal,
-                          itemCount: 5,
-                          allowHalfRating: true,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 0),
-                          ratingWidget: RatingWidget(
-                            full: Icon(
-                              Icons.star_purple500_sharp,
-                              color: Theme.of(context).accentColor,
-                            ),
-                            half: Icon(
-                              Icons.star_half,
-                              color: Theme.of(context).accentColor,
-                            ),
-                            empty: Icon(
-                              Icons.star_border,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          onRatingUpdate: (rating) {
-                            print(rating);
-                          },
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Text(
+                          "${averageRating?.toStringAsFixed(1) ?? 0} ",
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w600),
                         ),
-                      ),
-                    ],
+                        AbsorbPointer(
+                          child: RatingBar(
+                            itemSize: 16,
+                            initialRating: averageRating ?? 0,
+                            direction: Axis.horizontal,
+                            itemCount: 5,
+                            allowHalfRating: true,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 0),
+                            ratingWidget: RatingWidget(
+                              full: Icon(
+                                Icons.star_purple500_sharp,
+                                color: Theme.of(context).accentColor,
+                              ),
+                              half: Icon(
+                                Icons.star_half,
+                                color: Theme.of(context).accentColor,
+                              ),
+                              empty: Icon(
+                                Icons.star_border,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            onRatingUpdate: (rating) {
+                              print(rating);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Expanded(
                     child: Text(
@@ -354,7 +362,7 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Customer reviews(4321)",
+                            "Customer reviews ( ${_con?.reviewList?.length ?? ""} )",
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w600),
                           ),
@@ -363,7 +371,7 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                             child: Row(
                               children: [
                                 Text(
-                                  "4.9  ",
+                                  "${averageRating ?? 0} ",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600),
@@ -371,7 +379,7 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                                 AbsorbPointer(
                                   child: RatingBar(
                                     itemSize: 16,
-                                    initialRating: 3.5,
+                                    initialRating: averageRating,
                                     direction: Axis.horizontal,
                                     itemCount: 5,
                                     allowHalfRating: true,

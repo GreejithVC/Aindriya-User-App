@@ -39,6 +39,12 @@ class _ShopReviewsState extends StateMVC<ShopReviews> {
   Widget build(BuildContext context) {
     print("listenForReviewList/// length");
     print(_con?.reviewList?.length);
+    double averageRating = ((_con?.reviewList?.fold(
+                0.0,
+                (previousValue, element) =>
+                    previousValue + double.tryParse(element?.rating ?? "0")) ??
+            0) /
+        (_con?.reviewList?.length ?? 0));
 
     return Scaffold(
       body: ListView(
@@ -142,7 +148,7 @@ class _ShopReviewsState extends StateMVC<ShopReviews> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Customer reviews(4321)",
+                              "Customer reviews ( ${_con?.reviewList?.length ?? ""} )",
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.w600),
                             ),
@@ -151,7 +157,7 @@ class _ShopReviewsState extends StateMVC<ShopReviews> {
                               child: Row(
                                 children: [
                                   Text(
-                                    "4.9  ",
+                                    averageRating?.toStringAsFixed(1) ?? "",
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600),
@@ -159,7 +165,7 @@ class _ShopReviewsState extends StateMVC<ShopReviews> {
                                   AbsorbPointer(
                                     child: RatingBar(
                                       itemSize: 16,
-                                      initialRating: 3.5,
+                                      initialRating:averageRating ?? 0,
                                       direction: Axis.horizontal,
                                       itemCount: 5,
                                       allowHalfRating: true,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:superstore/src/models/add_review_modelclass.dart';
 import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/packagetype.dart';
 import 'package:superstore/src/repository/user_repository.dart';
@@ -17,6 +18,7 @@ class VendorController extends ControllerMVC {
   List<RestaurantProduct> vendorResProductList = <RestaurantProduct>[];
   PackageTypeModel subScribedPackage;
   DeliveryOptionsModel deliveryOptionsModel;
+  List<AddReview> reviewList = <AddReview>[];
 
   VendorController();
 
@@ -147,5 +149,34 @@ class VendorController extends ControllerMVC {
     }).catchError((e) {
       print(e);
     }).whenComplete(() {});
+  }
+  Future<void> listenForReviewList(
+      { String id, bool isShop}) async {
+    reviewList.clear();
+    print("listenForReviewList///");
+    FirebaseFirestore.instance
+        .collection('Reviews')
+        .doc(isShop == true ? "Shops" : "Products")
+        .collection(id)
+        .get()
+        .then((querySnapshot) {
+      print("listenForReviewList/// querySnapshot");
+      querySnapshot.docs.forEach((result) {
+        print(result);
+        print(result.id);
+        print(result.reference);
+        print(result.data());
+        reviewList.add(AddReview.fromJSON(result.data()));
+      });
+      setState(() => reviewList.sort((a, b) {
+        return b.rating.compareTo(a.rating);
+      }));
+      notifyListeners();
+    }).catchError((e) {
+      print(e);
+    }).whenComplete(() {
+      print("listenForReviewList/// completed");
+      print(reviewList.length);
+    });
   }
 }
