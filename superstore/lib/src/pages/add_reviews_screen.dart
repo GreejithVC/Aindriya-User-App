@@ -26,7 +26,7 @@ class _WriteReviewScreenState extends StateMVC<WriteReviewScreen> {
   @override
   // ignore: must_call_super
   void initState() {
-    _con?.listenForReviewList();
+    _con?.listenForReviewList(isShop: widget?.isShop,id:widget?.id );
   }
 
   @override
@@ -37,7 +37,8 @@ class _WriteReviewScreenState extends StateMVC<WriteReviewScreen> {
           elevation: 0,
           backgroundColor: Theme.of(context).accentColor,
           title: Text(
-            "Review Product",
+            widget?.isShop != true ?
+            "Review Product":"Review Shop",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
         ),

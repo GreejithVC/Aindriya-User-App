@@ -403,11 +403,17 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
+                      onTap: () async {
+                        var isReviewAdded = await Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => WriteReviewScreen(
                                   id: selectedVariantData?.product_id,
                                 )));
+                        print("isReviewAdded////");
+                        print(isReviewAdded);
+                        if(isReviewAdded == true){
+                          _con?.listenForReviewList(
+                              isShop: false, id: selectedVariantData?.product_id);
+                        }
                       },
                       child: Text(
                         "Write Review »",

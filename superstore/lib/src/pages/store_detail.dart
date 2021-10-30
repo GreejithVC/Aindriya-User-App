@@ -2,11 +2,13 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:superstore/src/controllers/add_review_controller.dart';
 import 'package:superstore/src/controllers/fav_shop_controller.dart';
 import 'package:superstore/src/elements/SearchWidgetRe.dart';
 import 'package:superstore/src/elements/image_zoom.dart';
 import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/packagetype.dart';
+import 'package:superstore/src/pages/shop_reviews.dart';
 import '../elements/RectangleLoaderWidget.dart';
 import '../helpers/helper.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -34,6 +36,7 @@ class StoreViewDetails extends StatefulWidget {
 class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
     with SingleTickerProviderStateMixin {
   VendorController _con;
+  ReviewController _reviewCon;
 
   _StoreViewDetailsState() : super(VendorController()) {
     _con = controller;
@@ -62,6 +65,7 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
     _con.listenForRestaurantProduct(int.parse(widget.shopDetails.shopId));
     _con.listenForPackageSubscribed(widget.shopDetails.shopId);
     _con.listenForDeliveryDetails(widget.shopDetails.shopId);
+    ReviewController().listenForReviewList(id: widget.shopDetails.shopId, isShop: true);
     //   _tabController = TabController(vsync: this, length: );
   }
 
@@ -436,12 +440,21 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                       ),
                     ),
                   ),
-                  Text(
-                    "View All Review »",
-                    style: TextStyle(
-                        color: Colors.blueAccent,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ShopReviews(
+                           shopDetails: shopDetails,
+                            shopTypeID: shopTypeID,
+                          )));
+                    },
+                    child: Text(
+                      "View All Review »",
+                      style: TextStyle(
+                          color: Colors.blueAccent,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ],
               ),

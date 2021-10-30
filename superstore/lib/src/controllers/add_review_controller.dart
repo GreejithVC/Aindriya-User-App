@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:superstore/src/models/add_review_modelclass.dart';
-import 'package:superstore/src/repository/user_repository.dart';
 
 class ReviewController extends ControllerMVC {
   List<AddReview> reviewList = <AddReview>[];
@@ -19,13 +18,12 @@ class ReviewController extends ControllerMVC {
       print(e);
     }).whenComplete(() {
       print("addReview/// whenComplete");
-      listenForReviewList();
-      Navigator.pop(context);
-      // Helper.hideLoader(loader);
+      Navigator.of(context).pop(true);
     });
   }
 
-  Future<void> listenForReviewList({@required String id, @required bool isShop}) async {
+  Future<void> listenForReviewList(
+      {@required String id, @required bool isShop}) async {
     reviewList.clear();
     print("listenForReviewList///");
     FirebaseFirestore.instance
@@ -43,7 +41,7 @@ class ReviewController extends ControllerMVC {
         reviewList.add(AddReview.fromJSON(result.data()));
       });
       setState(() => reviewList.sort((a, b) {
-            return a.rating.compareTo(b.rating);
+            return b.rating.compareTo(a.rating);
           }));
       notifyListeners();
     }).catchError((e) {
