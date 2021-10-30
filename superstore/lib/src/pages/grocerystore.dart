@@ -223,9 +223,15 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                         ),
                         Visibility(
                           visible: double.tryParse(
-                                  widget?.shopDetails?.distance ?? "0") >
-                              double.tryParse(
-                                  widget?.shopDetails?.deliveryRadius ?? "0"),
+                                  widget?.shopDetails?.distance?.isNotEmpty ==
+                                          true
+                                      ? widget?.shopDetails?.distance
+                                      : "0") >
+                              double.tryParse(widget?.shopDetails
+                                          ?.deliveryRadius?.isNotEmpty ==
+                                      true
+                                  ? widget?.shopDetails?.deliveryRadius
+                                  : "0"),
                           child: Container(
                             width: double.infinity,
                             padding: EdgeInsets.only(

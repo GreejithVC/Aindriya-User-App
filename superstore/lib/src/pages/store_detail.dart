@@ -380,14 +380,17 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
               ),
             ),
             Visibility(
-              visible: double.tryParse(
-                  shopDetails?.distance ?? "0") >
+              visible: double.tryParse(shopDetails?.distance?.isNotEmpty == true
+                      ? shopDetails?.distance
+                      : "0") >
                   double.tryParse(
-                      shopDetails?.deliveryRadius ?? "0"),
+                      shopDetails?.deliveryRadius?.isNotEmpty == true
+                          ? shopDetails?.deliveryRadius
+                          : "0"),
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.only(
-                    top: 28, left: 12, bottom: 8, right: 12),
+                padding:
+                    EdgeInsets.only(top: 28, left: 12, bottom: 8, right: 12),
                 color: Colors.black.withOpacity(0.7),
                 child: Text(
                     "The shop too far away from your location. Please change your delivery/pickup location.",
