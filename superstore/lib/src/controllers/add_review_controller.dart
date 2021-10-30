@@ -45,6 +45,7 @@ class ReviewController extends ControllerMVC {
       setState(() => reviewList.sort((a, b) {
             return a.rating.compareTo(b.rating);
           }));
+      notifyListeners();
     }).catchError((e) {
       print(e);
     }).whenComplete(() {

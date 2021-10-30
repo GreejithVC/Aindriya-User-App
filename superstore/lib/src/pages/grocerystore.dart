@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:superstore/src/elements/image_zoom.dart';
 import 'package:superstore/src/models/delivery_options_model.dart';
@@ -255,6 +256,51 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                 ),
                               ),
                               FavButton(vendorData: widget?.shopDetails),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "4.9  ",
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w600),
+                              ),
+                              Expanded(
+                                child: AbsorbPointer(
+                                  child: RatingBar(
+                                    itemSize: 16,
+                                    initialRating: 3.5,
+                                    direction: Axis.horizontal,
+                                    itemCount: 5,
+                                    allowHalfRating: true,
+                                    itemPadding: EdgeInsets.symmetric(horizontal: 0),
+                                    ratingWidget: RatingWidget(
+                                      full: Icon(
+                                        Icons.star_purple500_sharp,
+                                        color: Theme.of(context).accentColor,
+                                      ),
+                                      half: Icon(
+                                        Icons.star_half,
+                                        color: Theme.of(context).accentColor,
+                                      ),
+                                      empty: Icon(
+                                        Icons.star_border,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      print(rating);
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                "View All Review »",
+                                style: TextStyle(
+                                    color: Colors.blueAccent,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ],
                           ),
                           Padding(
