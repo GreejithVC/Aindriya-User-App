@@ -69,10 +69,6 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
     _con.listenForPackageSubscribed(widget.shopDetails.shopId);
     _con.listenForDeliveryDetails(widget.shopDetails.shopId);
     _con?.listenForReviewList(id: widget.shopDetails.shopId, isShop: true);
-    print(ReviewController()?.reviewList?.length);
-    print("ReviewController()?.reviewList?.length");
-
-    //   _tabController = TabController(vsync: this, length: );
   }
 
   tabMaker() {

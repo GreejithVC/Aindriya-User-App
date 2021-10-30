@@ -333,12 +333,6 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
         assert(title != null);
   final PageController _pageController = PageController(initialPage: 0);
 
-  void initState() {
-    ReviewController()
-        ?.listenForReviewList(id: shopDetails.shopId, isShop: true);
-
-    //   _tabController = TabController(vsync: this, length: );
-  }
 
   @override
   Widget build(
