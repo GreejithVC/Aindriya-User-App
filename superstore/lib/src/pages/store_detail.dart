@@ -275,7 +275,8 @@ class TransitionAppBar extends StatelessWidget {
       this.callback,
       this.subscribedPackage,
       this.deliveryOptionsModel,
-      Key key, this.reviewList})
+      Key key,
+      this.reviewList})
       : super(key: key);
 
   @override
@@ -332,9 +333,9 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
         assert(title != null);
   final PageController _pageController = PageController(initialPage: 0);
 
-
   void initState() {
-    ReviewController()?.listenForReviewList(id: shopDetails.shopId, isShop: true);
+    ReviewController()
+        ?.listenForReviewList(id: shopDetails.shopId, isShop: true);
 
     //   _tabController = TabController(vsync: this, length: );
   }
@@ -343,10 +344,10 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     double averageRating = ((reviewList?.fold(
-        0.0,
-            (previousValue, element) =>
-        previousValue + double.tryParse(element?.rating ?? "0")) ??
-        0) /
+                0.0,
+                (previousValue, element) =>
+                    previousValue + double.tryParse(element?.rating ?? "0")) ??
+            0) /
         (reviewList?.length ?? 0));
     return ListView(
       padding: EdgeInsets.all(0),
@@ -395,8 +396,32 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                     child: Text(shopDetails?.shopName,
                         style: Theme.of(context).textTheme.headline6),
                   ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SearchResultWidgetRe(
+                                itemDetails: itemDetails,
+                                shopId: shopDetails.shopId,
+                                shopName: shopDetails.shopName,
+                                subtitle: shopDetails.subtitle,
+                                km: shopDetails.distance,
+                                shopTypeID: shopTypeID,
+                                latitude: shopDetails.latitude,
+                                longitude: shopDetails.longitude,
+                                callback: this.callback,
+                                focusId: focusId,
+                              )));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Icon(
+                        Icons.search,
+                        color: Color(0xFF49aecb),
+                      ),
+                    ),
+                  ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 0, left: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: GestureDetector(
                       child: new Icon(Icons.chat,
                           color: Color(0xFF49aecb),
@@ -412,7 +437,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 8, left: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: Image.asset(
                       'assets/img/location.png',
                       height: 26,
@@ -425,16 +450,17 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
               Row(
                 children: [
                   Text(
-                    (averageRating > 0)?
-                    "${averageRating?.toStringAsFixed(1) ?? 0} ": "No Reviews ",
-                    style: TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w600),
+                    (averageRating > 0)
+                        ? "${averageRating?.toStringAsFixed(1) ?? 0} "
+                        : "No Reviews ",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                   Expanded(
                     child: AbsorbPointer(
                       child: RatingBar(
                         itemSize: 16,
-                        initialRating:(averageRating > 0)? averageRating ?? 0:0,
+                        initialRating:
+                            (averageRating > 0) ? averageRating ?? 0 : 0,
                         direction: Axis.horizontal,
                         itemCount: 5,
                         allowHalfRating: true,
@@ -460,12 +486,12 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => ShopReviews(
-                           shopDetails: shopDetails,
-                            shopTypeID: shopTypeID,
-                          )));
+                                shopDetails: shopDetails,
+                                shopTypeID: shopTypeID,
+                              )));
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(top: 4),

@@ -286,7 +286,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.only(right: 4, left: 2),
+                                      const EdgeInsets.symmetric(horizontal: 4),
                                   child: Image.asset(
                                     'assets/img/location.png',
                                     height: 26,
