@@ -348,34 +348,54 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       children: [
-        Container(
-          height: 200,
-          child: PageView.builder(
-            itemCount: shopDetails?.coverImageList?.length ?? 0,
-            scrollDirection: Axis.horizontal,
-            controller: _pageController,
-            // onPageChanged: _onPageChanged,
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ImageZoomScreen(
-                        imageUrl:
-                            shopDetails.coverImageList.elementAt(index))));
-              },
-              child: Image(
-                  image: shopDetails.coverImageList.elementAt(index) ==
-                              'no_image' &&
-                          shopTypeID == 2
-                      ? AssetImage(
-                          'assets/img/resturentdefaultbg.jpg',
-                        )
-                      : NetworkImage(
-                          shopDetails.coverImageList.elementAt(index)),
-                  height: 190,
-                  width: double.infinity,
-                  fit: BoxFit.cover),
+        Stack(
+          children: [
+            Container(
+              height: 200,
+              child: PageView.builder(
+                itemCount: shopDetails?.coverImageList?.length ?? 0,
+                scrollDirection: Axis.horizontal,
+                controller: _pageController,
+                // onPageChanged: _onPageChanged,
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ImageZoomScreen(
+                            imageUrl:
+                                shopDetails.coverImageList.elementAt(index))));
+                  },
+                  child: Image(
+                      image: shopDetails.coverImageList.elementAt(index) ==
+                                  'no_image' &&
+                              shopTypeID == 2
+                          ? AssetImage(
+                              'assets/img/resturentdefaultbg.jpg',
+                            )
+                          : NetworkImage(
+                              shopDetails.coverImageList.elementAt(index)),
+                      height: 190,
+                      width: double.infinity,
+                      fit: BoxFit.cover),
+                ),
+              ),
             ),
-          ),
+            Visibility(
+              visible: double.tryParse(
+                  shopDetails?.distance ?? "0") >
+                  double.tryParse(
+                      shopDetails?.deliveryRadius ?? "0"),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.only(
+                    top: 28, left: 12, bottom: 8, right: 12),
+                color: Colors.black.withOpacity(0.7),
+                child: Text(
+                    "The shop too far away from your location. Please change your delivery/pickup location.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white70)),
+              ),
+            ),
+          ],
         ),
         Container(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),

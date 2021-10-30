@@ -1,4 +1,3 @@
-
 import '../models/vendor.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -8,16 +7,16 @@ import '../repository/home_repository.dart';
 import '../models/inter_sort.dart';
 import '../models/shop_type.dart';
 
-
 class HomeController extends ControllerMVC {
   List<Slide> slides = <Slide>[];
   List<Slide> middleSlides = <Slide>[];
-  List<Vendor>vendorList = <Vendor>[];
-  List<Vendor>vendorSearch = <Vendor>[];
+  List<Vendor> vendorList = <Vendor>[];
+  List<Vendor> vendorSearch = <Vendor>[];
   List<InterSortView> interSortView = <InterSortView>[];
   List<Trending> trending = <Trending>[];
-  List<ShopType> shopTypeList= <ShopType>[];
+  List<ShopType> shopTypeList = <ShopType>[];
   bool loader = false;
+
   HomeController() {
     //listenForCategories();
     listenForSlides(1);
@@ -25,9 +24,6 @@ class HomeController extends ControllerMVC {
     listenForDealOfDay();
     listenForVendor();
     listenForInter_sort_view();
-
-
-
   }
 
   Future<void> listenForSlides(id) async {
@@ -38,7 +34,6 @@ class HomeController extends ControllerMVC {
       print(a);
     }, onDone: () {});
   }
-
 
   Future<void> listenForMiddleSlides(id) async {
     final Stream<Slide> stream = await getSlides(id);
@@ -53,24 +48,26 @@ class HomeController extends ControllerMVC {
     setState(() => vendorList.clear());
     final Stream<Vendor> stream = await getTopVendorList();
     stream.listen((Vendor _list) {
-      setState(() => vendorList.add(_list));
+      if (double.tryParse(_list.distance ?? "0") <=
+          double.tryParse(_list.deliveryRadius ?? "0")) {
+        setState(() => vendorList.add(_list));
+      }
     }, onError: (a) {
       print(a);
     }, onDone: () {});
   }
 
   Future<void> listenForVendorSearch(searchTxt) async {
-    setState(() =>loader = true);
+    setState(() => loader = true);
     setState(() => vendorSearch.clear());
     final Stream<Vendor> stream = await getTopVendorListSearch(searchTxt);
     stream.listen((Vendor _list) {
-      setState(() =>loader = false);
+      setState(() => loader = false);
       setState(() => vendorSearch.add(_list));
     }, onError: (a) {
       print(a);
     }, onDone: () {});
   }
-
 
   Future<void> listenForDealOfDay() async {
     final Stream<ShopType> stream = await getShopType();
@@ -78,6 +75,7 @@ class HomeController extends ControllerMVC {
       setState(() => shopTypeList.add(_type));
     }, onError: (a) {}, onDone: () {});
   }
+
 /*
   Future<void> listenForCategories() async {
     final Stream<Category> stream = await getCategories();
@@ -97,8 +95,6 @@ class HomeController extends ControllerMVC {
     }, onDone: () {});
   } */
 
-
-
   // ignore: non_constant_identifier_names
   Future<void> listenForInter_sort_view() async {
     final Stream<InterSortView> stream = await getInterSort();
@@ -108,12 +104,6 @@ class HomeController extends ControllerMVC {
       print(a);
     }, onDone: () {});
   }
-
-
-
-
-
-
 
   Future<void> refreshHome() async {
     setState(() {
