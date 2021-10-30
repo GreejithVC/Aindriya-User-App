@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:superstore/src/models/add_review_modelclass.dart';
+import 'package:superstore/src/repository/user_repository.dart';
 
 class ReviewController extends ControllerMVC {
   List<AddReview> reviewList = <AddReview>[];
@@ -13,7 +14,8 @@ class ReviewController extends ControllerMVC {
         .collection('Reviews')
         .doc(isShop == true ? "Shops" : "Products")
         .collection(id)
-        .add(addReview.toMap())
+        .doc(currentUser.value.id)
+        .set(addReview.toMap())
         .catchError((e) {
       print(e);
     }).whenComplete(() {
