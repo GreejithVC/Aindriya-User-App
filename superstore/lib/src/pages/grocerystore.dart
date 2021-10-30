@@ -72,8 +72,6 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
     print(ReviewController()?.reviewList?.length);
     print("ReviewController()?.reviewList?.length");
 
-
-
     //   _tabController = TabController(vsync: this, length: );
   }
 
@@ -109,14 +107,13 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
 
   final PageController _pageController = PageController(initialPage: 0);
 
-
   @override
   Widget build(BuildContext context) {
     double averageRating = ((_con?.reviewList?.fold(
-        0.0,
-            (previousValue, element) =>
-        previousValue + double.tryParse(element?.rating ?? "0")) ??
-        0) /
+                0.0,
+                (previousValue, element) =>
+                    previousValue + double.tryParse(element?.rating ?? "0")) ??
+            0) /
         (_con?.reviewList?.length ?? 0));
     print("expiry ////subScribedPackage?.expiryDate");
     print(_con?.subScribedPackage?.expiryDate);
@@ -233,23 +230,49 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(widget?.shopDetails?.shopName,
-                                    style:
-                                        Theme.of(context).textTheme.headline6),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 0, left: 4),
-                                child: IconButton(
-                                  icon: new Icon(Icons.chat,
-                                      color:
-                                      Color(0xFF49aecb),
-                                      // Color(0xFF333D37),
-                                      size: 24),
-                                  onPressed: () {
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8, bottom: 4),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(widget?.shopDetails?.shopName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    currentSearch.value.shopName =
+                                        widget?.shopDetails?.shopName;
+                                    currentSearch.value.shopTypeID =
+                                        widget.shopTypeID;
+                                    currentSearch.value.shopId =
+                                        widget.shopDetails.shopId;
+                                    currentSearch.value.latitude =
+                                        widget.shopDetails.latitude;
+                                    currentSearch.value.longitude =
+                                        widget.shopDetails.longitude;
+                                    currentSearch.value.km =
+                                        widget.shopDetails.distance;
+                                    currentSearch.value.subtitle =
+                                        widget.shopDetails.subtitle;
+                                    Navigator.of(context).push(SearchModal());
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4),
+                                    child: Icon(Icons.search,
+                                        color: Color(0xFF49aecb)),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4),
+                                    child: new Icon(Icons.chat,
+                                        color: Color(0xFF49aecb), size: 24),
+                                  ),
+                                  onTap: () {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
@@ -261,24 +284,25 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                                     shopMobile: '12')));
                                   },
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 8, left: 2),
-                                child: Image.asset(
-                                  'assets/img/location.png',
-                                  height: 26,
-                                  fit: BoxFit.contain,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(right: 4, left: 2),
+                                  child: Image.asset(
+                                    'assets/img/location.png',
+                                    height: 26,
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
-                              ),
-                              FavButton(vendorData: widget?.shopDetails),
-                            ],
+                                FavButton(vendorData: widget?.shopDetails),
+                              ],
+                            ),
                           ),
                           Row(
                             children: [
                               Text(
-                                (averageRating > 0)?
-                                "${averageRating?.toStringAsFixed(1) ?? 0} ": "No Reviews ",
+                                (averageRating > 0)
+                                    ? "${averageRating?.toStringAsFixed(1) ?? 0} "
+                                    : "No Reviews ",
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.w600),
                               ),
@@ -286,11 +310,14 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                 child: AbsorbPointer(
                                   child: RatingBar(
                                     itemSize: 16,
-                                    initialRating: (averageRating > 0)? averageRating ?? 0:0,
+                                    initialRating: (averageRating > 0)
+                                        ? averageRating ?? 0
+                                        : 0,
                                     direction: Axis.horizontal,
                                     itemCount: 5,
                                     allowHalfRating: true,
-                                    itemPadding: EdgeInsets.symmetric(horizontal: 0),
+                                    itemPadding:
+                                        EdgeInsets.symmetric(horizontal: 0),
                                     ratingWidget: RatingWidget(
                                       full: Icon(
                                         Icons.star_purple500_sharp,
@@ -312,15 +339,13 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                 ),
                               ),
                               GestureDetector(
-                                onTap: (){
-
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => ShopReviews(
-                                          shopDetails: widget?.shopDetails,
-                                          shopTypeID: widget?.shopTypeID,
-                                        )));
-                                  },
-
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => ShopReviews(
+                                            shopDetails: widget?.shopDetails,
+                                            shopTypeID: widget?.shopTypeID,
+                                          )));
+                                },
                                 child: Text(
                                   "View All Review »",
                                   style: TextStyle(
@@ -409,14 +434,15 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                               itemOption(
                                   image: "assets/img/homedelivery.png",
                                   title: "HomeDelivery",
-                                  isEnable: _con
-                                      .deliveryOptionsModel?.availableCOD == true),
+                                  isEnable:
+                                      _con.deliveryOptionsModel?.availableCOD ==
+                                          true),
                               itemOption(
                                   image: "assets/img/takeawayicon.png",
                                   title: "TakeAway",
-                                  isEnable:
-                                  _con
-                                      .deliveryOptionsModel?.availableTakeAway == true),
+                                  isEnable: _con.deliveryOptionsModel
+                                          ?.availableTakeAway ==
+                                      true),
                             ],
                           )
                         ],
@@ -501,7 +527,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
             title,
             style: TextStyle(
               color:
-              isEnable ? Color(0xFF333D37) : Colors.grey.withOpacity(0.4),
+                  isEnable ? Color(0xFF333D37) : Colors.grey.withOpacity(0.4),
             ),
           ),
         ),
