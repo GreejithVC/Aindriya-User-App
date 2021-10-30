@@ -79,7 +79,8 @@ class _PagesWidgetState extends State<PagesWidget> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: Helper.of(context).onWillPop,
+      // onWillPop: Helper.of(context).onWillPop,
+      onWillPop: () => Helper.of(context).showExitPopUp(context),
       child: Scaffold(
         key: widget.scaffoldKey,
         drawer: DrawerWidget(),

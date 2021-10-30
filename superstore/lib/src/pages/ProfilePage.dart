@@ -11,6 +11,7 @@ import 'package:superstore/src/controllers/home_controller.dart';
 import 'package:superstore/src/controllers/user_controller.dart';
 import 'package:superstore/src/elements/LocationWidget.dart';
 import 'package:superstore/src/elements/image_zoom.dart';
+import 'package:superstore/src/helpers/helper.dart';
 import 'package:superstore/src/models/user.dart';
 import 'package:superstore/src/pages/fav_shops.dart';
 import 'package:superstore/src/pages/wishList.dart';
@@ -417,18 +418,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                       "Logout",
                                       tapFucntion: () {
-                                        logout().then((value) {
-                                          showToast(
-                                              "${S.of(context).logout} ${S.of(context).successfully}",
-                                              gravity: Toast.BOTTOM,
-                                              duration: Toast.LENGTH_SHORT);
-                                          Navigator.of(context)
-                                              .pushNamedAndRemoveUntil(
-                                                  '/Login',
-                                                  (Route<dynamic> route) =>
-                                                      false,
-                                                  arguments: 2);
-                                        });
+                                        Helper.of(context)
+                                            .showLogoutPopUp(context);
                                       },
                                     ),
                                   ],

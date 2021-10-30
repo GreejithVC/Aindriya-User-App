@@ -15,6 +15,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:html/parser.dart';
 import 'package:superstore/src/listener/item_selected_listener.dart';
+import 'package:superstore/src/repository/user_repository.dart';
 import '../elements/ClearCartWidget.dart';
 import '../repository/order_repository.dart';
 import '../repository/settings_repository.dart';
@@ -190,15 +191,14 @@ class Helper {
     }
   }
 
-  static Future<Marker> getMyPositionMarker(
-
-      double latitude, double longitude,{OnItemSelected onItemSelected}) async {
+  static Future<Marker> getMyPositionMarker(double latitude, double longitude,
+      {OnItemSelected onItemSelected}) async {
     final Uint8List markerIcon =
         await getBytesFromAsset('assets/img/my_marker.png', 120);
-    final Marker marker = Marker(onTap: (){
-      onItemSelected("");
-
-    },
+    final Marker marker = Marker(
+        onTap: () {
+          onItemSelected("");
+        },
         markerId: MarkerId(Random().nextInt(100).toString()),
         icon: BitmapDescriptor.fromBytes(markerIcon),
         anchor: Offset(0.5, 0.5),
@@ -244,7 +244,8 @@ class Helper {
     );
 
     final Uint8List markerIcon = byteData.buffer.asUint8List();
-    final bitIcon = await createCustomMarkerBitmap(res["shopName"],res["previewImage"]);
+    final bitIcon =
+        await createCustomMarkerBitmap(res["shopName"], res["previewImage"]);
     final Marker marker = Marker(
         visible: zoomLevel >= 12,
         consumeTapEvents: true,
@@ -267,7 +268,8 @@ class Helper {
     return marker;
   }
 
-  static Future<BitmapDescriptor> createCustomMarkerBitmap(String title,String image) async {
+  static Future<BitmapDescriptor> createCustomMarkerBitmap(
+      String title, String image) async {
     TextSpan span = new TextSpan(
       style: new TextStyle(
         color: Colors.black,
@@ -287,11 +289,11 @@ class Helper {
       style: TextStyle(
         fontSize: 45.0,
         color: Colors.white,
-        letterSpacing: 0.2,backgroundColor: Colors.blue,
+        letterSpacing: 0.2,
+        backgroundColor: Colors.blue,
         fontFamily: 'Roboto Bold',
       ),
     );
-
 
     PictureRecorder recorder = new PictureRecorder();
     Canvas c = new Canvas(recorder);
@@ -303,15 +305,13 @@ class Helper {
 
     Picture p = recorder.endRecording();
     ByteData pngBytes =
-    await (await p.toImage(tp.width.toInt() + 40, tp.height.toInt() + 20))
-        .toByteData(format: ImageByteFormat.png);
-
+        await (await p.toImage(tp.width.toInt() + 40, tp.height.toInt() + 20))
+            .toByteData(format: ImageByteFormat.png);
 
     Uint8List data = Uint8List.view(pngBytes.buffer);
 
     return BitmapDescriptor.fromBytes(data);
   }
-
 
   static distance(
       double lat1, double lon1, double lat2, double lon2, String unit) {
@@ -484,5 +484,69 @@ class Helper {
     }
     SystemChannels.platform.invokeMethod('SystemNavigator.pop');
     return Future.value(true);
+  }
+
+  Future<bool> showExitPopUp(BuildContext context) async {
+    return await showPopUp(context,
+        title: "Confirmation",
+        message: "Are you sure to exit the app?",
+        sBtnLabel: "Exit", sBtnFunction: () {
+      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      return Future.value(true);
+    }, showBtnN: true);
+  }
+
+  Future<bool> showPopUp(BuildContext context,
+      {String title,
+      String message,
+      String sBtnLabel,
+      String nBtnLabel,
+      GestureTapCallback sBtnFunction,
+      GestureTapCallback nBtnFunction,
+      bool showBtnN}) async {
+    return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        title: Text(
+          title ?? "Buy Smart",
+          textAlign: TextAlign.center,
+        ),
+        content: Text(
+          message ?? "",
+          textAlign: TextAlign.center,
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              sBtnLabel ?? "OK",
+            ),
+            onPressed: sBtnFunction ?? () => Navigator.of(context).pop(),
+          ),
+          showBtnN == true
+              ? TextButton(
+                  child: Text(
+                    nBtnLabel ?? "Cancel",
+                  ),
+                  onPressed: nBtnFunction ?? () => Navigator.of(context).pop(),
+                )
+              : null,
+        ],
+      ),
+    );
+  }
+
+  Future<bool> showLogoutPopUp(BuildContext context) async {
+    return await showPopUp(context,
+        title: "Confirmation",
+        message: "Are you sure to logout?", sBtnFunction: () {
+      logout().then((value) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/Login', (Route<dynamic> route) => false,
+            arguments: 2);
+      });
+    }, showBtnN: true);
   }
 }
