@@ -80,7 +80,6 @@ class _ChatDetailPageState extends StateMVC<ChatDetailPage> {
                     .where("shopId", isEqualTo: widget.shopId)
                     .snapshots(),
                 builder: (context, snapshot) {
-                  print('chat count${snapshot.data.docs.length}');
                   Timer(Duration(milliseconds: 300), () => _scrollController.jumpTo(_scrollController.position.maxScrollExtent));
                   if (snapshot.hasError || snapshot.data == null) {
                     return Container();
