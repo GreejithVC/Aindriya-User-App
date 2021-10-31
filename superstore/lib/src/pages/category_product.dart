@@ -17,6 +17,7 @@ class CategoryProduct extends StatefulWidget {
   String shopName;
   String subtitle;
   String km;
+  String deliveryRadius;
   int shopTypeID;
   String latitude;
   String longitude;
@@ -29,6 +30,7 @@ class CategoryProduct extends StatefulWidget {
       this.shopName,
       this.subtitle,
       this.km,
+      this.deliveryRadius,
       this.shopTypeID,
       this.latitude,
       this.longitude,
@@ -188,6 +190,7 @@ class _CategoryProductState extends StateMVC<CategoryProduct> {
                             shopName: widget.shopName,
                             subtitle: widget.subtitle,
                             km: widget.km,
+                            deliveryRadius: widget.deliveryRadius,
                             shopTypeID: widget.shopTypeID,
                             longitude: widget.longitude,
                             latitude: widget.latitude,

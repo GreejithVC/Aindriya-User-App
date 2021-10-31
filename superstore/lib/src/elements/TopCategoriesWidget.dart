@@ -12,6 +12,7 @@ class TopCategoriesWidget extends StatefulWidget {
   String shopName;
   String subtitle;
   String km;
+  String deliveryRadius;
   int shopTypeID;
   String longitude;
   String latitude;
@@ -24,6 +25,7 @@ class TopCategoriesWidget extends StatefulWidget {
       this.shopName,
       this.subtitle,
       this.km,
+      this.deliveryRadius,
       this.shopTypeID,
       this.latitude,
       this.longitude,
@@ -50,7 +52,8 @@ class _TopCategoriesWidgetState extends State<TopCategoriesWidget> {
         itemBuilder: (BuildContext context, int index) {
           Category _categoryData = widget.categoryData.elementAt(index);
           return Column(children: [
-            AspectRatio(aspectRatio: 1,
+            AspectRatio(
+              aspectRatio: 1,
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -60,6 +63,7 @@ class _TopCategoriesWidgetState extends State<TopCategoriesWidget> {
                             shopName: widget.shopName,
                             subtitle: widget.subtitle,
                             km: widget.km,
+                            deliveryRadius: widget.deliveryRadius,
                             shopTypeID: widget.shopTypeID,
                             latitude: widget.latitude,
                             longitude: widget.longitude,

@@ -12,18 +12,32 @@ import 'custom_clipper.dart';
 
 // ignore: must_be_immutable
 class SearchResultWidgetRe extends StatefulWidget {
-  final  List<RestaurantProduct> itemDetails;
+  final List<RestaurantProduct> itemDetails;
   String shopId;
   String shopName;
   String subtitle;
   String km;
+  String deliveryRadius;
   int shopTypeID;
   String latitude;
   String longitude;
   Function callback;
   int focusId;
 
-  SearchResultWidgetRe({Key key, this.itemDetails,this.shopId, this.shopName, this.subtitle, this.km, this.shopTypeID, this.latitude, this.longitude, this.callback, this.focusId}) : super(key: key);
+  SearchResultWidgetRe(
+      {Key key,
+      this.itemDetails,
+      this.shopId,
+      this.shopName,
+      this.deliveryRadius,
+      this.subtitle,
+      this.km,
+      this.shopTypeID,
+      this.latitude,
+      this.longitude,
+      this.callback,
+      this.focusId})
+      : super(key: key);
 
   @override
   _SearchResultWidgetReState createState() => _SearchResultWidgetReState();
@@ -32,6 +46,7 @@ class SearchResultWidgetRe extends StatefulWidget {
 class _SearchResultWidgetReState extends StateMVC<SearchResultWidgetRe> {
   ProductController _con;
   List<ProductDetails2> itemList = <ProductDetails2>[];
+
   _SearchResultWidgetReState() : super(ProductController()) {
     _con = controller;
   }
@@ -40,12 +55,11 @@ class _SearchResultWidgetReState extends StateMVC<SearchResultWidgetRe> {
   bool _isListening = false;
   List<ProductDetails2> productList = <ProductDetails2>[];
   List<ProductDetails2> tempList = <ProductDetails2>[];
+
   @override
   void initState() {
     super.initState();
     _speech = stt.SpeechToText();
-
-
 
     widget.itemDetails.forEach((element) {
       productList.addAll(element.productdetails);
@@ -56,80 +70,110 @@ class _SearchResultWidgetReState extends StateMVC<SearchResultWidgetRe> {
 
   @override
   Widget build(BuildContext context) {
-    return  Material(
-        type: MaterialType.transparency,
-        // make sure that the overlay content is not cut off
-        child: SafeArea(
-        minimum: EdgeInsets.only(top: 40),
-    child: SafeArea(
-      child: Container(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: TextField(
-
-                onChanged: (e) {
-
-
-                  setState((){
-                   // itemList = _con.rTypeProductSearch(itemList, e);
-
-                    itemList  = tempList
-                        .where((u) =>
-                    (u.product_name.toLowerCase().contains(e.toLowerCase())) ||
-                        (u.id.toLowerCase().contains(e.toLowerCase())))
-                        .toList();
-                  });
-
-                },
-                autofocus: true,
-                style: Theme.of(context).textTheme.bodyText1,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(12),
-                  hintText: S.of(context).what_are_you_looking_for,
-                  hintStyle: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
-                  prefixIcon: Icon(Icons.search, color: Theme.of(context).accentColor),
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.mic),
-                    color: Theme.of(context).hintColor,
-                    onPressed: () {
-                      _isListening = false;
-                      ShowClipper();
-                    },
-                  ),
-                  border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.1))),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.3))),
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.1))),
-                ),
-              ),
-            ),
-            Expanded(
-              child: ListView(
+    return Material(
+      type: MaterialType.transparency,
+      // make sure that the overlay content is not cut off
+      child: SafeArea(
+          minimum: EdgeInsets.only(top: 40),
+          child: SafeArea(
+            child: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: itemList.length,
-                    separatorBuilder: (context, index) {
-                      return SizedBox(height: 10);
-                    },
-                    itemBuilder: (context, index) {
-                      ProductDetails2 _suggestion = itemList.elementAt(index);
-                      return RestaurantProductBox(choice: _suggestion, con: _con,shopId: widget.shopId,shopName: widget.shopName,subtitle: widget.subtitle,km: widget.km, shopTypeID: widget.shopTypeID,longitude: widget.longitude,latitude: widget.latitude,callback: widget.callback,focusId: widget.focusId,);
-                    },
-                  ),
-                  SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: TextField(
+                      onChanged: (e) {
+                        setState(() {
+                          // itemList = _con.rTypeProductSearch(itemList, e);
 
+                          itemList = tempList
+                              .where((u) =>
+                                  (u.product_name
+                                      .toLowerCase()
+                                      .contains(e.toLowerCase())) ||
+                                  (u.id
+                                      .toLowerCase()
+                                      .contains(e.toLowerCase())))
+                              .toList();
+                        });
+                      },
+                      autofocus: true,
+                      style: Theme.of(context).textTheme.bodyText1,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(12),
+                        hintText: S.of(context).what_are_you_looking_for,
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .caption
+                            .merge(TextStyle(fontSize: 14)),
+                        prefixIcon: Icon(Icons.search,
+                            color: Theme.of(context).accentColor),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.mic),
+                          color: Theme.of(context).hintColor,
+                          onPressed: () {
+                            _isListening = false;
+                            ShowClipper();
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context)
+                                    .focusColor
+                                    .withOpacity(0.1))),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context)
+                                    .focusColor
+                                    .withOpacity(0.3))),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context)
+                                    .focusColor
+                                    .withOpacity(0.1))),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView(
+                      children: <Widget>[
+                        ListView.separated(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: itemList.length,
+                          separatorBuilder: (context, index) {
+                            return SizedBox(height: 10);
+                          },
+                          itemBuilder: (context, index) {
+                            ProductDetails2 _suggestion =
+                                itemList.elementAt(index);
+                            return RestaurantProductBox(
+                              choice: _suggestion,
+                              con: _con,
+                              shopId: widget.shopId,
+                              shopName: widget.shopName,
+                              subtitle: widget.subtitle,
+                              km: widget.km,
+                              deliveryRadius: widget.deliveryRadius,
+                              shopTypeID: widget.shopTypeID,
+                              longitude: widget.longitude,
+                              latitude: widget.latitude,
+                              callback: widget.callback,
+                              focusId: widget.focusId,
+                            );
+                          },
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),)),
+          )),
     );
   }
 
@@ -156,7 +200,8 @@ class _SearchResultWidgetReState extends StateMVC<SearchResultWidgetRe> {
                   ),
                   Expanded(
                     child: ClipPath(
-                      clipper: CustomShape(), // this is my own class which extendsCustomClipper
+                      clipper: CustomShape(),
+                      // this is my own class which extendsCustomClipper
                       child: Container(
                         color: Theme.of(context).primaryColor,
                         child: Column(
@@ -165,41 +210,51 @@ class _SearchResultWidgetReState extends StateMVC<SearchResultWidgetRe> {
                             Expanded(
                               child: Container(
                                 width: double.infinity,
-                                padding: EdgeInsets.only(top: 30, left: 10, right: 10),
+                                padding: EdgeInsets.only(
+                                    top: 30, left: 10, right: 10),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,
                                 ),
                                 child: SingleChildScrollView(
-                                  child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-                                    SizedBox(height: 10),
-                                    Text(
-                                      _text,
-                                      style: Theme.of(context).textTheme.headline3.merge(TextStyle(fontWeight: FontWeight.w400)),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ]),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(height: 10),
+                                        Text(
+                                          _text,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline3
+                                              .merge(TextStyle(
+                                                  fontWeight: FontWeight.w400)),
+                                          textAlign: TextAlign.center,
+                                        )
+                                      ]),
                                 ),
                               ),
                             ),
                             Align(
                               alignment: Alignment.bottomCenter,
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 15, right: 15, top: 0, bottom: 5),
+                                padding: const EdgeInsets.only(
+                                    left: 15, right: 15, top: 0, bottom: 5),
                                 child: AvatarGlow(
                                   animate: _isListening,
                                   glowColor: Colors.green,
                                   endRadius: 75.0,
                                   duration: const Duration(milliseconds: 2000),
-                                  repeatPauseDuration: const Duration(milliseconds: 100),
+                                  repeatPauseDuration:
+                                      const Duration(milliseconds: 100),
                                   repeat: true,
                                   child: FloatingActionButton(
                                     onPressed: () async {
                                       if (!_isListening) {
-                                        bool available = await _speech.initialize(
-                                          onStatus: (val) {
-
-                                          },
-                                          onError: (val) => print('onError: $val'),
+                                        bool available =
+                                            await _speech.initialize(
+                                          onStatus: (val) {},
+                                          onError: (val) =>
+                                              print('onError: $val'),
                                         );
                                         if (available) {
                                           setState(() => _isListening = true);
@@ -207,24 +262,31 @@ class _SearchResultWidgetReState extends StateMVC<SearchResultWidgetRe> {
                                             onResult: (val) => setState(() {
                                               _text = val.recognizedWords;
 
-                                              if (val.hasConfidenceRating && val.confidence > 0) {
+                                              if (val.hasConfidenceRating &&
+                                                  val.confidence > 0) {
                                                 print('complete');
-                                                setState(() => _isListening = false);
+                                                setState(
+                                                    () => _isListening = false);
                                                 _speech.stop();
 
-                                                setState((){
+                                                setState(() {
                                                   // itemList = _con.rTypeProductSearch(itemList, e);
 
-                                                  itemList  = tempList
+                                                  itemList = tempList
                                                       .where((u) =>
-                                                  (u.product_name.toLowerCase().contains(_text.toLowerCase())) ||
-                                                      (u.id.toLowerCase().contains(_text.toLowerCase())))
+                                                          (u.product_name
+                                                              .toLowerCase()
+                                                              .contains(_text
+                                                                  .toLowerCase())) ||
+                                                          (u.id
+                                                              .toLowerCase()
+                                                              .contains(_text
+                                                                  .toLowerCase())))
                                                       .toList();
                                                 });
 
                                                 Navigator.pop(context);
                                               }
-
                                             }),
                                           );
                                         }
@@ -233,7 +295,9 @@ class _SearchResultWidgetReState extends StateMVC<SearchResultWidgetRe> {
                                         _speech.stop();
                                       }
                                     },
-                                    child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+                                    child: Icon(_isListening
+                                        ? Icons.mic
+                                        : Icons.mic_none),
                                   ),
                                 ),
                               ),

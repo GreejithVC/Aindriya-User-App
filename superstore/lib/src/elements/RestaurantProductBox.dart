@@ -24,6 +24,7 @@ class RestaurantProductBox extends StatefulWidget {
       this.shopId,
       this.shopName,
       this.subtitle,
+      this.deliveryRadius,
       this.km,
       this.shopTypeID,
       this.latitude,
@@ -35,6 +36,7 @@ class RestaurantProductBox extends StatefulWidget {
   final ProductController con;
   final String shopId;
   final String shopName;
+  final String deliveryRadius;
   final String subtitle;
   final String km;
   final int shopTypeID;
@@ -54,16 +56,13 @@ class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    bool isTooFar = (double.tryParse(widget?.choice?.distance?.isNotEmpty == true
-        ? widget?.choice?.distance
-        : "0") >
-        double.tryParse(
-            widget?.choice?.deliveryRadius?.isNotEmpty == true
-                ? widget?.choice?.deliveryRadius
-                : "0")) ? true :false;
+    bool isTooFar =
+        double.tryParse(widget?.km?.isNotEmpty == true ? widget?.km : "0") >
+            double.tryParse(widget?.deliveryRadius?.isNotEmpty == true
+                ? widget?.deliveryRadius
+                : "0");
     void showToast(String msg, {int duration, int gravity}) {
       Toast.show(
         msg,
@@ -95,20 +94,21 @@ class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
                         print("taped//////////////////////");
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ProductDetailsScreen(
-                              variantData:
-                              widget?.choice?.variant?.elementAt(index),
-                              choice: widget?.choice,
-                              subtitle: widget?.subtitle,
-                              shopId: widget?.shopId,
-                              shopName: widget?.shopName,
-                              focusId: widget?.focusId,
-                              con: widget?.con,
-                              callback: widget?.callback,
-                              shopTypeID: widget?.shopTypeID,
-                              km: widget?.km,
-                              latitude: widget?.latitude,
-                              longitude: widget?.longitude,
-                            )));
+                                  variantData:
+                                      widget?.choice?.variant?.elementAt(index),
+                                  choice: widget?.choice,
+                                  subtitle: widget?.subtitle,
+                                  shopId: widget?.shopId,
+                                  shopName: widget?.shopName,
+                                  focusId: widget?.focusId,
+                                  con: widget?.con,
+                                  callback: widget?.callback,
+                                  shopTypeID: widget?.shopTypeID,
+                                  km: widget?.km,
+                                  deliveryRadius: widget?.deliveryRadius,
+                                  latitude: widget?.latitude,
+                                  longitude: widget?.longitude,
+                                )));
 
                         // widget.con.view_product(widget.choice);
                       },
@@ -179,17 +179,17 @@ class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
                                                 widget.choice.product_name,
                                             price: _variantData.sale_price,
                                             image: _variantData.image,
-                                        shopId:widget?.shopId,shopName: widget?.shopName),
-
+                                            shopId: widget?.shopId,
+                                            shopName: widget?.shopName),
                                       ),
                                     ]),
                                     SizedBox(height: 3),
                                     /**    Text(
-                                    '${widget.choice..toString()} % ${S.of(context).offer}',
-                                    style: Theme.of(context).textTheme.subtitle2.merge(TextStyle(
-                                    color: Theme.of(context).accentColor,
-                                    )),
-                                    ), */
+                                  '${widget.choice..toString()} % ${S.of(context).offer}',
+                                  style: Theme.of(context).textTheme.subtitle2.merge(TextStyle(
+                                  color: Theme.of(context).accentColor,
+                                  )),
+                                  ), */
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -216,19 +216,19 @@ class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
                                             }
 
                                             /**  AvailableQuantityHelper.exit(context, widget.choice.variant, widget.choice.product_name, _variantData.selected).then((receivedLocation) {
-                                            print('success${receivedLocation}');
-                                            if(receivedLocation!=null) {
-                                            widget.choice.variant.forEach((_l) {
-                                            setState(() {
-                                            if (_l.variant_id == receivedLocation) {
-                                            _l.selected = true;
-                                            } else {
-                                            _l.selected = false;
-                                            }
-                                            });
-                                            });
-                                            }
-                                            }); */
+                                          print('success${receivedLocation}');
+                                          if(receivedLocation!=null) {
+                                          widget.choice.variant.forEach((_l) {
+                                          setState(() {
+                                          if (_l.variant_id == receivedLocation) {
+                                          _l.selected = true;
+                                          } else {
+                                          _l.selected = false;
+                                          }
+                                          });
+                                          });
+                                          }
+                                          }); */
                                           },
                                           child: Container(
                                               height: 30,
@@ -268,19 +268,18 @@ class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
                                                         _variantData.variant_id)
                                             ? InkWell(
                                                 onTap: () {
-
-                                                  if(isTooFar = true){
-                                                    setState(() { });
-                                                    showToast( "The shop too far away from your location. Please change your delivery/pickup location.",
-                                                        gravity: Toast.BOTTOM, duration: 4);
-
-                                                  }
-                                                  else {
+                                                  if (isTooFar == true) {
+                                                    setState(() {});
+                                                    showToast(
+                                                        "The shop too far away from your location. Please change your delivery/pickup location.",
+                                                        gravity: Toast.BOTTOM,
+                                                        duration: 4);
+                                                  } else {
                                                     if (currentCheckout
-                                                        .value.shopId ==
-                                                        widget.shopId ||
+                                                                .value.shopId ==
+                                                            widget.shopId ||
                                                         currentCheckout
-                                                            .value.shopId ==
+                                                                .value.shopId ==
                                                             null) {
                                                       variantPop(
                                                           widget.choice,
@@ -297,7 +296,6 @@ class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
                                                     } else {
                                                       ClearCartShow();
                                                     }
-
                                                   }
                                                   //   widget.con.checkShopAdded(widget.choice, 'cart',_variantData, widget.shopId,ClearCartShow);
                                                 },

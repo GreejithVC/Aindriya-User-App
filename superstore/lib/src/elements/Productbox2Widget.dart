@@ -22,6 +22,7 @@ class ProductBox2Widget extends StatefulWidget {
       this.shopName,
       this.subtitle,
       this.km,
+      this.deliveryRadius,
       this.shopTypeID,
       this.latitude,
       this.longitude,
@@ -34,6 +35,7 @@ class ProductBox2Widget extends StatefulWidget {
   final String shopName;
   final String subtitle;
   final String km;
+  final String deliveryRadius;
   final int shopTypeID;
   final String latitude;
   final String longitude;
@@ -52,15 +54,12 @@ class _ProductBox2WidgetState extends StateMVC<ProductBox2Widget> {
 
   @override
   Widget build(BuildContext context) {
-    bool isTooFar = (double.tryParse(
-                widget?.choice?.distance?.isNotEmpty == true
-                    ? widget?.choice?.distance
-                    : "0") >
-            double.tryParse(widget?.choice?.deliveryRadius?.isNotEmpty == true
-                ? widget?.choice?.deliveryRadius
-                : "0"))
-        ? true
-        : false;
+    bool isTooFar =
+        double.tryParse(widget?.km?.isNotEmpty == true ? widget?.km : "0") >
+            double.tryParse(widget?.deliveryRadius?.isNotEmpty == true
+                ? widget?.deliveryRadius
+                : "0");
+
     void showToast(String msg, {int duration, int gravity}) {
       Toast.show(
         msg,
@@ -105,6 +104,7 @@ class _ProductBox2WidgetState extends StateMVC<ProductBox2Widget> {
                                   callback: widget?.callback,
                                   shopTypeID: widget?.shopTypeID,
                                   km: widget?.km,
+                                  deliveryRadius: widget?.deliveryRadius,
                                   latitude: widget?.latitude,
                                   longitude: widget?.longitude,
                                 )));
@@ -248,7 +248,7 @@ class _ProductBox2WidgetState extends StateMVC<ProductBox2Widget> {
                                                         _variantData.variant_id)
                                             ? InkWell(
                                                 onTap: () {
-                                                  if (isTooFar = true) {
+                                                  if (isTooFar == true) {
                                                     setState(() {});
                                                     showToast(
                                                         "The shop too far away from your location. Please change your delivery/pickup location.",

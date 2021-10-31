@@ -14,12 +14,28 @@ class ProductBox1Widget extends StatefulWidget {
   String shopName;
   String subtitle;
   String km;
+  String deliveryRadius;
   int shopTypeID;
   String latitude;
   String longitude;
   Function callback;
   int focusId;
-  ProductBox1Widget({Key key, this.productData, this.shopId, this.shopName, this.subtitle, this.km, this.shopTypeID, this.latitude, this.longitude, this.callback, this.focusId}) : super(key: key);
+
+  ProductBox1Widget(
+      {Key key,
+      this.productData,
+      this.shopId,
+      this.deliveryRadius,
+      this.shopName,
+      this.subtitle,
+      this.km,
+      this.shopTypeID,
+      this.latitude,
+      this.longitude,
+      this.callback,
+      this.focusId})
+      : super(key: key);
+
   @override
   _ProductBox1WidgetState createState() => _ProductBox1WidgetState();
 }
@@ -30,6 +46,7 @@ class _ProductBox1WidgetState extends StateMVC<ProductBox1Widget> {
   _ProductBox1WidgetState() : super(ProductController()) {
     _con = controller;
   }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -38,10 +55,21 @@ class _ProductBox1WidgetState extends StateMVC<ProductBox1Widget> {
       padding: EdgeInsets.only(top: 16, right: 2),
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        return RestaurantProductBox(choice: widget.productData[index], con: _con,shopId: widget.shopId,shopName: widget.shopName,subtitle: widget.subtitle,km: widget.km, shopTypeID: widget.shopTypeID,longitude: widget.longitude,latitude: widget.latitude,callback: widget.callback,focusId: widget.focusId,);
+        return RestaurantProductBox(
+          choice: widget.productData[index],
+          con: _con,
+          shopId: widget.shopId,
+          shopName: widget.shopName,
+          subtitle: widget.subtitle,
+          km: widget.km,
+          deliveryRadius: widget.deliveryRadius,
+          shopTypeID: widget.shopTypeID,
+          longitude: widget.longitude,
+          latitude: widget.latitude,
+          callback: widget.callback,
+          focusId: widget.focusId,
+        );
       },
     );
   }
 }
-
-

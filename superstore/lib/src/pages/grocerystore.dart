@@ -280,6 +280,8 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                         widget.shopDetails.longitude;
                                     currentSearch.value.km =
                                         widget.shopDetails.distance;
+                                    currentSearch.value.deliveryRadius =
+                                        widget.shopDetails.deliveryRadius;
                                     currentSearch.value.subtitle =
                                         widget.shopDetails.subtitle;
                                     Navigator.of(context).push(SearchModal());
@@ -527,6 +529,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                       shopName: widget.shopDetails.shopName,
                       subtitle: widget.shopDetails.subtitle,
                       km: widget.shopDetails.distance,
+                      deliveryRadius: widget.shopDetails.deliveryRadius,
                       shopTypeID: widget.shopTypeID,
                       latitude: widget.shopDetails.latitude,
                       longitude: widget.shopDetails.longitude,

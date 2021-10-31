@@ -232,6 +232,7 @@ class _ProductListState extends StateMVC<ProductList> {
                                     shopName: currentSearch.value.shopName,
                                     subtitle: currentSearch.value.subtitle,
                                     km: currentSearch.value.km,
+                                    deliveryRadius: currentSearch.value.deliveryRadius,
                                     shopTypeID: currentSearch.value.shopTypeID,
                                     latitude: currentSearch.value.latitude,
                                     longitude: currentSearch.value.longitude,

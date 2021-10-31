@@ -19,6 +19,7 @@ import 'package:superstore/src/models/variant.dart';
 import 'package:superstore/src/pages/Widget/fav_product_button.dart';
 import 'package:superstore/src/pages/add_reviews_screen.dart';
 import 'package:superstore/src/repository/user_repository.dart';
+import 'package:toast/toast.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final variantModel variantData;
@@ -28,6 +29,7 @@ class ProductDetailsScreen extends StatefulWidget {
   final String shopName;
   final String subtitle;
   final String km;
+  final String deliveryRadius;
   final int shopTypeID;
   final String latitude;
   final String longitude;
@@ -44,6 +46,7 @@ class ProductDetailsScreen extends StatefulWidget {
     this.shopName,
     this.subtitle,
     this.km,
+    this.deliveryRadius,
     this.shopTypeID,
     this.latitude,
     this.longitude,
@@ -64,7 +67,6 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
   }
 
   variantModel selectedVariantData;
-  CartController _cartController;
 
   @override
   void initState() {
@@ -93,13 +95,31 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isTooFar =
+        (double.tryParse(widget?.km?.isNotEmpty == true ? widget?.km : "0") >
+            double.tryParse(widget?.deliveryRadius?.isNotEmpty == true
+                ? widget?.deliveryRadius
+                : "0"));
+
+    void showToast(String msg, {int duration, int gravity}) {
+      Toast.show(
+        msg,
+        context,
+        duration: duration,
+        gravity: gravity,
+      );
+    }
+
+    print(isTooFar);
+    print("isTooFar//////////");
+    print("widget?.choice?.deliveryRadius////");
     print(widget?.subtitle);
     print("widget?.subtitle");
     double averageRating = ((_con?.reviewList?.fold(
-        0.0,
-            (previousValue, element) =>
-        previousValue + double.tryParse(element?.rating ?? "0")) ??
-        0) /
+                0.0,
+                (previousValue, element) =>
+                    previousValue + double.tryParse(element?.rating ?? "0")) ??
+            0) /
         (_con?.reviewList?.length ?? 0));
     return Scaffold(
       body: ListView(padding: EdgeInsets.all(0), children: [
@@ -161,15 +181,18 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                 child: Row(children: [
                   Row(
                     children: [
-                      Text( (averageRating > 0)?
-                        "${averageRating?.toStringAsFixed(1) ?? 0} ": "No Reviews ",
+                      Text(
+                        (averageRating > 0)
+                            ? "${averageRating?.toStringAsFixed(1) ?? 0} "
+                            : "No Reviews ",
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       AbsorbPointer(
                         child: RatingBar(
                           itemSize: 16,
-                          initialRating: (averageRating > 0)? averageRating ?? 0:0,
+                          initialRating:
+                              (averageRating > 0) ? averageRating ?? 0 : 0,
                           direction: Axis.horizontal,
                           itemCount: 5,
                           allowHalfRating: true,
@@ -410,15 +433,17 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        var isReviewAdded = await Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WriteReviewScreen(
-                                  id: selectedVariantData?.product_id,
-                                )));
+                        var isReviewAdded =
+                            await Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => WriteReviewScreen(
+                                      id: selectedVariantData?.product_id,
+                                    )));
                         print("isReviewAdded////");
                         print(isReviewAdded);
-                        if(isReviewAdded == true){
+                        if (isReviewAdded == true) {
                           _con?.listenForReviewList(
-                              isShop: false, id: selectedVariantData?.product_id);
+                              isShop: false,
+                              id: selectedVariantData?.product_id);
                         }
                       },
                       child: Text(
@@ -451,7 +476,9 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                                   child: Text(
                                 reviewDetails?.userName ?? "",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 14, color: Colors.black87),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: Colors.black87),
                               )),
                               Text(
                                 convertToDisplayDate(reviewDetails?.time),
@@ -584,21 +611,29 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                         widget?.choice?.id, selectedVariantData?.variant_id)
                 ? InkWell(
                     onTap: () {
-                      widget?.con?.checkShopAdded(
-                          widget?.choice,
-                          'cart',
-                          selectedVariantData,
-                          widget?.shopId,
-                          ClearCartShow,
-                          widget?.shopName,
-                          widget?.subtitle,
-                          widget?.km,
-                          widget?.shopTypeID,
-                          widget?.latitude,
-                          widget?.longitude,
-                          widget?.callback,
-                          widget?.focusId);
-                      setState(() {});
+                      if (isTooFar == true) {
+                        setState(() {});
+                        showToast(
+                            "The shop too far away from your location. Please change your delivery/pickup location.",
+                            gravity: Toast.BOTTOM,
+                            duration: 4);
+                      } else {
+                        widget?.con?.checkShopAdded(
+                            widget?.choice,
+                            'cart',
+                            selectedVariantData,
+                            widget?.shopId,
+                            ClearCartShow,
+                            widget?.shopName,
+                            widget?.subtitle,
+                            widget?.km,
+                            widget?.shopTypeID,
+                            widget?.latitude,
+                            widget?.longitude,
+                            widget?.callback,
+                            widget?.focusId);
+                        setState(() {});
+                      }
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -695,27 +730,39 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                       widget?.choice?.id, selectedVariantData?.variant_id),
               child: GestureDetector(
                 onTap: () {
-                  print("buy now");
-                  widget?.con?.checkShopAdded(
-                      widget?.choice,
-                      'cart',
-                      selectedVariantData,
-                      widget?.shopId,
-                      ClearCartShow,
-                      widget?.shopName,
-                      widget?.subtitle,
-                      widget?.km,
-                      widget?.shopTypeID,
-                      widget?.latitude,
-                      widget?.longitude,
-                      widget?.callback,
-                      widget?.focusId);
-                  if (currentUser.value.apiToken != null) {
-                    Navigator.of(context).pushNamed('/Checkout');
+                  print(isTooFar);
+                  print("isTooFar");
+                  if (isTooFar == true) {
+                    setState(() {});
+                    showToast(
+                        "The shop too far away from your location. Please change your delivery/pickup location.",
+                        gravity: Toast.BOTTOM,
+                        duration: 4);
+                    print(isTooFar);
+                    print("isTooFar");
                   } else {
-                    Navigator.of(context).pushNamed('/Login');
+                    print("buy now");
+                    widget?.con?.checkShopAdded(
+                        widget?.choice,
+                        'cart',
+                        selectedVariantData,
+                        widget?.shopId,
+                        ClearCartShow,
+                        widget?.shopName,
+                        widget?.subtitle,
+                        widget?.km,
+                        widget?.shopTypeID,
+                        widget?.latitude,
+                        widget?.longitude,
+                        widget?.callback,
+                        widget?.focusId);
+                    if (currentUser.value.apiToken != null) {
+                      Navigator.of(context).pushNamed('/Checkout');
+                    } else {
+                      Navigator.of(context).pushNamed('/Login');
+                    }
+                    setState(() {});
                   }
-                  setState(() {});
                 },
                 child: Container(
                   alignment: Alignment.center,

@@ -17,6 +17,7 @@ class CategorySwipeHeader extends StatefulWidget {
       this.shopName,
       this.subtitle,
       this.km,
+      this.deliveryRadius,
       this.shopTypeID,
       this.longitude,
       this.latitude,
@@ -28,6 +29,7 @@ class CategorySwipeHeader extends StatefulWidget {
   String shopName;
   String subtitle;
   String km;
+  String deliveryRadius;
   int shopTypeID;
   String latitude;
   String longitude;
@@ -58,6 +60,7 @@ class _CategorySwipeHeaderState extends StateMVC<CategorySwipeHeader> {
           shopName: widget.shopName,
           subtitle: widget.subtitle,
           km: widget.km,
+          deliveryRadius: widget.deliveryRadius,
           shopTypeID: widget.shopTypeID,
           latitude: widget.latitude,
           longitude: widget.longitude,

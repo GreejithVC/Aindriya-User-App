@@ -5,6 +5,7 @@ class SearchCatch {
   String shopName;
   String subtitle;
   String km;
+  String deliveryRadius;
   int shopTypeID;
   String latitude;
   String longitude;
@@ -17,6 +18,7 @@ class SearchCatch {
       shopName = jsonMap['shopName'];
       subtitle = jsonMap['subtitle'];
       km = jsonMap['km'];
+      deliveryRadius = jsonMap['deliveryRadius'];
       shopTypeID = jsonMap['shopTypeID'];
       latitude = jsonMap['latitude'];
       longitude = jsonMap['longitude'];
@@ -25,6 +27,7 @@ class SearchCatch {
       shopName = '';
       subtitle = '';
       km = '';
+      deliveryRadius = '';
       shopTypeID = 0;
       latitude = '';
       longitude = '';
