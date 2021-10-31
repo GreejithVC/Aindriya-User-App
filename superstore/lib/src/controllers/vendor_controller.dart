@@ -19,11 +19,13 @@ class VendorController extends ControllerMVC {
   PackageTypeModel subScribedPackage;
   DeliveryOptionsModel deliveryOptionsModel;
   List<AddReview> reviewList = <AddReview>[];
+  bool isFetching = false;
 
   VendorController();
 
   Future<void> listenForPackageSubscribed(String userId) async {
     print("listen for package subscribed");
+    isFetching = true;
     FirebaseFirestore.instance
         .collection("vendorSubscriptions")
         .doc(userId)
@@ -31,23 +33,28 @@ class VendorController extends ControllerMVC {
         .then((value) {
       if (value?.data() != null) {
         print(value.data());
-        setState(() {
-          subScribedPackage = PackageTypeModel.fromJSON(value.data(), userId);
-          final bool isExpired =
-              subScribedPackage?.expiryDate?.isNotEmpty == true
-                  ? DateFormat("dd/MM/yyyy")
-                      ?.parse(subScribedPackage?.expiryDate)
-                      ?.isBefore(DateTime.now())
-                  : true;
-          print(isExpired);
-          if (isExpired == true) {
-            storeLiveStatus(false, userId);
-          }
-        });
+
+        subScribedPackage = PackageTypeModel.fromJSON(value.data(), userId);
+        final bool isExpired = subScribedPackage?.expiryDate?.isNotEmpty == true
+            ? DateFormat("dd/MM/yyyy")
+                ?.parse(subScribedPackage?.expiryDate)
+                ?.isBefore(DateTime.now())
+            : true;
+        print(isExpired);
+        if (isExpired == true) {
+          storeLiveStatus(false, userId);
+        }
+        isFetching = false;
+        setState(() {});
       }
     }).catchError((e) {
+      isFetching = false;
+      setState(() {});
       print(e);
-    }).whenComplete(() {});
+    }).whenComplete(() {
+      isFetching = false;
+      setState(() {});
+    });
   }
 
   Future<void> listenForVendorList(int shopType, int focusId) async {
@@ -150,8 +157,8 @@ class VendorController extends ControllerMVC {
       print(e);
     }).whenComplete(() {});
   }
-  Future<void> listenForReviewList(
-      { String id, bool isShop}) async {
+
+  Future<void> listenForReviewList({String id, bool isShop}) async {
     reviewList.clear();
     print("listenForReviewList///");
     FirebaseFirestore.instance
@@ -169,8 +176,8 @@ class VendorController extends ControllerMVC {
         reviewList.add(AddReview.fromJSON(result.data()));
       });
       setState(() => reviewList.sort((a, b) {
-        return b.rating.compareTo(a.rating);
-      }));
+            return b.rating.compareTo(a.rating);
+          }));
       notifyListeners();
     }).catchError((e) {
       print(e);

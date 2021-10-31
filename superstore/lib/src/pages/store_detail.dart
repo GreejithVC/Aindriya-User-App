@@ -193,7 +193,10 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
                       : true) ||
                   (_con.deliveryOptionsModel?.availableCOD != true &&
                       _con.deliveryOptionsModel?.availableTakeAway != true)
-              ? Center(child: Text("Sorry this shop is currently closed"))
+              ? Center(
+                  child: Text(_con?.isFetching == true
+                      ? ""
+                      : "Sorry this shop is currently closed"))
               : (_con.vendorResProductList.isEmpty
                   ? RectangleLoaderWidget()
                   : TabBarView(
@@ -332,7 +335,6 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
   })  : assert(avatar != null),
         assert(title != null);
   final PageController _pageController = PageController(initialPage: 0);
-
 
   @override
   Widget build(

@@ -177,7 +177,10 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                     : true) ||
                 (_con.deliveryOptionsModel?.availableCOD != true &&
                     _con.deliveryOptionsModel?.availableTakeAway != true)
-            ? Center(child: Text("Sorry this shop is currently closed"))
+            ? Center(
+                child: Text(_con?.isFetching == true
+                    ? ""
+                    : "Sorry this shop is currently closed"))
             : SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                 child: Column(
