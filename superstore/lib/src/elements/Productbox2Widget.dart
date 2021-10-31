@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:superstore/src/models/favouriteProduct.dart';
 import 'package:superstore/src/pages/Widget/fav_product_button.dart';
 import 'package:superstore/src/pages/product_details_screen.dart';
+import 'package:toast/toast.dart';
 import '../models/product_details2.dart';
 import '../models/variant.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -51,6 +52,24 @@ class _ProductBox2WidgetState extends StateMVC<ProductBox2Widget> {
 
   @override
   Widget build(BuildContext context) {
+    bool isTooFar = (double.tryParse(
+                widget?.choice?.distance?.isNotEmpty == true
+                    ? widget?.choice?.distance
+                    : "0") >
+            double.tryParse(widget?.choice?.deliveryRadius?.isNotEmpty == true
+                ? widget?.choice?.deliveryRadius
+                : "0"))
+        ? true
+        : false;
+    void showToast(String msg, {int duration, int gravity}) {
+      Toast.show(
+        msg,
+        context,
+        duration: duration,
+        gravity: gravity,
+      );
+    }
+
     print(widget?.shopName);
     print("widget?.shopName");
     return Container(
@@ -229,20 +248,28 @@ class _ProductBox2WidgetState extends StateMVC<ProductBox2Widget> {
                                                         _variantData.variant_id)
                                             ? InkWell(
                                                 onTap: () {
-                                                  widget.con.checkShopAdded(
-                                                      widget.choice,
-                                                      'cart',
-                                                      _variantData,
-                                                      widget.shopId,
-                                                      ClearCartShow,
-                                                      widget.shopName,
-                                                      widget.subtitle,
-                                                      widget.km,
-                                                      widget.shopTypeID,
-                                                      widget.latitude,
-                                                      widget.longitude,
-                                                      widget.callback,
-                                                      widget.focusId);
+                                                  if (isTooFar = true) {
+                                                    setState(() {});
+                                                    showToast(
+                                                        "The shop too far away from your location. Please change your delivery/pickup location.",
+                                                        gravity: Toast.BOTTOM,
+                                                        duration: 4);
+                                                  } else {
+                                                    widget.con.checkShopAdded(
+                                                        widget.choice,
+                                                        'cart',
+                                                        _variantData,
+                                                        widget.shopId,
+                                                        ClearCartShow,
+                                                        widget.shopName,
+                                                        widget.subtitle,
+                                                        widget.km,
+                                                        widget.shopTypeID,
+                                                        widget.latitude,
+                                                        widget.longitude,
+                                                        widget.callback,
+                                                        widget.focusId);
+                                                  }
                                                 },
                                                 child: Padding(
                                                   padding: EdgeInsets.only(
@@ -552,10 +579,10 @@ class AvailableQuantityHelper {
   static exit(context, variant, name, select) => showDialog(
       context: context,
       builder: (context) => AvailableQuantityPopup(
-        variantList: variant,
-        title: name,
-        selected: select,
-      ));
+            variantList: variant,
+            title: name,
+            selected: select,
+          ));
 }
 
 // ignore: must_be_immutable
@@ -588,140 +615,140 @@ class _AvailableQuantityPopupState extends State<AvailableQuantityPopup> {
   }
 
   _buildChild(BuildContext context) => SingleChildScrollView(
-    child: Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.all(Radius.circular(3))),
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding:
-            EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
-            child: Text('Available Quantity',
-                style: TextStyle(
-                    color: Theme.of(context).disabledColor,
-                    fontWeight: FontWeight.w500)),
-          ),
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: 1,
-                  )),
-            ),
-          ),
-          Padding(
-            padding:
-            EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
-            child: Text(
-              widget.title,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle2
-                  .merge(TextStyle(fontWeight: FontWeight.w600)),
-            ),
-          ),
-          ListView.separated(
-            itemCount: widget.variantList.length,
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            primary: false,
-            itemBuilder: (context, index) {
-              variantModel _variantData =
-              widget.variantList.elementAt(index);
-
-              return Container(
-                width: double.infinity,
-                // ignore: deprecated_member_use
-                child: FlatButton(
-                  onPressed: () {
-                    widget.variantList.forEach((_l) {
-                      setState(() {
-                        _l.selected = false;
-                      });
-                    });
-
-                    _variantData.selected = true;
-
-                    Navigator.pop(context, _variantData.variant_id);
-                  },
-                  padding: EdgeInsets.all(10),
-                  color: _variantData.selected
-                      ? Theme.of(context).backgroundColor.withOpacity(0.8)
-                      : null,
-                  child: RichText(
-                    text: new TextSpan(children: [
-                      TextSpan(
-                        text:
-                        '${_variantData.quantity}  ${_variantData.unit} ',
-                        style: _variantData.selected
-                            ? Theme.of(context)
-                            .textTheme
-                            .headline1
-                            .merge(TextStyle(
-                          color: Colors.white,
-                        ))
-                            : Theme.of(context).textTheme.headline1.merge(
-                            TextStyle(
-                                color: Theme.of(context).disabledColor,
-                                fontWeight: FontWeight.w500)),
-                      ),
-                      TextSpan(
-                          text:
-                          Helper.pricePrint(_variantData.strike_price),
-                          style: _variantData.selected
-                              ? Theme.of(context).textTheme.headline1.merge(
-                              TextStyle(
-                                  color: Colors.white,
-                                  decoration:
-                                  TextDecoration.lineThrough))
-                              : Theme.of(context).textTheme.headline1.merge(
-                              TextStyle(
-                                  color:
-                                  Theme.of(context).disabledColor,
-                                  fontWeight: FontWeight.w500,
-                                  decoration:
-                                  TextDecoration.lineThrough))),
-                      TextSpan(
-                        text: Helper.pricePrint(_variantData.sale_price),
-                        style: _variantData.selected
-                            ? Theme.of(context)
-                            .textTheme
-                            .headline1
-                            .merge(TextStyle(
-                          color: Colors.white,
-                        ))
-                            : Theme.of(context).textTheme.headline1.merge(
-                            TextStyle(
-                                color: Theme.of(context).disabledColor,
-                                fontWeight: FontWeight.w500)),
-                      )
-                    ]),
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return Container(
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(3))),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding:
+                    EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
+                child: Text('Available Quantity',
+                    style: TextStyle(
+                        color: Theme.of(context).disabledColor,
+                        fontWeight: FontWeight.w500)),
+              ),
+              Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
                   border: Border(
                       bottom: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: 1,
+                  )),
+                ),
+              ),
+              Padding(
+                padding:
+                    EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
+                child: Text(
+                  widget.title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2
+                      .merge(TextStyle(fontWeight: FontWeight.w600)),
+                ),
+              ),
+              ListView.separated(
+                itemCount: widget.variantList.length,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                primary: false,
+                itemBuilder: (context, index) {
+                  variantModel _variantData =
+                      widget.variantList.elementAt(index);
+
+                  return Container(
+                    width: double.infinity,
+                    // ignore: deprecated_member_use
+                    child: FlatButton(
+                      onPressed: () {
+                        widget.variantList.forEach((_l) {
+                          setState(() {
+                            _l.selected = false;
+                          });
+                        });
+
+                        _variantData.selected = true;
+
+                        Navigator.pop(context, _variantData.variant_id);
+                      },
+                      padding: EdgeInsets.all(10),
+                      color: _variantData.selected
+                          ? Theme.of(context).backgroundColor.withOpacity(0.8)
+                          : null,
+                      child: RichText(
+                        text: new TextSpan(children: [
+                          TextSpan(
+                            text:
+                                '${_variantData.quantity}  ${_variantData.unit} ',
+                            style: _variantData.selected
+                                ? Theme.of(context)
+                                    .textTheme
+                                    .headline1
+                                    .merge(TextStyle(
+                                      color: Colors.white,
+                                    ))
+                                : Theme.of(context).textTheme.headline1.merge(
+                                    TextStyle(
+                                        color: Theme.of(context).disabledColor,
+                                        fontWeight: FontWeight.w500)),
+                          ),
+                          TextSpan(
+                              text:
+                                  Helper.pricePrint(_variantData.strike_price),
+                              style: _variantData.selected
+                                  ? Theme.of(context).textTheme.headline1.merge(
+                                      TextStyle(
+                                          color: Colors.white,
+                                          decoration:
+                                              TextDecoration.lineThrough))
+                                  : Theme.of(context).textTheme.headline1.merge(
+                                      TextStyle(
+                                          color:
+                                              Theme.of(context).disabledColor,
+                                          fontWeight: FontWeight.w500,
+                                          decoration:
+                                              TextDecoration.lineThrough))),
+                          TextSpan(
+                            text: Helper.pricePrint(_variantData.sale_price),
+                            style: _variantData.selected
+                                ? Theme.of(context)
+                                    .textTheme
+                                    .headline1
+                                    .merge(TextStyle(
+                                      color: Colors.white,
+                                    ))
+                                : Theme.of(context).textTheme.headline1.merge(
+                                    TextStyle(
+                                        color: Theme.of(context).disabledColor,
+                                        fontWeight: FontWeight.w500)),
+                          )
+                        ]),
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
                         color: Theme.of(context).dividerColor,
                         width: 1,
                       )),
-                ),
-              );
-            },
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:superstore/src/models/favouriteProduct.dart';
 import 'package:superstore/src/pages/Widget/fav_product_button.dart';
 import 'package:superstore/src/pages/product_details_screen.dart';
+import 'package:toast/toast.dart';
 import '../repository/order_repository.dart';
 import '../models/product_details2.dart';
 import '../models/variant.dart';
@@ -53,8 +54,25 @@ class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
+    bool isTooFar = (double.tryParse(widget?.choice?.distance?.isNotEmpty == true
+        ? widget?.choice?.distance
+        : "0") >
+        double.tryParse(
+            widget?.choice?.deliveryRadius?.isNotEmpty == true
+                ? widget?.choice?.deliveryRadius
+                : "0")) ? true :false;
+    void showToast(String msg, {int duration, int gravity}) {
+      Toast.show(
+        msg,
+        context,
+        duration: duration,
+        gravity: gravity,
+      );
+    }
+
     return Container(
       padding: EdgeInsets.only(
         left: 10,
@@ -250,26 +268,36 @@ class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
                                                         _variantData.variant_id)
                                             ? InkWell(
                                                 onTap: () {
-                                                  if (currentCheckout
-                                                              .value.shopId ==
-                                                          widget.shopId ||
-                                                      currentCheckout
-                                                              .value.shopId ==
-                                                          null) {
-                                                    variantPop(
-                                                        widget.choice,
-                                                        widget.choice
-                                                            .product_name,
-                                                        widget.con,
-                                                        widget.shopName,
-                                                        widget.subtitle,
-                                                        widget.km,
-                                                        widget.shopTypeID,
-                                                        widget.latitude,
-                                                        widget.longitude,
-                                                        widget.focusId);
-                                                  } else {
-                                                    ClearCartShow();
+
+                                                  if(isTooFar = true){
+                                                    setState(() { });
+                                                    showToast( "The shop too far away from your location. Please change your delivery/pickup location.",
+                                                        gravity: Toast.BOTTOM, duration: 4);
+
+                                                  }
+                                                  else {
+                                                    if (currentCheckout
+                                                        .value.shopId ==
+                                                        widget.shopId ||
+                                                        currentCheckout
+                                                            .value.shopId ==
+                                                            null) {
+                                                      variantPop(
+                                                          widget.choice,
+                                                          widget.choice
+                                                              .product_name,
+                                                          widget.con,
+                                                          widget.shopName,
+                                                          widget.subtitle,
+                                                          widget.km,
+                                                          widget.shopTypeID,
+                                                          widget.latitude,
+                                                          widget.longitude,
+                                                          widget.focusId);
+                                                    } else {
+                                                      ClearCartShow();
+                                                    }
+
                                                   }
                                                   //   widget.con.checkShopAdded(widget.choice, 'cart',_variantData, widget.shopId,ClearCartShow);
                                                 },
