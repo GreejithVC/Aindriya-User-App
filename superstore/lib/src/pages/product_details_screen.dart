@@ -10,6 +10,7 @@ import 'package:superstore/src/controllers/add_review_controller.dart';
 import 'package:superstore/src/controllers/cart_controller.dart';
 import 'package:superstore/src/controllers/product_controller.dart';
 import 'package:superstore/src/elements/ClearCartWidget.dart';
+import 'package:superstore/src/elements/image_zoom.dart';
 import 'package:superstore/src/helpers/helper.dart';
 import 'package:superstore/src/models/add_review_modelclass.dart';
 import 'package:superstore/src/models/delivery_options_model.dart';
@@ -126,14 +127,21 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
         Stack(
           alignment: Alignment.topRight,
           children: [
-            Container(
-              width: double.infinity,
-              height: 250,
-              child: CachedNetworkImage(
-                imageUrl: selectedVariantData?.image,
-                placeholder: (context, url) => new CircularProgressIndicator(),
-                errorWidget: (context, url, error) => new Icon(Icons.error),
-                fit: BoxFit.cover,
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ImageZoomScreen(
+                        imageUrl:selectedVariantData?.image,)));
+              },
+              child: Container(
+                width: double.infinity,
+                height: 250,
+                child: CachedNetworkImage(
+                  imageUrl: selectedVariantData?.image,
+                  placeholder: (context, url) => new CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => new Icon(Icons.error),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             Container(
