@@ -19,6 +19,7 @@ import 'package:superstore/src/models/product_details2.dart';
 import 'package:superstore/src/models/variant.dart';
 import 'package:superstore/src/pages/Widget/fav_product_button.dart';
 import 'package:superstore/src/pages/add_reviews_screen.dart';
+import 'package:superstore/src/pages/chat_detail_page.dart';
 import 'package:superstore/src/repository/user_repository.dart';
 import 'package:toast/toast.dart';
 
@@ -549,10 +550,22 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.chat_outlined,
-                    color: Color(0xFF333D37).withOpacity(0.8),
-                    // Color(0xFF333D37),
-                    size: 23),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ChatDetailPage(
+                                    shopId: widget?.shopId,
+                                    shopName: widget
+                                        ?.shopName,
+                                    shopMobile: '12')));
+                  },
+                  child: Icon(Icons.chat_outlined,
+                      color: Color(0xFF333D37).withOpacity(0.8),
+                      // Color(0xFF333D37),
+                      size: 23),
+                ),
                 Text("chat")
               ],
             ),
@@ -561,10 +574,15 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    Icons.store_mall_directory,
-                    size: 24,
-                    color: Color(0xFF333D37).withOpacity(0.8),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.store_mall_directory,
+                      size: 24,
+                      color: Color(0xFF333D37).withOpacity(0.8),
+                    ),
                   ),
                   Text("store")
                 ],
