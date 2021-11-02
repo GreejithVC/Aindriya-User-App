@@ -246,7 +246,7 @@ class CartController extends ControllerMVC {
         }
       } else if (currentCheckout.value.deliveryTimeSlot == null ||
           currentCheckout.value.deliveryTimeSlot == '') {
-        showToast("Please select your deliver time slot",
+        showToast("Please select your delivery time slot",
             gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
       } else {
         if (currentCheckout.value.uploadImage == 'no') {
