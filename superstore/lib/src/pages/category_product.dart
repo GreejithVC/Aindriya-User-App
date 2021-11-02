@@ -1,6 +1,8 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:superstore/src/elements/SearchWidget.dart';
+import 'package:superstore/src/repository/product_repository.dart';
 import '../elements/RectangleLoaderWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -133,19 +135,31 @@ class _CategoryProductState extends StateMVC<CategoryProduct> {
                 pinned: true,
                 floating: false,
                 delegate: SliverCustomHeaderDelegate(
-                    collapsedHeight: 0,
-                    expandedHeight: 150,
-                    paddingTop: 28,
-                    // paddingTop: MediaQuery.of(context).padding.top,
-                    coverImgUrl: widget.categoryData.image,
-                    pagetitle: widget.categoryData.name),
+                  collapsedHeight: 0,
+                  expandedHeight: 150,
+                  paddingTop: 28,
+                  // paddingTop: MediaQuery.of(context).padding.top,
+                  coverImgUrl: widget.categoryData.image,
+                  pagetitle: widget.categoryData.name,
+                  shopId: widget.shopId,
+                  shopName: widget.shopName,
+                  subtitle: widget.subtitle,
+                  km: widget.km,
+                  deliveryRadius: widget.deliveryRadius,
+                  shopTypeID: widget.shopTypeID,
+                  latitude: widget.latitude,
+                  longitude: widget.longitude,
+                ),
               ),
-              SliverAppBar(backgroundColor: Colors.white,
+              SliverAppBar(
+                backgroundColor: Colors.white,
                 pinned: true,
                 floating: false,
-                primary: false,automaticallyImplyLeading: false,
+                primary: false,
+                automaticallyImplyLeading: false,
                 // bottom:
-                flexibleSpace:  Container(margin: EdgeInsets.symmetric(horizontal: 20),
+                flexibleSpace: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
                   child: PreferredSize(
                     preferredSize: const Size.fromHeight(0),
                     child: TabBar(
@@ -213,15 +227,32 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double paddingTop;
   final String coverImgUrl;
   final String pagetitle;
+  final String shopId;
+  final String shopName;
+  final String subtitle;
+  final String km;
+  final String deliveryRadius;
+  final int shopTypeID;
+  final String latitude;
+  final String longitude;
 
   String statusBarMode = 'dark';
 
-  SliverCustomHeaderDelegate(
-      {this.collapsedHeight,
-      this.expandedHeight,
-      this.paddingTop,
-      this.coverImgUrl,
-      this.pagetitle});
+  SliverCustomHeaderDelegate({
+    this.collapsedHeight,
+    this.expandedHeight,
+    this.paddingTop,
+    this.coverImgUrl,
+    this.pagetitle,
+    this.shopId,
+    this.shopName,
+    this.subtitle,
+    this.km,
+    this.deliveryRadius,
+    this.shopTypeID,
+    this.latitude,
+    this.longitude,
+  });
 
   @override
   double get minExtent => this.collapsedHeight + this.paddingTop;
@@ -255,7 +286,8 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(margin: EdgeInsets.only(bottom: 10),
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
       height: this.maxExtent,
       width: MediaQuery.of(context).size.width,
       child: Stack(
@@ -271,6 +303,15 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
             alignment: Alignment.topRight,
             child: GestureDetector(
               onTap: () {
+                currentSearch.value.shopName = this.shopName;
+                currentSearch.value.shopTypeID = this.shopTypeID;
+                currentSearch.value.shopId = this.shopId;
+                currentSearch.value.latitude = this.latitude;
+                currentSearch.value.longitude = this.longitude;
+                currentSearch.value.km = this.km;
+                currentSearch.value.deliveryRadius = this.deliveryRadius;
+                currentSearch.value.subtitle = this.subtitle;
+                Navigator.of(context).push(SearchModal());
               },
               child: Container(
                 margin: EdgeInsets.only(top: 30, right: 20),
