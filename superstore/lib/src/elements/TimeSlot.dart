@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 class TimeSlotWidget extends StatefulWidget {
   const TimeSlotWidget({Key key, this.choice}) : super(key: key);
   final List<TimeSlot> choice;
+
   @override
   _TimeSlotWidgetState createState() => _TimeSlotWidgetState();
 }
@@ -19,6 +20,7 @@ class _TimeSlotWidgetState extends State<TimeSlotWidget> {
   String selectDate;
   String selectTime;
   bool changeDate = false;
+
   @override
   void initState() {
     var formatter = new DateFormat('yyyy-MM-dd');
@@ -50,42 +52,57 @@ class _TimeSlotWidgetState extends State<TimeSlotWidget> {
                   width: 1,
                 )),
               ),
-              child: Text('Select your delivery time slot', style: Theme.of(context).textTheme.headline1)),
+              child: Text('Select your delivery time slot',
+                  style: Theme.of(context).textTheme.headline1)),
           SizedBox(height: 25.0),
           Padding(
             padding: EdgeInsets.only(left: 15, right: 15),
             child: Container(
-                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              Container(
-                child: DatePicker(
-                  DateTime.now(),
-                  width: 65,
-                  height: 100,
-                  controller: _controller,
-                  initialSelectedDate: DateTime.now(),
-                  selectionColor: Colors.black,
-                  selectedTextColor: Colors.white,
-                  onDateChange: (date) {
-                    // New date selected
-                    setState(() {
-                      // _selectedValue = date;
-                      // _con.addTodate(date.toString());
-                      var formatter = new DateFormat('yyyy-MM-dd');
-                      String formattedDate = formatter.format(date);
-                      //currentbookdetail.value.date = formattedDate;
-                      //print(formattedDate);
-                      selectDate = formattedDate;
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                  Container(
+                    child: DatePicker(
+                      DateTime.now(),
+                      dateTextStyle: TextStyle(
+                          color: Theme.of(context).textTheme.headline1.color),
+                      dayTextStyle: TextStyle(
+                          color: Theme.of(context).textTheme.headline1.color),
+                      monthTextStyle: TextStyle(
+                          color: Theme.of(context).textTheme.headline1.color),
+                      width: 65,
+                      height: 100,
+                      controller: _controller,
+                      initialSelectedDate: DateTime.now(),
+                      selectionColor:
+                          Colors.blueAccent,
+                      selectedTextColor:  Colors.white,
+                      onDateChange: (date) {
+                        // New date selected
+                        setState(() {
+                          // _selectedValue = date;
+                          // _con.addTodate(date.toString());
+                          var formatter = new DateFormat('yyyy-MM-dd');
+                          String formattedDate = formatter.format(date);
+                          //currentbookdetail.value.date = formattedDate;
+                          //print(formattedDate);
+                          selectDate = formattedDate;
 
-                      if (currentCheckout.value.deliveryTime == '' || currentCheckout.value.deliveryTime == null) {
-                        currentCheckout.value.deliveryTimeSlot = formattedDate + '' + selectTime;
-                      } else {
-                        currentCheckout.value.deliveryTimeSlot = formattedDate + '' + currentCheckout.value.deliveryTime;
-                      }
-                    });
-                  },
-                ),
-              ),
-            ])),
+                          if (currentCheckout.value.deliveryTime == '' ||
+                              currentCheckout.value.deliveryTime == null) {
+                            currentCheckout.value.deliveryTimeSlot =
+                                formattedDate + '' + selectTime;
+                          } else {
+                            currentCheckout.value.deliveryTimeSlot =
+                                formattedDate +
+                                    '' +
+                                    currentCheckout.value.deliveryTime;
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ])),
           ),
         ]),
       ),
@@ -105,7 +122,9 @@ class _TimeSlotWidgetState extends State<TimeSlotWidget> {
                       var formatter = new DateFormat('yyyy-MM-dd');
                       String currentDate = formatter.format(now);
 
-                      if (now.hour >= _datetime.timeid && _datetime.timeid != 1 && selectDate == currentDate) {
+                      if (now.hour >= _datetime.timeid &&
+                          _datetime.timeid != 1 &&
+                          selectDate == currentDate) {
                         return Container();
                       } else {
                         return Row(
@@ -118,19 +137,34 @@ class _TimeSlotWidgetState extends State<TimeSlotWidget> {
                                         });
                                       }),
                                       _datetime.selected = true,
-                                      currentCheckout.value.deliveryTime = _datetime.fromTime +''+_datetime.toTime,
-                                      currentCheckout.value.deliveryTimeSlot = selectDate + ' ' + currentCheckout.value.deliveryTime,
+                                      currentCheckout.value.deliveryTime =
+                                          _datetime.fromTime +
+                                              '' +
+                                              _datetime.toTime,
+                                      currentCheckout.value.deliveryTimeSlot =
+                                          selectDate +
+                                              ' ' +
+                                              currentCheckout
+                                                  .value.deliveryTime,
                                     },
                                 child: Container(
-                                  width: MediaQuery.of(context).size.width * 0.50,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.50,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: _datetime.selected ? Colors.blueAccent : Theme.of(context).dividerColor,
+                                    color: _datetime.selected
+                                        ? Colors.blueAccent
+                                        : Theme.of(context).dividerColor,
                                   ),
                                   child: Center(
-                                      child: Text('${_datetime.fromTime} to ${_datetime.toTime}',
+                                      child: Text(
+                                          '${_datetime.fromTime} to ${_datetime.toTime}',
                                           style: TextStyle(
-                                              fontSize: 11.0, color: _datetime.selected ? Colors.white : Colors.black, fontWeight: FontWeight.w700))),
+                                              fontSize: 11.0,
+                                              color: _datetime.selected
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              fontWeight: FontWeight.w700))),
                                 )),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.06,
@@ -149,6 +183,7 @@ class _TimeSlotWidgetState extends State<TimeSlotWidget> {
 
 class Datetime {
   Datetime({this.timeid, this.time, this.selected});
+
   int timeid;
   String time;
   bool selected;
