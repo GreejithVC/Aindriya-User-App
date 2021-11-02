@@ -352,6 +352,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
       physics: NeverScrollableScrollPhysics(),
       children: [
         Stack(
+          alignment: Alignment.center,
           children: [
             Container(
               height: 200,
@@ -393,7 +394,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
               child: Container(
                 width: double.infinity,
                 padding:
-                    EdgeInsets.only(top: 28, left: 12, bottom: 8, right: 12),
+                    EdgeInsets.only(top: 8, left: 12, bottom: 8, right: 12),
                 color: Colors.black.withOpacity(0.7),
                 child: Text(
                     "The shop too far away from your location. Please change your delivery/pickup location.",

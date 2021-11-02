@@ -186,6 +186,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Stack(
+                      alignment: Alignment.center,
                       children: [
                         Container(
                           height: 200,
@@ -235,7 +236,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                           child: Container(
                             width: double.infinity,
                             padding: EdgeInsets.only(
-                                top: 28, left: 12, bottom: 8, right: 12),
+                                top: 8, left: 12, bottom: 8, right: 12),
                             color: Colors.black.withOpacity(0.7),
                             child: Text(
                                 "The shop too far away from your location. Please change your delivery/pickup location.",
