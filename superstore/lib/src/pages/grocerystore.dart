@@ -186,7 +186,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Stack(
-                      alignment: Alignment.center,
+                      // alignment: Alignment.center,
                       children: [
                         Container(
                           height: 200,
@@ -233,15 +233,59 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                       true
                                   ? widget?.shopDetails?.deliveryRadius
                                   : "0"),
-                          child: Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.only(
-                                top: 8, left: 12, bottom: 8, right: 12),
-                            color: Colors.black.withOpacity(0.7),
-                            child: Text(
-                                "The shop too far away from your location. Please change your delivery/pickup location.",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white70)),
+                          child: Positioned.fill(
+                            child: Center(
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.only(
+                                    top: 8, left: 12, bottom: 8, right: 12),
+                                color: Colors.black.withOpacity(0.7),
+                                child: Text(
+                                    "The shop too far away from your location. Please change your delivery/pickup location.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white70)),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              currentSearch.value.shopName =
+                                  widget?.shopDetails?.shopName;
+                              currentSearch.value.shopTypeID =
+                                  widget.shopTypeID;
+                              currentSearch.value.shopId =
+                                  widget.shopDetails.shopId;
+                              currentSearch.value.latitude =
+                                  widget.shopDetails.latitude;
+                              currentSearch.value.longitude =
+                                  widget.shopDetails.longitude;
+                              currentSearch.value.km =
+                                  widget.shopDetails.distance;
+                              currentSearch.value.deliveryRadius =
+                                  widget.shopDetails.deliveryRadius;
+                              currentSearch.value.subtitle =
+                                  widget.shopDetails.subtitle;
+                              Navigator.of(context).push(SearchModal());
+                            },
+                            child: Container(
+                                margin: EdgeInsets.only(top: 30, right: 20),
+                                height: 35,
+                                width: 35,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Theme.of(context).accentColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 5.0,
+                                      ),
+                                    ]),
+                              child: Icon(Icons.search,
+                                  color: Colors.white),),
                           ),
                         ),
                       ],
@@ -264,33 +308,33 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                           .textTheme
                                           .headline6),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    currentSearch.value.shopName =
-                                        widget?.shopDetails?.shopName;
-                                    currentSearch.value.shopTypeID =
-                                        widget.shopTypeID;
-                                    currentSearch.value.shopId =
-                                        widget.shopDetails.shopId;
-                                    currentSearch.value.latitude =
-                                        widget.shopDetails.latitude;
-                                    currentSearch.value.longitude =
-                                        widget.shopDetails.longitude;
-                                    currentSearch.value.km =
-                                        widget.shopDetails.distance;
-                                    currentSearch.value.deliveryRadius =
-                                        widget.shopDetails.deliveryRadius;
-                                    currentSearch.value.subtitle =
-                                        widget.shopDetails.subtitle;
-                                    Navigator.of(context).push(SearchModal());
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 4),
-                                    child: Icon(Icons.search,
-                                        color: Color(0xFF49aecb)),
-                                  ),
-                                ),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     currentSearch.value.shopName =
+                                //         widget?.shopDetails?.shopName;
+                                //     currentSearch.value.shopTypeID =
+                                //         widget.shopTypeID;
+                                //     currentSearch.value.shopId =
+                                //         widget.shopDetails.shopId;
+                                //     currentSearch.value.latitude =
+                                //         widget.shopDetails.latitude;
+                                //     currentSearch.value.longitude =
+                                //         widget.shopDetails.longitude;
+                                //     currentSearch.value.km =
+                                //         widget.shopDetails.distance;
+                                //     currentSearch.value.deliveryRadius =
+                                //         widget.shopDetails.deliveryRadius;
+                                //     currentSearch.value.subtitle =
+                                //         widget.shopDetails.subtitle;
+                                //     Navigator.of(context).push(SearchModal());
+                                //   },
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.symmetric(
+                                //         horizontal: 4),
+                                //     child: Icon(Icons.search,
+                                //         color: Color(0xFF49aecb)),
+                                //   ),
+                                // ),
                                 GestureDetector(
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(

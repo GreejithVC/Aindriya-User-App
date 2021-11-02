@@ -352,7 +352,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
       physics: NeverScrollableScrollPhysics(),
       children: [
         Stack(
-          alignment: Alignment.center,
+          // alignment: Alignment.center,
           children: [
             Container(
               height: 200,
@@ -391,15 +391,56 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                       shopDetails?.deliveryRadius?.isNotEmpty == true
                           ? shopDetails?.deliveryRadius
                           : "0"),
-              child: Container(
-                width: double.infinity,
-                padding:
-                    EdgeInsets.only(top: 8, left: 12, bottom: 8, right: 12),
-                color: Colors.black.withOpacity(0.7),
-                child: Text(
-                    "The shop too far away from your location. Please change your delivery/pickup location.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white70)),
+              child: Positioned.fill(
+                child: Center(
+                  child: Container(
+                    width: double.infinity,
+                    padding:
+                        EdgeInsets.only(top: 8, left: 12, bottom: 8, right: 12),
+                    color: Colors.black.withOpacity(0.7),
+                    child: Text(
+                        "The shop too far away from your location. Please change your delivery/pickup location.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white70)),
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SearchResultWidgetRe(
+                        itemDetails: itemDetails,
+                        shopId: shopDetails.shopId,
+                        shopName: shopDetails.shopName,
+                        subtitle: shopDetails.subtitle,
+                        km: shopDetails.distance,
+                        deliveryRadius: shopDetails.deliveryRadius,
+                        shopTypeID: shopTypeID,
+                        latitude: shopDetails.latitude,
+                        longitude: shopDetails.longitude,
+                        callback: this.callback,
+                        focusId: focusId,
+                      )));
+                },
+                child: Container(
+                  margin: EdgeInsets.only(top: 30, right: 20),
+                  height: 35,
+                  width: 35,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).accentColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 5.0,
+                        ),
+                      ]),
+                  child: Icon(Icons.search,
+                      color: Colors.white),),
               ),
             ),
           ],
