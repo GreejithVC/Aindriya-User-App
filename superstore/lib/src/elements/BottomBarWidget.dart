@@ -53,7 +53,7 @@ class _BottomBarWidgetState extends StateMVC<BottomBarWidget> {
                         child: Padding(
                             padding: EdgeInsets.only(left: 10, right: 10),
                             child: Text(
-                                ' ${currentCart.value.length} ${S.of(context).items}  & ${S.of(context).you_save} ${Helper.pricePrint(_con.calculateAmount())}',
+                                ' ${currentCart.value.length} ${S.of(context).items}  & ${S.of(context).you_save} ${Helper.pricePrint(_con.grandSummary())}',
                                 style: Theme.of(context).textTheme.headline1)),
                       ),
                       // ignore: deprecated_member_use

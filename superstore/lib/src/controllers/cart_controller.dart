@@ -142,7 +142,7 @@ class CartController extends ControllerMVC {
     currentCart.value.forEach((element) {
       totalprice += int.parse(element.price) * element.qty;
 
-      totalsalesprice += int.parse(element.price) * element.qty;
+      totalsalesprice += int.parse(element.strike) * element.qty;
       element.addon.forEach((addonElement) {
         addon += int.parse(addonElement.price) * element.qty;
       });
