@@ -157,11 +157,8 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               color: Color(0xFFfbd100).withOpacity(0.5)),
-                          child: Text('Our Stores',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline1
-                                  .merge(TextStyle(fontSize: 20))),
+                          child: Text('Shop Categories',
+                              style: Theme.of(context).textTheme.headline1.merge(TextStyle(fontSize: 16))),
                         ),
                       ),
                       _con.shopTypeList.isEmpty

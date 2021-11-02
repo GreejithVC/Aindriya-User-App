@@ -289,21 +289,21 @@ class ShopList extends StatelessWidget {
                                                     .height *
                                                 0.01),
                                         Wrap(children: [
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 0),
-                                            child: Icon(Icons.star,
-                                                color: Colors.grey[500],
-                                                size: 15),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 2),
-                                            child: Text('${choice.rate}     ',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText2),
-                                          ),
+                                          // Padding(
+                                          //   padding:
+                                          //       const EdgeInsets.only(top: 0),
+                                          //   child: Icon(Icons.star,
+                                          //       color: Colors.grey[500],
+                                          //       size: 15),
+                                          // ),
+                                          // Padding(
+                                          //   padding:
+                                          //       const EdgeInsets.only(left: 2),
+                                          //   child: Text('${choice.rate}     ',
+                                          //       style: Theme.of(context)
+                                          //           .textTheme
+                                          //           .bodyText2),
+                                          // ),
                                           Padding(
                                             padding:
                                                 const EdgeInsets.only(left: 3),

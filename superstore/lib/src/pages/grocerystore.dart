@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
-import 'package:superstore/src/controllers/add_review_controller.dart';
-import 'package:superstore/src/controllers/reviews_controller.dart';
 import 'package:superstore/src/elements/image_zoom.dart';
 import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/packagetype.dart';
@@ -10,7 +8,6 @@ import 'package:superstore/src/pages/shop_reviews.dart';
 import 'package:superstore/src/pages/store_detail.dart';
 import 'package:superstore/src/pages/upload_prescription.dart';
 
-import '../helpers/helper.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../elements/SearchWidget.dart';
