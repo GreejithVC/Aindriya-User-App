@@ -10,6 +10,8 @@ import 'package:superstore/src/models/add_review_modelclass.dart';
 import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/packagetype.dart';
 import 'package:superstore/src/pages/shop_reviews.dart';
+import 'package:superstore/src/repository/product_repository.dart';
+import 'package:superstore/src/repository/user_repository.dart';
 import '../elements/RectangleLoaderWidget.dart';
 import '../helpers/helper.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -406,42 +408,73 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.topRight,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => SearchResultWidgetRe(
-                            itemDetails: itemDetails,
-                            shopId: shopDetails.shopId,
-                            shopName: shopDetails.shopName,
-                            subtitle: shopDetails.subtitle,
-                            km: shopDetails.distance,
-                            deliveryRadius: shopDetails.deliveryRadius,
-                            shopTypeID: shopTypeID,
-                            latitude: shopDetails.latitude,
-                            longitude: shopDetails.longitude,
-                            callback: this.callback,
-                            focusId: focusId,
-                          )));
-                },
-                child: Container(
-                  margin: EdgeInsets.only(top: 30, right: 20),
-                  height: 35,
-                  width: 35,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).accentColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 5.0,
-                        ),
-                      ]),
-                  child: Icon(Icons.search, color: Colors.white),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SearchResultWidgetRe(
+                              itemDetails: itemDetails,
+                              shopId: shopDetails.shopId,
+                              shopName: shopDetails.shopName,
+                              subtitle: shopDetails.subtitle,
+                              km: shopDetails.distance,
+                              deliveryRadius: shopDetails.deliveryRadius,
+                              shopTypeID: shopTypeID,
+                              latitude: shopDetails.latitude,
+                              longitude: shopDetails.longitude,
+                              callback: this.callback,
+                              focusId: focusId,
+                            )));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 30, right: 10),
+                    height: 35,
+                    width: 35,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).accentColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            blurRadius: 5.0,
+                          ),
+                        ]),
+                    child: Icon(Icons.search, color: Colors.white),
+                  ),
                 ),
-              ),
+                GestureDetector(
+                  onTap: () {
+                    if (currentUser.value.apiToken != null) {
+                      if (currentCart.value.length != 0) {
+                        Navigator.of(context).pushNamed('/Checkout');
+                      } else {
+                        Navigator.of(context).pushNamed('/EmptyList');
+                      }
+                    } else {
+                      Navigator.of(context).pushNamed('/Login');
+                    }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 30, right: 20),
+                    height: 35,
+                    width: 35,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).accentColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            blurRadius: 5.0,
+                          ),
+                        ]),
+                    child: Icon(Icons.shopping_cart, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

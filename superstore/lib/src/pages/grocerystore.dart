@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:superstore/src/elements/ShoppingCartButtonWidget.dart';
 import 'package:superstore/src/elements/image_zoom.dart';
 import 'package:superstore/src/models/delivery_options_model.dart';
 import 'package:superstore/src/models/packagetype.dart';
@@ -9,6 +10,7 @@ import 'package:superstore/src/pages/store_detail.dart';
 import 'package:superstore/src/pages/upload_prescription.dart';
 
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:superstore/src/repository/user_repository.dart';
 
 import '../elements/SearchWidget.dart';
 import '../elements/TopCategoriesWidget.dart';
@@ -248,45 +250,76 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              currentSearch.value.shopName =
-                                  widget?.shopDetails?.shopName;
-                              currentSearch.value.shopTypeID =
-                                  widget.shopTypeID;
-                              currentSearch.value.shopId =
-                                  widget.shopDetails.shopId;
-                              currentSearch.value.latitude =
-                                  widget.shopDetails.latitude;
-                              currentSearch.value.longitude =
-                                  widget.shopDetails.longitude;
-                              currentSearch.value.km =
-                                  widget.shopDetails.distance;
-                              currentSearch.value.deliveryRadius =
-                                  widget.shopDetails.deliveryRadius;
-                              currentSearch.value.subtitle =
-                                  widget.shopDetails.subtitle;
-                              Navigator.of(context).push(SearchModal());
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(top: 30, right: 20),
-                              height: 35,
-                              width: 35,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Theme.of(context).accentColor,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey,
-                                      blurRadius: 5.0,
-                                    ),
-                                  ]),
-                              child: Icon(Icons.search, color: Colors.white),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                currentSearch.value.shopName =
+                                    widget?.shopDetails?.shopName;
+                                currentSearch.value.shopTypeID =
+                                    widget.shopTypeID;
+                                currentSearch.value.shopId =
+                                    widget.shopDetails.shopId;
+                                currentSearch.value.latitude =
+                                    widget.shopDetails.latitude;
+                                currentSearch.value.longitude =
+                                    widget.shopDetails.longitude;
+                                currentSearch.value.km =
+                                    widget.shopDetails.distance;
+                                currentSearch.value.deliveryRadius =
+                                    widget.shopDetails.deliveryRadius;
+                                currentSearch.value.subtitle =
+                                    widget.shopDetails.subtitle;
+                                Navigator.of(context).push(SearchModal());
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 30, right: 10),
+                                height: 35,
+                                width: 35,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Theme.of(context).accentColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 5.0,
+                                      ),
+                                    ]),
+                                child: Icon(Icons.search, color: Colors.white),
+                              ),
                             ),
-                          ),
+                            GestureDetector(
+                              onTap: () {
+                                if (currentUser.value.apiToken != null) {
+                                  if (currentCart.value.length != 0) {
+                                    Navigator.of(context).pushNamed('/Checkout');
+                                  } else {
+                                    Navigator.of(context).pushNamed('/EmptyList');
+                                  }
+                                } else {
+                                  Navigator.of(context).pushNamed('/Login');
+                                }
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 30, right: 20),
+                                height: 35,
+                                width: 35,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Theme.of(context).accentColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 5.0,
+                                      ),
+                                    ]),
+                                child: Icon(Icons.shopping_cart, color: Colors.white),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
