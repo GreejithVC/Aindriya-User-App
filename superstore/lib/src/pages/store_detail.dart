@@ -412,18 +412,18 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => SearchResultWidgetRe(
-                        itemDetails: itemDetails,
-                        shopId: shopDetails.shopId,
-                        shopName: shopDetails.shopName,
-                        subtitle: shopDetails.subtitle,
-                        km: shopDetails.distance,
-                        deliveryRadius: shopDetails.deliveryRadius,
-                        shopTypeID: shopTypeID,
-                        latitude: shopDetails.latitude,
-                        longitude: shopDetails.longitude,
-                        callback: this.callback,
-                        focusId: focusId,
-                      )));
+                            itemDetails: itemDetails,
+                            shopId: shopDetails.shopId,
+                            shopName: shopDetails.shopName,
+                            subtitle: shopDetails.subtitle,
+                            km: shopDetails.distance,
+                            deliveryRadius: shopDetails.deliveryRadius,
+                            shopTypeID: shopTypeID,
+                            latitude: shopDetails.latitude,
+                            longitude: shopDetails.longitude,
+                            callback: this.callback,
+                            focusId: focusId,
+                          )));
                 },
                 child: Container(
                   margin: EdgeInsets.only(top: 30, right: 20),
@@ -439,8 +439,8 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                           blurRadius: 5.0,
                         ),
                       ]),
-                  child: Icon(Icons.search,
-                      color: Colors.white),),
+                  child: Icon(Icons.search, color: Colors.white),
+                ),
               ),
             ),
           ],
@@ -683,15 +683,15 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                     itemOption(
                         image: "assets/img/ic_cod.png",
                         title: "COD",
-                        isEnable: true),
+                        isEnable: shopDetails?.cod == true),
                     itemOption(
                         image: "assets/img/ic_upi.png",
                         title: "UPI",
-                        isEnable: true),
+                        isEnable: shopDetails?.upi == true),
                     itemOption(
                         image: "assets/img/ic_card.png",
                         title: "Card",
-                        isEnable: true),
+                        isEnable: shopDetails?.card == true),
                   ],
                 ),
               )

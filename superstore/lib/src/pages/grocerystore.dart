@@ -271,21 +271,21 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                               Navigator.of(context).push(SearchModal());
                             },
                             child: Container(
-                                margin: EdgeInsets.only(top: 30, right: 20),
-                                height: 35,
-                                width: 35,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Theme.of(context).accentColor,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        blurRadius: 5.0,
-                                      ),
-                                    ]),
-                              child: Icon(Icons.search,
-                                  color: Colors.white),),
+                              margin: EdgeInsets.only(top: 30, right: 20),
+                              height: 35,
+                              width: 35,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Theme.of(context).accentColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      blurRadius: 5.0,
+                                    ),
+                                  ]),
+                              child: Icon(Icons.search, color: Colors.white),
+                            ),
                           ),
                         ),
                       ],
@@ -549,15 +549,16 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                 itemOption(
                                     image: "assets/img/ic_cod.png",
                                     title: "COD",
-                                    isEnable: true),
+                                    isEnable: widget?.shopDetails?.cod == true),
                                 itemOption(
                                     image: "assets/img/ic_upi.png",
                                     title: "UPI",
-                                    isEnable: true),
+                                    isEnable: widget?.shopDetails?.upi == true),
                                 itemOption(
                                     image: "assets/img/ic_card.png",
                                     title: "Card",
-                                    isEnable: true),
+                                    isEnable:
+                                        widget?.shopDetails?.card == true),
                               ],
                             ),
                           )
