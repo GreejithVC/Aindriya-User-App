@@ -133,9 +133,10 @@ class _CategoryProductState extends StateMVC<CategoryProduct> {
                 pinned: true,
                 floating: false,
                 delegate: SliverCustomHeaderDelegate(
-                    collapsedHeight: 50,
+                    collapsedHeight: 0,
                     expandedHeight: 150,
-                    paddingTop: MediaQuery.of(context).padding.top,
+                    paddingTop: 28,
+                    // paddingTop: MediaQuery.of(context).padding.top,
                     coverImgUrl: widget.categoryData.image,
                     pagetitle: widget.categoryData.name),
               ),
@@ -265,6 +266,29 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
             height: MediaQuery.of(context).size.height / 0.5,
             width: double.infinity,
             fit: BoxFit.cover,
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: GestureDetector(
+              onTap: () {
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 30, right: 20),
+                height: 35,
+                width: 35,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).accentColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 5.0,
+                      ),
+                    ]),
+                child: Icon(Icons.search, color: Colors.white),
+              ),
+            ),
           ),
           Container(
             padding: EdgeInsets.only(right: 15),
