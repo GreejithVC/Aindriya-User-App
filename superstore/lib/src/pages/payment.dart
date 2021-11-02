@@ -461,7 +461,7 @@ class _PaymentPageState extends StateMVC<PaymentPage> {
                                           ),
                                         ]),
                                     child:Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
                                           width:50,height:50,
@@ -474,7 +474,7 @@ class _PaymentPageState extends StateMVC<PaymentPage> {
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Text('COD',style: Theme.of(context).textTheme.headline1),
+                                                Text('HomeDelivery',style: Theme.of(context).textTheme.headline1),
 
                                               ],
                                             ),
@@ -516,7 +516,7 @@ class _PaymentPageState extends StateMVC<PaymentPage> {
                                           ),
                                         ]),
                                     child:Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
                                           width:50,height:50,
