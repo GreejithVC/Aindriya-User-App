@@ -3,6 +3,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:global_configuration/global_configuration.dart';
+import 'package:superstore/src/pages/ShowBillDetailsScreen.dart';
 import '../repository/product_repository.dart';
 import '../helpers/helper.dart';
 import '../repository/order_repository.dart';
@@ -20,151 +21,39 @@ class CheckoutPage extends StatefulWidget {
 class _CheckoutPageState extends StateMVC<CheckoutPage> {
   bool popperShow = false;
   CartController _con;
+
   _CheckoutPageState() : super(CartController()) {
     _con = controller;
   }
+
   void callback(bool nextPage) {
     setState(() {
       this.popperShow = nextPage;
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    var size= MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
     return Scaffold(
-        floatingActionButton:  popperShow?Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: FlareActor(
-                'assets/img/winners.flr',
-                animation: 'boom',
+        floatingActionButton: popperShow
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: FlareActor(
+                      'assets/img/winners.flr',
+                      animation: 'boom',
+                    )),
               )
-          ),
-        ):Container(),
-        bottomNavigationBar: Container(
-          width: double.infinity,height: 100,
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 6,
-                blurRadius: 7,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-ValueListenableBuilder(
-                    valueListenable: cartRepo.currentCart,
-                    builder: (context, _setting, _) {
-
-                      return Column(
-                        children:[
-                          currentCheckout.value.deliveryPossible?Container(): Container(
-                            child:SingleChildScrollView(child:Column(
-                              children: [
-
-
-                               Padding(
-                                  padding: EdgeInsets.only(left:size.width * 0.2,right:size.width * 0.2,top:10),
-                                  child: Container(
-                                    width: double.infinity,
-                                    // ignore: deprecated_member_use
-                                    child: FlatButton(
-                                      onPressed: () {
-                                        /*Navigator.of(context).pushNamed('/Login');*/
-                                      },
-                                      padding: EdgeInsets.only(left:10,right:10,top:10,bottom:10),
-                                      color:Colors.blueGrey.shade900,
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            'CHANGE ADDRESS',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2
-                                                .merge(TextStyle(color: Theme.of(context).primaryColorLight,fontWeight: FontWeight.w500)),
-                                          ),
-                                          SizedBox(height:4),
-                                          Text('use another address',style: TextStyle(fontSize:10,color:Theme.of(context).primaryColorLight.withOpacity(0.7),))
-
-                                        ],
-                                      ),),
-                                  ),
-                                ),
-                              ],
-                            )),
-                          ),
-                                currentCheckout.value.deliveryPossible?  Column(
-                           mainAxisAlignment: MainAxisAlignment.end,
-                           children:[
-                             Container(
-                               margin: EdgeInsets.only(top:40),
-                                 alignment:Alignment.bottomCenter,
-                                 child:Wrap(
-                                     alignment: WrapAlignment.end,
-                                     children: [
-                                       InkWell(
-                                         onTap: () {},
-                                         child: Container(
-                                           width: MediaQuery.of(context).size.width * 0.5,
-                                           child: Padding(
-                                             padding: const EdgeInsets.only(top:5,right:10,left:20,bottom:10),
-                                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                               Text(' ${Helper.pricePrint(currentCheckout.value.grand_total)}', style: Theme.of(context).textTheme.bodyText1),
-                                               Text(
-                                                 S.of(context).view_bill_details,
-                                                 style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
-                                                 textAlign: TextAlign.center,
-                                               ),
-                                             ]),
-                                           ),
-                                         ),
-                                       ),
-                                       InkWell(
-                                         onTap: () {
-                                           _con.gotopayment();
-                                         },
-                                         child: Container(
-                                           width: MediaQuery.of(context).size.width * 0.5,
-                                           decoration: BoxDecoration(
-                                             color: Theme.of(context).accentColor,
-                                           ),
-                                           child: Padding(
-                                             padding: const EdgeInsets.only(top:12,right:12,left:12,bottom:12),
-                                             child: Text(
-                                               S.of(context).proceed_to_pay,
-                                               style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
-                                               textAlign: TextAlign.center,
-                                             ),
-                                           ),
-                                         ),
-                                       ),
-                                     ])
-                             ),
-                           ]
-                         ):Text(''),
-
-
-                        ]
-                      );
-                    })
-
-
-            ],
-          ),
-        ),
+            : Container(),
         body: CustomScrollView(
           slivers: <Widget>[
             ValueListenableBuilder(
                 valueListenable: cartRepo.currentCart,
                 builder: (context, _setting, _) {
-               // _con.grandSummary();
+                  // _con.grandSummary();
                   return SliverPersistentHeader(
                     pinned: true,
                     floating: false,
@@ -173,14 +62,194 @@ ValueListenableBuilder(
                       collapsedHeight: 70,
                       expandedHeight: 120,
                       paddingTop: MediaQuery.of(context).padding.top,
-                      coverImgUrl: 'http://www.sriaghraharamatrimoni.com/assets/new_home_page/images/lp-3.png',
-                      subtitle: '${currentCart.value.length} ${S.of(context).items}, to pay  ${Helper.pricePrint(currentCheckout.value.grand_total)}',
+                      coverImgUrl:
+                          'http://www.sriaghraharamatrimoni.com/assets/new_home_page/images/lp-3.png',
+                      subtitle:
+                          '${currentCart.value.length} ${S.of(context).items}, to pay  ${Helper.pricePrint(currentCheckout.value.grand_total)}',
                     ),
                   );
                 }),
             SliverList(
               delegate: SliverChildListDelegate(<Widget>[
-                CheckoutListWidget(con: _con, callback: this.callback,),
+                CheckoutListWidget(
+                  con: _con,
+                  callback: this.callback,
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 6,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      ValueListenableBuilder(
+                          valueListenable: cartRepo.currentCart,
+                          builder: (context, _setting, _) {
+                            return Column(children: [
+                              currentCheckout.value.deliveryPossible
+                                  ? Container()
+                                  : Container(
+                                child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: size.width * 0.2,
+                                              right: size.width * 0.2,
+                                              top: 10),
+                                          child: Container(
+                                            width: double.infinity,
+                                            // ignore: deprecated_member_use
+                                            child: FlatButton(
+                                              onPressed: () {
+                                                /*Navigator.of(context).pushNamed('/Login');*/
+                                              },
+                                              padding: EdgeInsets.only(
+                                                  left: 10,
+                                                  right: 10,
+                                                  top: 10,
+                                                  bottom: 10),
+                                              color: Colors.blueGrey.shade900,
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    'CHANGE ADDRESS',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .subtitle2
+                                                        .merge(TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight,
+                                                        fontWeight:
+                                                        FontWeight.w500)),
+                                                  ),
+                                                  SizedBox(height: 4),
+                                                  Text('use another address',
+                                                      style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: Theme.of(context)
+                                                            .primaryColorLight
+                                                            .withOpacity(0.7),
+                                                      ))
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                              if (currentCheckout.value.deliveryPossible) Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                        margin: EdgeInsets.only(top: 40),
+                                        alignment: Alignment.bottomCenter,
+                                        child: Wrap(
+                                            alignment: WrapAlignment.end,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {},
+                                                child: Container(
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                      0.5,
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        top: 5,
+                                                        right: 10,
+                                                        left: 20,
+                                                        bottom: 10),
+                                                    child: Column(
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                        children: [
+                                                          Text(
+                                                              ' ${Helper.pricePrint(currentCheckout.value.grand_total)}',
+                                                              style: Theme.of(
+                                                                  context)
+                                                                  .textTheme
+                                                                  .bodyText1),
+                                                          GestureDetector(
+                                                            onTap: (){
+                                                              Navigator.of(context).push(MaterialPageRoute(
+                                                                  builder: (context) => ViewBillDetails()));
+
+                                                            },
+                                                            child: Text(
+                                                              S
+                                                                  .of(context)
+                                                                  .view_bill_details,
+                                                              style: TextStyle(
+                                                                  color:
+                                                                  Colors.blue,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                              textAlign:
+                                                              TextAlign.center,
+                                                            ),
+                                                          ),
+                                                        ]),
+                                                  ),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  _con.gotopayment();
+                                                },
+                                                child: Container(
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                      0.5,
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context)
+                                                        .accentColor,
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        top: 12,
+                                                        right: 12,
+                                                        left: 12,
+                                                        bottom: 12),
+                                                    child: Text(
+                                                      S
+                                                          .of(context)
+                                                          .proceed_to_pay,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          .merge(TextStyle(
+                                                          color: Theme.of(
+                                                              context)
+                                                              .scaffoldBackgroundColor)),
+                                                      textAlign: TextAlign.center,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ])),
+                                  ]) else Text(''),
+                            ]);
+                          })
+                    ],
+                  ),
+                ),
               ]),
             ),
           ],
@@ -234,7 +303,9 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   Color makeStickyHeaderBgColor(shrinkOffset) {
-    final int alpha = (shrinkOffset / (this.maxExtent - this.minExtent) * 255).clamp(0, 255).toInt();
+    final int alpha = (shrinkOffset / (this.maxExtent - this.minExtent) * 255)
+        .clamp(0, 255)
+        .toInt();
     return Color.fromARGB(alpha, 255, 255, 255);
   }
 
@@ -242,13 +313,16 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
     if (shrinkOffset <= 50) {
       return isIcon ? Colors.white : Colors.transparent;
     } else {
-      final int alpha = (shrinkOffset / (this.maxExtent - this.minExtent) * 255).clamp(0, 255).toInt();
+      final int alpha = (shrinkOffset / (this.maxExtent - this.minExtent) * 255)
+          .clamp(0, 255)
+          .toInt();
       return Color.fromARGB(alpha, 0, 0, 0);
     }
   }
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     this.updateStatusBarBrightness(shrinkOffset);
     return Container(
       height: this.maxExtent,
@@ -268,23 +342,28 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
                       onPressed: () {},
                       icon: Icon(Icons.arrow_back_ios),
                     ),
-
                     CachedNetworkImage(
                       // ignore: deprecated_member_use
-                      imageUrl: "${GlobalConfiguration().getString('base_upload')}/uploads/vendor_image/vendor_${currentCheckout.value.shopId}.png",
-                      placeholder: (context, url) => new CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => new Icon(Icons.error),
+                      imageUrl:
+                          "${GlobalConfiguration().getString('base_upload')}/uploads/vendor_image/vendor_${currentCheckout.value.shopId}.png",
+                      placeholder: (context, url) =>
+                          new CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          new Icon(Icons.error),
                       height: 60.0,
                       width: 60.0,
                     ),
-
                     SizedBox(width: 10),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(currentCheckout.value.shopName, textAlign: TextAlign.left, style: Theme.of(context).textTheme.headline1),
-                        Text(currentCheckout.value.subtitle, textAlign: TextAlign.left, style: Theme.of(context).textTheme.caption),
+                        Text(currentCheckout.value.shopName,
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.headline1),
+                        Text(currentCheckout.value.subtitle,
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.caption),
                       ],
                     )
                     /**  Column(children: [
@@ -314,7 +393,8 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
                       IconButton(
                         icon: Icon(
                           Icons.arrow_back_ios,
-                          color: this.makeStickyHeaderTextColor(shrinkOffset, false),
+                          color: this
+                              .makeStickyHeaderTextColor(shrinkOffset, false),
                         ),
                         onPressed: () => Navigator.pop(context),
                       ),
@@ -324,16 +404,24 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
                           Text(
                             this.title,
                             textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.headline1.merge(TextStyle(
-                              color: this.makeStickyHeaderTextColor(shrinkOffset, false),
-                            )),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline1
+                                .merge(TextStyle(
+                                  color: this.makeStickyHeaderTextColor(
+                                      shrinkOffset, false),
+                                )),
                           ),
                           Text(
                             this.subtitle,
                             textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.caption.merge(TextStyle(
-                              color: this.makeStickyHeaderTextColor(shrinkOffset, false),
-                            )),
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption
+                                .merge(TextStyle(
+                                  color: this.makeStickyHeaderTextColor(
+                                      shrinkOffset, false),
+                                )),
                           ),
                         ],
                       ),
