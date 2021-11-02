@@ -127,6 +127,7 @@ class ShopPicker extends StatelessWidget {
                     fillColor: Colors.white,
                     filled: true,
                     hintText: "Search Shops",
+                    hintStyle: TextStyle(color: Colors.grey.shade600),
                     suffixIcon: Icon(
                       Icons.search,
                       size: 20,
