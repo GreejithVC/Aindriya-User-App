@@ -425,7 +425,7 @@ class ProductController extends ControllerMVC {
   }
 
   Future<void> listenForDeliveryDetails(String userId) async {
-    print("expiry ////subScribedPackage?.expiryDate at controller");
+    print("listenForDeliveryDetails/////////////");
     print(subScribedPackage?.expiryDate);
     print("expiry ////.deliveryOptionsModel?.availableCOD");
     print(deliveryOptionsModel?.availableCOD);

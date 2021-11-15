@@ -53,6 +53,7 @@ class RestaurantProductBox extends StatefulWidget {
 class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
   @override
   void initState() {
+    widget?.con?.listenForDeliveryDetails(widget?.shopId);
     super.initState();
   }
 
@@ -268,6 +269,13 @@ class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
                                                         _variantData.variant_id)
                                             ? InkWell(
                                                 onTap: () {
+                                                  print(widget?.con?.deliveryOptionsModel?.availableCOD);
+                                                  print("widget?.con?.deliveryOptionsModel?.availableCOD");
+                                                  print( widget?.con?.deliveryOptionsModel?.availableTakeAway);
+                                                  print( "widget?.con?.deliveryOptionsModel?.availableTakeAway");
+                                                  print( widget?.shopId);
+                                                  print(" widget?.shopId");
+
                                                   if (isTooFar == true) {
                                                     setState(() {});
                                                     showToast(

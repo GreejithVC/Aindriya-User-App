@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:superstore/src/models/favouriteProduct.dart';
 import 'package:superstore/src/pages/Widget/fav_product_button.dart';
 import 'package:superstore/src/pages/product_details_screen.dart';
+import 'package:superstore/src/repository/user_repository.dart';
 import 'package:toast/toast.dart';
 import '../models/product_details2.dart';
 import '../models/variant.dart';
@@ -49,6 +50,7 @@ class ProductBox2Widget extends StatefulWidget {
 class _ProductBox2WidgetState extends StateMVC<ProductBox2Widget> {
   @override
   void initState() {
+    widget?.con?.listenForDeliveryDetails(widget?.shopId);
     super.initState();
   }
 
@@ -248,6 +250,12 @@ class _ProductBox2WidgetState extends StateMVC<ProductBox2Widget> {
                                                         _variantData.variant_id)
                                             ? InkWell(
                                                 onTap: () {
+                                                  print(widget?.con?.deliveryOptionsModel?.availableCOD);
+                                                  print("widget?.con?.deliveryOptionsModel?.availableCOD");
+                                                  print( widget?.con?.deliveryOptionsModel?.availableTakeAway);
+                                                  print( "widget?.con?.deliveryOptionsModel?.availableTakeAway");
+                                                  print( widget?.shopId);
+                                                  print(" widget?.shopId");
                                                   if (isTooFar == true) {
                                                     setState(() {});
                                                     showToast(

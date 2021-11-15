@@ -80,6 +80,7 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
     selectedVariantData.selected = true;
     _con?.listenForReviewList(
         isShop: false, id: selectedVariantData?.product_id);
+    widget?.con?.listenForDeliveryDetails(widget?.shopId);
   }
 
   String convertToDisplayDate(String date) {
@@ -768,6 +769,12 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                       widget?.choice?.id, selectedVariantData?.variant_id),
               child: GestureDetector(
                 onTap: () {
+                  print(widget?.con?.deliveryOptionsModel?.availableCOD);
+                  print("widget?.con?.deliveryOptionsModel?.availableCOD");
+                  print( widget?.con?.deliveryOptionsModel?.availableTakeAway);
+                  print( "widget?.con?.deliveryOptionsModel?.availableTakeAway");
+                  print( widget?.shopId);
+                  print(" widget?.shopId");
                   print(isTooFar);
                   print("isTooFar");
                   if (isTooFar == true) {
