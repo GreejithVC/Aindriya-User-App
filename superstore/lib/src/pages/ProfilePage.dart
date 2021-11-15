@@ -279,7 +279,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           fit: BoxFit.contain,
                                         ),
                                         (currentUser?.value?.selected_address ??
-                                                currentUser?.value?.address) ??
+                                                currentUser?.value?.address?.toString()) ??
                                             "Home Location",
                                         tapFucntion: () async {
                                       LocationResult result =
@@ -838,10 +838,14 @@ class _ProfilePageState extends State<ProfilePage> {
     // ignore: deprecated_member_use
     final uri = Uri.parse(
         "${GlobalConfiguration().getString('base_url')}Api/profileimage/${currentUser.value.id}?$_apiToken");
+
     var request = http.MultipartRequest('POST', uri);
     var pic = await http.MultipartFile.fromPath('image', image.path);
     request.files.add(pic);
     var response = await request.send();
+    print(uri);
+    print(response);
+    print(uri);
     if (response.statusCode == 200) {
       // Navigator.of(context).pushReplacementNamed('/Success');
 

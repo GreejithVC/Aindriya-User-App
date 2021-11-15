@@ -45,6 +45,13 @@ class _ShopReviewsState extends StateMVC<ShopReviews> {
                     previousValue + double.tryParse(element?.rating ?? "0")) ??
             0) /
         (_con?.reviewList?.length ?? 0));
+    List<String>coverImageList =[widget?.shopDetails?.cover];
+    if(widget?.shopDetails?.cover1?.isNotEmpty == true){
+      coverImageList.add(widget?.shopDetails?.cover1);
+    }
+    if(widget?.shopDetails?.cover2?.isNotEmpty == true){
+      coverImageList.add(widget?.shopDetails?.cover2);
+    }
 
     return Scaffold(
       body: ListView(
@@ -55,7 +62,7 @@ class _ShopReviewsState extends StateMVC<ShopReviews> {
           Container(
             height: 200,
             child: PageView.builder(
-              itemCount: widget.shopDetails?.coverImageList?.length ?? 0,
+              itemCount: coverImageList?.length ?? 0,
               scrollDirection: Axis.horizontal,
               controller: _pageController,
               // onPageChanged: _onPageChanged,
@@ -63,18 +70,17 @@ class _ShopReviewsState extends StateMVC<ShopReviews> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ImageZoomScreen(
-                          imageUrl: widget.shopDetails.coverImageList
-                              .elementAt(index))));
+                          imageUrl: coverImageList?.elementAt(index))));
                 },
                 child: Image(
-                    image: widget.shopDetails.coverImageList.elementAt(index) ==
+                    image:coverImageList?.elementAt(index) ==
                                 'no_image' &&
                             widget.shopTypeID == 2
                         ? AssetImage(
                             'assets/img/resturentdefaultbg.jpg',
                           )
                         : NetworkImage(
-                            widget.shopDetails.coverImageList.elementAt(index)),
+                            coverImageList?.elementAt(index)),
                     height: 190,
                     width: double.infinity,
                     fit: BoxFit.cover),

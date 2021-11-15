@@ -149,7 +149,7 @@ class VendorController extends ControllerMVC {
           deliveryOptionsModel = DeliveryOptionsModel.fromJSON(value.data());
           if (deliveryOptionsModel?.availableCOD != true &&
               deliveryOptionsModel?.availableTakeAway != true) {
-            storeLiveStatus(false, userId);
+            storeLiveStatus(true, userId);
           }
         });
       }

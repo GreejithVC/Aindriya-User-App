@@ -110,6 +110,9 @@ Future<String> bookOrderResp() async {
   // ignore: deprecated_member_use
   final String url = '${GlobalConfiguration().getString('api_base_url')}api/order/test/${_user.id}?$_apiToken';
 
+  print(url);
+  print("_book.toMap()");
+  print(_book.toMap());
   final client = new http.Client();
   final response = await client.put(
       Uri.parse(url),

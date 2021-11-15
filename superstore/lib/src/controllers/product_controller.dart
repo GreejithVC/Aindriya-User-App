@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:superstore/src/models/delivery_options_model.dart';
+import 'package:superstore/src/models/packagetype.dart';
+import 'package:superstore/src/repository/vendor_repository.dart';
 import '../models/addon.dart';
 import '../models/product_details2.dart';
 import '../models/variant.dart';
@@ -20,6 +24,8 @@ class ProductController extends ControllerMVC {
   List<Product> category_products = <Product>[];
   List<ProductDetails2> productList = <ProductDetails2>[];
   List<ReviewList> reviewList = <ReviewList>[];
+  PackageTypeModel subScribedPackage;
+  DeliveryOptionsModel deliveryOptionsModel;
 
   // ignore: non_constant_identifier_names
   List<AutoSuggestion> auto_suggestion = <AutoSuggestion>[];
@@ -416,5 +422,33 @@ class ProductController extends ControllerMVC {
       content: Text('Cart Cleared Successfully'),
     ));
     Navigator.pop(context);
+  }
+
+  Future<void> listenForDeliveryDetails(String userId) async {
+    print("expiry ////subScribedPackage?.expiryDate at controller");
+    print(subScribedPackage?.expiryDate);
+    print("expiry ////.deliveryOptionsModel?.availableCOD");
+    print(deliveryOptionsModel?.availableCOD);
+    print("expiry ////deliveryOptionsModel?.availableTakeAway");
+    print(deliveryOptionsModel?.availableTakeAway);
+    print("listen for DeliveryDetails");
+    FirebaseFirestore.instance
+        .collection("vendorDeliveryDetails")
+        .doc(userId)
+        .get()
+        .then((value) {
+      if (value?.data() != null) {
+        print(value.data());
+        setState(() {
+          deliveryOptionsModel = DeliveryOptionsModel.fromJSON(value.data());
+          if (deliveryOptionsModel?.availableCOD != true &&
+              deliveryOptionsModel?.availableTakeAway != true) {
+            storeLiveStatus(true, userId);
+          }
+        });
+      }
+    }).catchError((e) {
+      print(e);
+    }).whenComplete(() {});
   }
 }

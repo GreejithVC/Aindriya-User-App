@@ -18,6 +18,7 @@ ValueNotifier<SearchCatch> currentSearch = new ValueNotifier(SearchCatch());
 Future<Stream<Product>> getProductsByCategory(categoryId) async {
   Uri uri = Helper.getUri('api/category_wise_product/$categoryId');
   print(uri);
+  print("uri//////////////////");
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));

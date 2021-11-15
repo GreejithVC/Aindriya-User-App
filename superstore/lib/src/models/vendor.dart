@@ -9,7 +9,8 @@ class Vendor {
   String distance;
   String logo;
   String cover;
-  List<String> coverImageList;
+  String cover1;
+  String cover2;
   bool openStatus;
   bool cod;
   bool upi;
@@ -38,12 +39,14 @@ class Vendor {
       logo = jsonMap['logo'] ?? "";
       shopTypePreviewImage = jsonMap['previewImage'] ?? "";
       cover = jsonMap['cover'] ?? "";
-      coverImageList = (jsonMap["coverImageList"] as List<dynamic>)
-          ?.map((val) => val.toString() ?? "")
-          ?.toList();
-      if ((coverImageList?.length ?? 0) <= 0) {
-        coverImageList = [cover ?? ""];
-      }
+      cover1 = jsonMap['cover1'] ?? "";
+      cover2 = jsonMap['cover2'] ?? "";
+      // coverImageList = (jsonMap["coverImageList"] as List<dynamic>)
+      //     ?.map((val) => val.toString() ?? "")
+      //     ?.toList();
+      // if ((coverImageList?.length ?? 0) <= 0) {
+      //   coverImageList = [cover ?? ""];
+      // }
       openStatus = jsonMap['openStatus'] ?? false;
       cod = jsonMap['cod'] ?? false;
       upi = jsonMap['upi'] ?? false;
@@ -64,7 +67,9 @@ class Vendor {
       distance = '';
       logo = '';
       cover = '';
-      coverImageList = [];
+      cover1 = '';
+      cover2 = '';
+      // coverImageList = [];
       openStatus = false;
       cod = false;
       upi = false;
@@ -90,7 +95,9 @@ class Vendor {
     map["logo"] = logo;
     map["previewImage"] = shopTypePreviewImage;
     map["cover"] = cover;
-    map["coverImageList"] = coverImageList;
+    map["cover1"] = cover1;
+    map["cover2"] = cover2;
+    // map["coverImageList"] = coverImageList;
     map["openStatus"] = openStatus;
     map["cod"] = cod;
     map["upi"] = upi;

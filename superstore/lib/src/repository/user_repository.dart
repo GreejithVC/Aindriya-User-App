@@ -13,13 +13,16 @@ ValueNotifier<UserDetails> currentUser = new ValueNotifier(UserDetails());
 Future<UserDetails> login(UserDetails user) async {
   // ignore: deprecated_member_use
   final String url = '${GlobalConfiguration().getString('api_base_url')}api/login';
-  print(url);
+
   final client = new http.Client();
   final response = await client.post(
       Uri.parse(url),
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(user.toMap()),
   );
+  print(url);
+  print(user.toMap());
+  print(response.body);
 
   //print(json.decode(response.body)['data']);
   if (response.statusCode == 200) {
@@ -42,6 +45,9 @@ Future<bool> resetPassword(UserDetails user) async {
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(user.toMap()),
   );
+  print(url);
+  print(user.toMap());
+  print(response.body);
   if (response.statusCode == 200) {
     return true;
   } else {
@@ -66,7 +72,9 @@ Future<bool> register(Registermodel user) async {
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(user.toMap()),
   );
-
+  print(url);
+  print(user.toMap());
+  print(response.body);
   if (response.statusCode == 200) {
     // setCurrentUser(response.body);
     // currentUser.value = User.fromJSON(json.decode(response.body)['data']);
@@ -118,13 +126,14 @@ Future<UserDetails> update(UserDetails user) async {
   // ignore: deprecated_member_use
   final String url = '${GlobalConfiguration().getString('base_url')}api/profileupdate/${currentUser.value.id}?$_apiToken';
   print(url);
+  print(user.toMap());
   final client = new http.Client();
    await client.post(
       Uri.parse(url),
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(user.toMap()),
   );
-  //setCurrentUser(response.body);
+   //setCurrentUser(response.body);
   //currentUser.value = User.fromJSON(json.decode(response.body)['data']);
   return currentUser.value;
 }

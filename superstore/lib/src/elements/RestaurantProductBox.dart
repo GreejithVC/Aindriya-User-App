@@ -274,7 +274,20 @@ class _RestaurantProductBoxState extends StateMVC<RestaurantProductBox> {
                                                         "The shop too far away from your location. Please change your delivery/pickup location.",
                                                         gravity: Toast.BOTTOM,
                                                         duration: 4);
-                                                  } else {
+                                                  }
+                                                  else if(
+                                                  (widget?.con?.deliveryOptionsModel?.availableCOD != true &&
+                                                      widget?.con?.deliveryOptionsModel?.availableTakeAway != true)
+                                                  ){
+                                                    setState(() {});
+                                                    showToast(
+                                                        "Sorry.The shop is currently closed.Please try again later",
+                                                        gravity: Toast.BOTTOM,
+                                                        duration: 4);
+
+                                                  }
+
+                                                  else {
                                                     if (currentCheckout
                                                                 .value.shopId ==
                                                             widget.shopId ||

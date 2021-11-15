@@ -643,7 +643,19 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                             "The shop too far away from your location. Please change your delivery/pickup location.",
                             gravity: Toast.BOTTOM,
                             duration: 4);
-                      } else {
+                      }
+                      else if(
+                      (widget?.con?.deliveryOptionsModel?.availableCOD != true &&
+                          widget?.con?.deliveryOptionsModel?.availableTakeAway != true)
+                      ){
+                        setState(() {});
+                        showToast(
+                            "Sorry.The shop is currently closed.Please try again later",
+                            gravity: Toast.BOTTOM,
+                            duration: 4);
+
+                      }
+                      else {
                         widget?.con?.checkShopAdded(
                             widget?.choice,
                             'cart',
@@ -766,7 +778,20 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                         duration: 4);
                     print(isTooFar);
                     print("isTooFar");
-                  } else {
+                  }
+                  else if(
+                  (widget?.con?.deliveryOptionsModel?.availableCOD != true &&
+                      widget?.con?.deliveryOptionsModel?.availableTakeAway != true)
+                  ){
+                    setState(() {});
+                    showToast(
+                        "Sorry.The shop is currently closed.Please try again later",
+                        gravity: Toast.BOTTOM,
+                        duration: 4);
+
+                  }
+
+                  else {
                     print("buy now");
                     widget?.con?.checkShopAdded(
                         widget?.choice,

@@ -150,8 +150,8 @@ class Helper {
 
   static String limitString(String text,
       {int limit = 24, String hiddenText = "..."}) {
-    return text.substring(0, Math.min<int>(limit, text.length)) +
-        (text.length > limit ? hiddenText : '');
+    return (text?.substring(0, Math.min<int>(limit, text?.length ?? 0)) ?? "") +
+        ((text?.length ?? 0) > limit ? hiddenText : '');
   }
 
   static String getCreditCardNumber(String number) {

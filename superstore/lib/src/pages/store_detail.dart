@@ -192,9 +192,10 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
                       ? DateFormat("dd/MM/yyyy")
                           ?.parse(_con.subScribedPackage?.expiryDate)
                           ?.isBefore(DateTime.now())
-                      : true) ||
-                  (_con.deliveryOptionsModel?.availableCOD != true &&
-                      _con.deliveryOptionsModel?.availableTakeAway != true)
+                      : true)
+              // ||
+              //     (_con.deliveryOptionsModel?.availableCOD != true &&
+              //         _con.deliveryOptionsModel?.availableTakeAway != true)
               ? Center(
                   child: Text(_con?.isFetching == true
                       ? ""
@@ -348,6 +349,13 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                     previousValue + double.tryParse(element?.rating ?? "0")) ??
             0) /
         (reviewList?.length ?? 0));
+    List<String>coverImageList =[shopDetails?.cover];
+    if(shopDetails?.cover1?.isNotEmpty == true){
+      coverImageList.add(shopDetails?.cover1);
+    }
+    if(shopDetails?.cover2?.isNotEmpty == true){
+      coverImageList.add(shopDetails?.cover2);
+    }
     return ListView(
       padding: EdgeInsets.all(0),
       shrinkWrap: true,
@@ -359,7 +367,7 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
             Container(
               height: 200,
               child: PageView.builder(
-                itemCount: shopDetails?.coverImageList?.length ?? 0,
+                itemCount: coverImageList?.length ?? 0,
                 scrollDirection: Axis.horizontal,
                 controller: _pageController,
                 // onPageChanged: _onPageChanged,
@@ -368,17 +376,17 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ImageZoomScreen(
                             imageUrl:
-                                shopDetails.coverImageList.elementAt(index))));
+                                coverImageList?.elementAt(index))));
                   },
                   child: Image(
-                      image: shopDetails.coverImageList.elementAt(index) ==
+                      image: coverImageList?.elementAt(index) ==
                                   'no_image' &&
                               shopTypeID == 2
                           ? AssetImage(
                               'assets/img/resturentdefaultbg.jpg',
                             )
                           : NetworkImage(
-                              shopDetails.coverImageList.elementAt(index)),
+                              coverImageList?.elementAt(index)),
                       height: 190,
                       width: double.infinity,
                       fit: BoxFit.cover),

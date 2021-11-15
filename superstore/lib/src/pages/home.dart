@@ -90,7 +90,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                             style: Theme.of(context).textTheme.caption.merge(
                                 TextStyle(
                                     color: Colors.white60)))
-                        : Text(currentUser.value.selected_address,
+                        : Text(currentUser?.value?.selected_address ?? "",
                             style: Theme.of(context).textTheme.caption.merge(
                                 TextStyle(
                                     color: Colors.white60))),

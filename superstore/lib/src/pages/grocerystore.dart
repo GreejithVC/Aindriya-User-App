@@ -116,6 +116,13 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
     print(_con.deliveryOptionsModel?.availableCOD);
     print("expiry ////deliveryOptionsModel?.availableTakeAway");
     print(_con.deliveryOptionsModel?.availableTakeAway);
+    List<String>coverImageList =[widget?.shopDetails?.cover];
+    if(widget?.shopDetails?.cover1?.isNotEmpty == true){
+      coverImageList.add(widget?.shopDetails?.cover1);
+    }
+    if(widget?.shopDetails?.cover2?.isNotEmpty == true){
+      coverImageList.add(widget?.shopDetails?.cover2);
+    }
     return DefaultTabController(
       length: _con.vendorResProductList.length,
       child: Scaffold(
@@ -173,9 +180,10 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                     ? DateFormat("dd/MM/yyyy")
                         ?.parse(_con.subScribedPackage?.expiryDate)
                         ?.isBefore(DateTime.now())
-                    : true) ||
-                (_con.deliveryOptionsModel?.availableCOD != true &&
-                    _con.deliveryOptionsModel?.availableTakeAway != true)
+                    : true)
+            // ||
+            //     (_con.deliveryOptionsModel?.availableCOD != true &&
+            //         _con.deliveryOptionsModel?.availableTakeAway != true)
             ? Center(
                 child: Text(_con?.isFetching == true
                     ? ""
@@ -194,7 +202,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                           height: 200,
                           child: PageView.builder(
                             itemCount:
-                                widget?.shopDetails?.coverImageList?.length ??
+                                coverImageList?.length ??
                                     0,
                             scrollDirection: Axis.horizontal,
                             controller: _pageController,
@@ -203,20 +211,18 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ImageZoomScreen(
-                                        imageUrl: widget
-                                            ?.shopDetails?.coverImageList
+                                        imageUrl: coverImageList
                                             ?.elementAt(index))));
                               },
                               child: Image(
-                                  image: widget?.shopDetails?.coverImageList
+                                  image: coverImageList
                                                   ?.elementAt(index) ==
                                               'no_image' &&
                                           widget?.shopTypeID == 2
                                       ? AssetImage(
                                           'assets/img/resturentdefaultbg.jpg',
                                         )
-                                      : NetworkImage(widget
-                                          ?.shopDetails?.coverImageList
+                                      : NetworkImage(coverImageList
                                           ?.elementAt(index)),
                                   height: 190,
                                   width: double.infinity,
