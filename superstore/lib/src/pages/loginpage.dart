@@ -32,6 +32,7 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
 
     animationController.repeat();
   }
+  bool _showPassword = false;
   @override
   void dispose() {
     animationController.dispose(); // you need this
@@ -158,37 +159,56 @@ class _LoginPageState extends StateMVC<LoginPage>  with SingleTickerProviderStat
                           ),
                         ))),
                 SizedBox(height:3),
-                Container(
-                    margin: EdgeInsets.only(left: 40, right: 40),
-                    width: double.infinity,
-                    child: TextFormField(
-                        textAlign: TextAlign.left,
-                        autocorrect: true,
+                Stack(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(left: 40, right: 40),
+                        width: double.infinity,
+                        child: TextFormField(
+                            textAlign: TextAlign.left,
+                            autocorrect: true,
+                            obscureText: !_showPassword,
 
-                        onSaved: (input) => _con.user.password = input,
-                        validator: (input) => input.length < 3 ? S.of(context).should_be_more_than_3_characters : null,
-                        style: Theme.of(context).textTheme.headline3.merge(TextStyle(color:Colors.black)),
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: S.of(context).password,
-                          labelStyle: Theme.of(context)
-                              .textTheme
-                              .headline1
-                              .merge(TextStyle(color: Colors.black)),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0xFF4062DC),
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0xFF4062DC),
-                              width: 1.0,
-                            ),
-                          ),
-                        ))),
+
+                            onSaved: (input) => _con.user.password = input,
+                            validator: (input) => input.length < 3 ? S.of(context).should_be_more_than_3_characters : null,
+                            style: Theme.of(context).textTheme.headline3.merge(TextStyle(color:Colors.black)),
+                            keyboardType: TextInputType.text,
+
+                            // obscureText: true,
+                            decoration: InputDecoration(
+                              labelText: S.of(context).password,
+                              labelStyle: Theme.of(context)
+                                  .textTheme
+                                  .headline1
+                                  .merge(TextStyle(color: Colors.black)),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFF4062DC),
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFF4062DC),
+                                  width: 1.0,
+                                ),
+                              ),
+                            ))),
+                    Positioned(
+                      right: 40,top: 40,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _showPassword = !_showPassword;
+                          });
+                        },
+                        child:Text( _showPassword == false ? "show":"hide",style: TextStyle(color: Colors.black),)
+
+                      ),
+                    ),
+                  ],
+                ),
 
                 SizedBox(
                   height: 12,
