@@ -50,6 +50,7 @@ class _OrderDetailsState extends StateMVC<OrderDetails> {
   int _counter = 0;
   Uint8List _imageFile;
   ScreenshotController screenshotController = ScreenshotController();
+  bool _showButton =true;
 
 
   @override
@@ -711,98 +712,131 @@ class _OrderDetailsState extends StateMVC<OrderDetails> {
                       ),
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 0),
-                          child: _con.invoiceDetailsData.status != 'Completed'
-                              ? Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                    top: BorderSide(
-                                      width: 1,
-                                      color: Colors.grey[200],
-                                    ),
-                                  )),
-                                  // ignore: deprecated_member_use
-                                  child: FlatButton(
-                                      onPressed: () {
-                                        if (_con.invoiceDetailsData.status !=
-                                                'cancelled' &&
-                                            _con.invoiceDetailsData.status !=
-                                                'Completed') {
-                                          Navigator.of(context)
-                                              .pushReplacementNamed('/Map',
-                                                  arguments: widget.orderId);
-                                        }
-                                      },
-                                      padding: EdgeInsets.all(15),
-                                      color: Colors.grey[200],
-                                      child: Text(
-                                        _con.invoiceDetailsData.status,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline1
-                                            .merge(TextStyle(
-                                                color: Colors.deepOrange)),
+                        child: Column(
+                          children: [
+
+
+                            Padding(
+                              padding: const EdgeInsets.only(left: 0),
+                              child: _con.invoiceDetailsData.status != 'Completed'
+                                  ? Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                        top: BorderSide(
+                                          width: 1,
+                                          color: Colors.grey[200],
+                                        ),
                                       )),
-                                )
-                              : _con.invoiceDetailsData.status == 'Completed' &&
-                                      _con.invoiceDetailsData.rating == '0'
-                                  ? InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).pushNamed(
-                                            '/ShopRating',
-                                            arguments: _con.invoiceDetailsData);
-                                      },
-                                      child: Column(children: [
-                                        Text('Give your rating '),
-                                        SizedBox(height: 5),
-                                        RatingBar.builder(
-                                          initialRating: 0,
-                                          minRating: 1,
-                                          tapOnlyMode: true,
-                                          direction: Axis.horizontal,
-                                          allowHalfRating: false,
-                                          itemCount: 5,
-                                          itemSize: 25,
-                                          itemPadding: EdgeInsets.symmetric(
-                                              horizontal: 1.0),
-                                          itemBuilder: (context, _) => Icon(
-                                            Icons.star,
-                                            color: Colors.amber,
-                                          ),
-                                          onRatingUpdate: (rating) {
-                                            print(rating);
+                                      // ignore: deprecated_member_use
+                                      child: FlatButton(
+                                          onPressed: () {
+                                            if (_con.invoiceDetailsData.status !=
+                                                    'cancelled' &&
+                                                _con.invoiceDetailsData.status !=
+                                                    'Completed') {
+                                              Navigator.of(context)
+                                                  .pushReplacementNamed('/Map',
+                                                      arguments: widget.orderId);
+                                            }
                                           },
-                                        ),
-                                        SizedBox(height: 10),
-                                      ]),
+                                          padding: EdgeInsets.all(15),
+                                          color: Colors.grey[200],
+                                          child: Text(
+                                            _con.invoiceDetailsData.status,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline1
+                                                .merge(TextStyle(
+                                                    color: Colors.deepOrange)),
+                                          )),
                                     )
-                                  : Column(children: [
-                                      Text(
-                                          'Your rating is ${_con.invoiceDetailsData.rating}'),
-                                      SizedBox(height: 5),
-                                      RatingBar.builder(
-                                        initialRating: double.parse(
-                                            _con.invoiceDetailsData.rating),
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: false,
-                                        itemCount: 5,
-                                        tapOnlyMode: false,
-                                        itemSize: 25,
-                                        itemPadding:
-                                            EdgeInsets.symmetric(horizontal: 1.0),
-                                        itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        onRatingUpdate: (rating) {
-                                          print(rating);
-                                        },
-                                      ),
-                                      SizedBox(height: 10),
-                                    ]),
+                                  : _con.invoiceDetailsData.status == 'Completed' &&
+                                          _con.invoiceDetailsData.rating == '0'
+                                      ? InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).pushNamed(
+                                                '/ShopRating',
+                                                arguments: _con.invoiceDetailsData);
+                                          },
+                                          child: Column(children: [
+                                            Text('Give your rating '),
+                                            SizedBox(height: 5),
+                                            RatingBar.builder(
+                                              initialRating: 0,
+                                              minRating: 1,
+                                              tapOnlyMode: true,
+                                              direction: Axis.horizontal,
+                                              allowHalfRating: false,
+                                              itemCount: 5,
+                                              itemSize: 25,
+                                              itemPadding: EdgeInsets.symmetric(
+                                                  horizontal: 1.0),
+                                              itemBuilder: (context, _) => Icon(
+                                                Icons.star,
+                                                color: Colors.amber,
+                                              ),
+                                              onRatingUpdate: (rating) {
+                                                print(rating);
+                                              },
+                                            ),
+                                            SizedBox(height: 10),
+                                          ]),
+                                        )
+                                      : Column(children: [
+                                          Text(
+                                              'Your rating is ${_con.invoiceDetailsData.rating}'),
+                                          SizedBox(height: 5),
+                                          RatingBar.builder(
+                                            initialRating: double.parse(
+                                                _con.invoiceDetailsData.rating),
+                                            minRating: 1,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: false,
+                                            itemCount: 5,
+                                            tapOnlyMode: false,
+                                            itemSize: 25,
+                                            itemPadding:
+                                                EdgeInsets.symmetric(horizontal: 1.0),
+                                            itemBuilder: (context, _) => Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            ),
+                                            onRatingUpdate: (rating) {
+                                              print(rating);
+                                            },
+                                          ),
+                                          SizedBox(height: 10),
+                                        ]),
+                            ),
+                            Visibility(
+                              visible: _showButton != false,
+                              child: FlatButton(onPressed:(){
+                                _showButton = false;
+                                screenshotController
+                                    .capture(delay: Duration(milliseconds: 10))
+                                    .then((capturedImage) async {
+                                  ShowCapturedWidget(context, capturedImage);
+                                  await ImageGallerySaver.saveImage(capturedImage);
+                                  print("image saved to gallery");
+                                  setState(() {});
+                                  showToast(
+                                      "Screenshot saved to gallery",
+                                      gravity: Toast.BOTTOM,
+                                      duration: 4);
+                                  _showButton = true;
+
+                                }).catchError((onError) {
+                                  print(onError);
+                                  _showButton = true;
+                                });
+
+                              } ,
+                                  padding: EdgeInsets.all(15),
+                                  color: Colors.blue,
+                                  child: Text("Save as image",style: TextStyle(color: Colors.white),)),
+                            ),
+                          ],
                         ),
                       ),
                     ],
