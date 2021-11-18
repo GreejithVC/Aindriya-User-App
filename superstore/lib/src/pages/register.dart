@@ -36,7 +36,7 @@ class _RegisterState extends StateMVC<Register>
 
     animationController.repeat();
   }
-
+  bool _showPassword = false;
   @override
   void dispose() {
     animationController.dispose(); // you need this
@@ -320,42 +320,58 @@ class _RegisterState extends StateMVC<Register>
                           child: Container(
                               margin: EdgeInsets.only(left: 40, right: 40),
                               width: double.infinity,
-                              child: TextFormField(
-                                  textAlign: TextAlign.left,
-                                  autocorrect: true,
-                                  onSaved: (input) =>
-                                      _con.register_data.password = input,
-                                  validator: (input) => input.length < 3
-                                      ? S
-                                          .of(context)
-                                          .should_be_more_than_3_characters
-                                      : null,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline3
-                                      .merge(TextStyle(
-                                          color: Colors.black)),
-                                  keyboardType: TextInputType.text,
-                                  obscureText: true,
-                                  decoration: InputDecoration(
-                                    labelText: S.of(context).password,
-                                    labelStyle: Theme.of(context)
-                                        .textTheme
-                                        .headline1
-                                        .merge(TextStyle(color: Colors.grey)),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0xFF4062DC),
-                                        width: 1.0,
-                                      ),
+                              child: Stack(
+                                children: [
+                                  TextFormField(
+                                      textAlign: TextAlign.left,
+                                      autocorrect: true,
+                                      onSaved: (input) =>
+                                          _con.register_data.password = input,
+                                      validator: (input) => input.length < 3
+                                          ? S
+                                              .of(context)
+                                              .should_be_more_than_3_characters
+                                          : null,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline3
+                                          .merge(TextStyle(
+                                              color: Colors.black)),
+                                      keyboardType: TextInputType.text,
+                                      obscureText: !_showPassword,
+                                      decoration: InputDecoration(
+                                        labelText: S.of(context).password,
+                                        labelStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            .merge(TextStyle(color: Colors.grey)),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Color(0xFF4062DC),
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Color(0xFF4062DC),
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                      )),
+                                  Positioned(
+                                    right: 5,top: 40,
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _showPassword = !_showPassword;
+                                          });
+                                        },
+                                        child:Text( _showPassword == false ? "show":"hide",style: TextStyle(color: Colors.black),)
+
                                     ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0xFF4062DC),
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                  ))),
+                                  ),
+                                ],
+                              )),
                         ),
                       ],
                     ),

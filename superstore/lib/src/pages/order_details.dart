@@ -94,31 +94,31 @@ class _OrderDetailsState extends StateMVC<OrderDetails> {
                     ])),
             actions: [
 
-              GestureDetector(onTap: (){
-                screenshotController
-                    .capture(delay: Duration(milliseconds: 10))
-                    .then((capturedImage) async {
-                  ShowCapturedWidget(context, capturedImage);
-                  await ImageGallerySaver.saveImage(capturedImage);
-                  print("image saved to gallery");
-                  setState(() {});
-                  showToast(
-                      "Screenshot saved to gallery",
-                      gravity: Toast.BOTTOM,
-                      duration: 4);
-
-                }).catchError((onError) {
-                  print(onError);
-                });
-              },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 14),
-                  child: Icon(Icons.camera,
-                      color: Colors.white,
-                      // Color(0xFF333D37),
-                      size: 23),
-                ),
-              ),
+              // GestureDetector(onTap: (){
+              //   screenshotController
+              //       .capture(delay: Duration(milliseconds: 10))
+              //       .then((capturedImage) async {
+              //     ShowCapturedWidget(context, capturedImage);
+              //     await ImageGallerySaver.saveImage(capturedImage);
+              //     print("image saved to gallery");
+              //     setState(() {});
+              //     showToast(
+              //         "Screenshot saved to gallery",
+              //         gravity: Toast.BOTTOM,
+              //         duration: 4);
+              //
+              //   }).catchError((onError) {
+              //     print(onError);
+              //   });
+              // },
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(right: 14),
+              //     child: Icon(Icons.camera,
+              //         color: Colors.white,
+              //         // Color(0xFF333D37),
+              //         size: 23),
+              //   ),
+              // ),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -811,8 +811,9 @@ class _OrderDetailsState extends StateMVC<OrderDetails> {
                             ),
                             Visibility(
                               visible: _showButton != false,
-                              child: FlatButton(onPressed:(){
+                              child: GestureDetector(onTap:(){
                                 _showButton = false;
+                                setState(() { });
                                 screenshotController
                                     .capture(delay: Duration(milliseconds: 10))
                                     .then((capturedImage) async {
@@ -825,16 +826,27 @@ class _OrderDetailsState extends StateMVC<OrderDetails> {
                                       gravity: Toast.BOTTOM,
                                       duration: 4);
                                   _showButton = true;
+                                  setState(() { });
 
                                 }).catchError((onError) {
                                   print(onError);
                                   _showButton = true;
+                                  setState(() { });
                                 });
 
                               } ,
-                                  padding: EdgeInsets.all(15),
-                                  color: Colors.blue,
-                                  child: Text("Save as image",style: TextStyle(color: Colors.white),)),
+                                  child:Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 12),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.blue,
+                                    ),
+                                    width: double.infinity,alignment: Alignment.center,
+                                      padding: EdgeInsets.symmetric(vertical: 8,horizontal: 15),
+
+                                      child: Text("Save as image",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w900,fontSize: 14),)
+                                  )
+                                 ),
                             ),
                           ],
                         ),
