@@ -17,10 +17,11 @@ enum MessageType {
 }
 // ignore: must_be_immutable
 class ChatDetailPage extends StatefulWidget {
-  ChatDetailPage({Key key, this.shopId, this.shopName, this.shopMobile});
+  ChatDetailPage({Key key, this.shopId, this.shopName, this.shopMobile,this.productName});
   String shopId;
   String shopName;
   String shopMobile;
+  String productName;
   @override
   _ChatDetailPageState createState() => _ChatDetailPageState();
 }
@@ -32,7 +33,9 @@ class _ChatDetailPageState extends StateMVC<ChatDetailPage> {
   }
 
   final _txtController = TextEditingController();
+
   final ScrollController _scrollController = ScrollController();
+
  // AudioPlayer advancedPlayer;
  // AudioCache audioCache;
 
@@ -41,8 +44,13 @@ class _ChatDetailPageState extends StateMVC<ChatDetailPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     initPlayer();
     Timer(Duration(milliseconds: 300), () => _scrollController.jumpTo(_scrollController.position.maxScrollExtent));
+    // if(widget?.productName?.isNotEmpty == true){
+    //   _txtController..text= "Hi, I am intrested in ${widget?.productName ?? ""}";
+    // }
+    _txtController..text= "Hi, I am intrested in ${widget?.productName ?? ""}";
   }
 
   void initPlayer() {
@@ -134,6 +142,7 @@ class _ChatDetailPageState extends StateMVC<ChatDetailPage> {
                           contentPadding: EdgeInsets.all(16.0),
                         ),
                         keyboardType: TextInputType.emailAddress,
+
                       ),
                     ),
                   ),

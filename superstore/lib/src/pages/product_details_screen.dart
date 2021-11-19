@@ -564,7 +564,7 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                                     shopId: widget?.shopId,
                                     shopName: widget
                                         ?.shopName,
-                                    shopMobile: '12')));
+                                    shopMobile: '12',productName: widget?.choice?.product_name,)));
                   },
                   child: Icon(Icons.chat_outlined,
                       // color: Color(0xFF333D37).withOpacity(0.8),
