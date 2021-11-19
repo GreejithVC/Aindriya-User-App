@@ -14,6 +14,7 @@ import 'package:superstore/src/elements/image_zoom.dart';
 import 'package:superstore/src/helpers/helper.dart';
 import 'package:superstore/src/models/user.dart';
 import 'package:superstore/src/pages/fav_shops.dart';
+import 'package:superstore/src/pages/pages.dart';
 import 'package:superstore/src/pages/wishList.dart';
 import 'package:superstore/src/repository/settings_repository.dart';
 import 'package:superstore/src/repository/user_repository.dart';
@@ -38,6 +39,21 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:AppBar(toolbarHeight: 50,
+        backgroundColor: Color(0xFF333D37),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => PagesWidget()));
+          },
+          icon: Icon(Icons.arrow_back_ios),
+          // color: Theme.of(context).backgroundColor,
+        ),
+        title: Text(
+          "Profile",
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+        ),centerTitle: true,
+      ) ,
       body: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.center,

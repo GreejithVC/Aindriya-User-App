@@ -125,6 +125,10 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
             0) /
         (_con?.reviewList?.length ?? 0));
     return Scaffold(
+      appBar: AppBar(centerTitle: true,elevation: 0,
+      title:  Text(widget?.choice?.product_name ?? "",
+          style: Theme.of(context).textTheme.headline3.merge(
+              TextStyle(fontSize: 24, fontWeight: FontWeight.w500,color: Colors.white))),),
       body: ListView(padding: EdgeInsets.all(0), children: [
         Stack(
           alignment: Alignment.topRight,
@@ -183,11 +187,11 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             children: [
-              Text(widget?.choice?.product_name ?? "",
-                  style: Theme.of(context).textTheme.headline3.merge(
-                      TextStyle(fontSize: 24, fontWeight: FontWeight.w500))),
+              // Text(widget?.choice?.product_name ?? "",
+              //     style: Theme.of(context).textTheme.headline3.merge(
+              //         TextStyle(fontSize: 24, fontWeight: FontWeight.w500))),
               Padding(
-                padding: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.only(bottom: 0),
                 child: Row(children: [
                   Row(
                     children: [
@@ -249,10 +253,10 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                   ),
                 ]),
               ),
-              Text(
-                "Product Details:",
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-              ),
+              // Text(
+              //   "Product Details:",
+              //   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(top: 6),
                 child: Text(
@@ -563,11 +567,15 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                                     shopMobile: '12')));
                   },
                   child: Icon(Icons.chat_outlined,
-                      color: Color(0xFF333D37).withOpacity(0.8),
+                      // color: Color(0xFF333D37).withOpacity(0.8),
+                      // color: Theme.of(context).secondaryHeaderColor,
+                      // color: Colors.green,
+                      color: Theme.of(context).accentColor,
                       // Color(0xFF333D37),
                       size: 23),
                 ),
-                Text("chat")
+                Text("chat",style: TextStyle(
+                    color: Theme.of(context).accentColor),)
               ],
             ),
             Padding(
@@ -583,9 +591,14 @@ class _ProductDetailsScreenState extends StateMVC<ProductDetailsScreen> {
                       Icons.store_mall_directory,
                       size: 24,
                       color: Color(0xFF333D37).withOpacity(0.8),
+                      // color: Colors.deepOrange,
                     ),
                   ),
-                  Text("store")
+                  Text("store",style: TextStyle(
+                    color:  Color(0xFF333D37).withOpacity(0.8),
+                    // color:Colors.deepOrange,
+                    // color: Colors.green,
+                  ),)
                 ],
               ),
             ),
