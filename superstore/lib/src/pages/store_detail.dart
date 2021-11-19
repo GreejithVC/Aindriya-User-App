@@ -112,6 +112,21 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
     return DefaultTabController(
       length: _con.vendorResProductList.length,
       child: Scaffold(
+        appBar:AppBar(toolbarHeight: 50,
+          // backgroundColor: Theme.of(context).accentColor,
+          backgroundColor: Color(0xFF333D37),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios),
+            // color: Theme.of(context).backgroundColor,
+          ),
+          title: Text(
+            widget?.shopDetails?.shopName ?? "",
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+          ),centerTitle: true,
+        ) ,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: popperShow
             ? Padding(
@@ -496,36 +511,41 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
               Row(
                 children: [
                   Expanded(
-                    child: Text(shopDetails?.shopName,
-                        style: Theme.of(context).textTheme.headline6),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SearchResultWidgetRe(
-                                itemDetails: itemDetails,
-                                shopId: shopDetails.shopId,
-                                shopName: shopDetails.shopName,
-                                subtitle: shopDetails.subtitle,
-                                km: shopDetails.distance,
-                                deliveryRadius: shopDetails.deliveryRadius,
-                                shopTypeID: shopTypeID,
-                                latitude: shopDetails.latitude,
-                                longitude: shopDetails.longitude,
-                                callback: this.callback,
-                                focusId: focusId,
-                              )));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Icon(
-                        Icons.search,
-                        color: Color(0xFF49aecb),
-                      ),
+                    child: Text(
+                      shopDetails?.subtitle,
+                      overflow: TextOverflow.fade,
+                      maxLines: 1,
                     ),
+                    // Text(shopDetails?.shopName,
+                    //     style: Theme.of(context).textTheme.headline6),
                   ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Navigator.of(context).push(MaterialPageRoute(
+                  //         builder: (context) => SearchResultWidgetRe(
+                  //               itemDetails: itemDetails,
+                  //               shopId: shopDetails.shopId,
+                  //               shopName: shopDetails.shopName,
+                  //               subtitle: shopDetails.subtitle,
+                  //               km: shopDetails.distance,
+                  //               deliveryRadius: shopDetails.deliveryRadius,
+                  //               shopTypeID: shopTypeID,
+                  //               latitude: shopDetails.latitude,
+                  //               longitude: shopDetails.longitude,
+                  //               callback: this.callback,
+                  //               focusId: focusId,
+                  //             )));
+                  //   },
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 4),
+                  //     child: Icon(
+                  //       Icons.search,
+                  //       color: Color(0xFF49aecb),
+                  //     ),
+                  //   ),
+                  // ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    padding: const EdgeInsets.only(left: 4,right: 14),
                     child: GestureDetector(
                       child: new Icon(Icons.chat,
                           color: Color(0xFF49aecb),
@@ -540,14 +560,14 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Image.asset(
-                      'assets/img/location.png',
-                      height: 26,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 4),
+                  //   child: Image.asset(
+                  //     'assets/img/location.png',
+                  //     height: 26,
+                  //     fit: BoxFit.contain,
+                  //   ),
+                  // ),
                   FavButton(vendorData: shopDetails),
                 ],
               ),
@@ -610,14 +630,14 @@ class _TransitionAppBarDelegate extends SliverPersistentHeaderDelegate {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  shopDetails?.subtitle,
-                  overflow: TextOverflow.fade,
-                  maxLines: 1,
-                ),
-              )
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 4),
+              //   child: Text(
+              //     shopDetails?.subtitle,
+              //     overflow: TextOverflow.fade,
+              //     maxLines: 1,
+              //   ),
+              // )
             ],
           ),
         ),

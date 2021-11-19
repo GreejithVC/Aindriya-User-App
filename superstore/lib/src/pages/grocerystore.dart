@@ -126,6 +126,21 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
     return DefaultTabController(
       length: _con.vendorResProductList.length,
       child: Scaffold(
+        appBar:AppBar(toolbarHeight: 50,
+          // backgroundColor: Theme.of(context).accentColor,
+          backgroundColor: Color(0xFF333D37),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios),
+            // color: Theme.of(context).backgroundColor,
+          ),
+          title: Text(
+            widget?.shopDetails?.shopName ?? "",
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+          ),centerTitle: true,
+        ) ,
         floatingActionButton: widget.shopTypeID == 3
             ? FloatingActionButton(
                 elevation: 2,
@@ -342,10 +357,16 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                             child: Row(
                               children: [
                                 Expanded(
-                                  child: Text(widget?.shopDetails?.shopName,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6),
+                                  child:Text(
+                                    widget?.shopDetails?.subtitle,
+                                    overflow: TextOverflow.fade,
+                                    maxLines: 1,
+                                  ),
+                                  //
+                                  // Text(widget?.shopDetails?.shopName,
+                                  //     style: Theme.of(context)
+                                  //         .textTheme
+                                  //         .headline6),
                                 ),
                                 // GestureDetector(
                                 //   onTap: () {
@@ -376,8 +397,7 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                 // ),
                                 GestureDetector(
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 4),
+                                    padding: const EdgeInsets.only(left: 4,right: 14),
                                     child: new Icon(Icons.chat,
                                         color: Color(0xFF49aecb), size: 24),
                                   ),
@@ -393,15 +413,15 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                                                     shopMobile: '12')));
                                   },
                                 ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 4),
-                                  child: Image.asset(
-                                    'assets/img/location.png',
-                                    height: 26,
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding:
+                                //       const EdgeInsets.symmetric(horizontal: 4),
+                                //   child: Image.asset(
+                                //     'assets/img/location.png',
+                                //     height: 26,
+                                //     fit: BoxFit.contain,
+                                //   ),
+                                // ),
                                 FavButton(vendorData: widget?.shopDetails),
                               ],
                             ),
@@ -465,14 +485,14 @@ class _GroceryStoreWidgetState extends StateMVC<GroceryStoreWidget>
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Text(
-                              widget?.shopDetails?.subtitle,
-                              overflow: TextOverflow.fade,
-                              maxLines: 1,
-                            ),
-                          )
+                          // Padding(
+                          //   padding: const EdgeInsets.only(top: 4),
+                          //   child: Text(
+                          //     widget?.shopDetails?.subtitle,
+                          //     overflow: TextOverflow.fade,
+                          //     maxLines: 1,
+                          //   ),
+                          // )
                         ],
                       ),
                     ),
