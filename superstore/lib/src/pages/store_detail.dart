@@ -130,8 +130,8 @@ class _StoreViewDetailsState extends StateMVC<StoreViewDetails>
           headerSliverBuilder: (BuildContext context, bool isScrolled) {
             print("isexpire in store");
             print(_con?.subScribedPackage?.expiryDate);
-            print(_con.deliveryOptionsModel?.availableCOD);
-            print(_con.deliveryOptionsModel?.availableTakeAway);
+            print(_con?.deliveryOptionsModel?.availableCOD);
+            print(_con?.deliveryOptionsModel?.availableTakeAway);
             print("expiry ////subScribedPackage?.expiryDate");
             print(_con?.subScribedPackage?.expiryDate);
             print("expiry ////.deliveryOptionsModel?.availableCOD");

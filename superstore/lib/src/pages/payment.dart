@@ -474,7 +474,7 @@ class _PaymentPageState extends StateMVC<PaymentPage> {
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Text('HomeDelivery',style: Theme.of(context).textTheme.headline1),
+                                                Text('Pay on Delivery',style: Theme.of(context).textTheme.headline1),
 
                                               ],
                                             ),
